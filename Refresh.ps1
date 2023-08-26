@@ -1,3 +1,6 @@
+# Sets the Security Protocol for a .NET application to use TLS 1.2
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 # Set the URL of the API you want to access
 $url = "https://dbpool.datto.net/api/v2/containers"
 

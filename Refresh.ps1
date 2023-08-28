@@ -35,10 +35,9 @@ if (Test-Path -Path $envFilePath -PathType Leaf) {
     #}
 } else {
     $p_apiKeySecure = Read-Host "Please enter your DBPool Personal API Key" -AsSecureString
+    # Convert the secure string to a plain text string
+    $p_apiKey = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($p_apiKeySecure))
 }
-
-# Convert the secure string to a plain text string
-$p_apiKey = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($p_apiKeySecure))
 
 # Prepare headers with the API key
 $headers = @{
@@ -52,3 +51,6 @@ $apiResponse = Invoke-WebRequest -Uri $url -Headers $headers -Method Get
 # Display the response content
 $apiResponse.Content
 #Write-Host "IDs: $ids"
+
+# Close Session
+#Exit-PSSession

@@ -20,18 +20,25 @@ $url = "https://dbpool.datto.net/api/v2/containers"
 if (Test-Path -Path $envFilePath -PathType Leaf) {
     # Read the file and convert it into key-value pairs
     $envVariables = Get-Content $envFilePath | ForEach-Object {
-        $parts = $_ -split '='
-        $key = $parts[0]
-        $value = $parts[1]
+        $line = $_.Trim()
+        $name, $value = $line -split '=', 2
         [PSCustomObject]@{
-            Key = $key
+            Name = $name
             Value = $value
         }
     }
 
+    # Import variables into the current session
+    $envVariables | ForEach-Object {
+        $envName = $_.Name
+        $envValue = $_.Value
+        Write-Host "Overriding variable: $envName with value: $envValue"
+        Set-Item -Path "env:$envName" -Value $envValue
+    }
+
     # Display the environment variables
-    #foreach ($variable in $envVariables) {
-    #    Write-Host "Key: $($variable.Key), Value: $($variable.Value)"
+    #$envVariables | ForEach-Object {
+    #    Write-Host "Variable: $($_.Name), Value: $($_.Value)"
     #}
 } else {
     $p_apiKeySecure = Read-Host "Please enter your DBPool Personal API Key" -AsSecureString

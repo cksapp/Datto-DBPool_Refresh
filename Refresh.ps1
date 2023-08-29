@@ -52,11 +52,16 @@ $headers = @{
 }
 
 # Make an API request with the API key in the headers
-$apiResponse = Invoke-WebRequest -Uri $url -Headers $headers -Method Get
-#$ids = $apiResponse | Select-Object -ExpandProperty id
+$getContainers = Invoke-WebRequest -Uri $url -Headers $headers -Method Get
 
+# Convert JSON to PowerShell object
+$json = ConvertFrom-Json $getContainers
+# Extract and print the 'id' values under 'containers'
+$json.containers | ForEach-Object { $_.id }
+
+# $apiResponse = 
 # Display the response content
-$apiResponse.Content
+#$apiResponse.Content
 #Write-Host "IDs: $ids"
 
 # Close Session

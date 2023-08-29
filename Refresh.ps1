@@ -57,7 +57,17 @@ $getContainers = Invoke-WebRequest -Uri $url -Headers $headers -Method Get
 # Convert JSON to PowerShell object
 $json = ConvertFrom-Json $getContainers
 # Extract and print the 'id' values under 'containers'
-$json.containers | ForEach-Object { $_.id }
+$json.containers | ForEach-Object {
+    $id = $_.id
+
+    # Perform API call for each 'id'
+    $refreshUrl = "$url/$id/actions/refresh"
+    $refreshResponse = Invoke-WebRequest -Uri $refreshUrl -Headers $headers -Method Get 
+
+    # Display the API response
+    Write-Host "API Response for Refresh ${id}:"
+    $refreshResponse | ConvertTo-Json -Depth 4
+}
 
 # $apiResponse = 
 # Display the response content

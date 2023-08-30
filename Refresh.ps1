@@ -61,11 +61,11 @@ $json.containers | ForEach-Object {
     $id = $_.id
 
     # Perform API call for each 'id'
-    $refreshUrl = "$url/$id/actions/refresh"
-    $refreshResponse = Invoke-WebRequest -Uri $refreshUrl -Headers $headers -Method Get 
+    $refreshUrl = "$url/${id}/actions/refresh"
+    $refreshResponse = Invoke-WebRequest -Uri $refreshUrl -Headers $headers -Method Post
 
     # Display the API response
-    Write-Host "API Response for Refresh ${id}:"
+    Write-Host "API Response for Refresh of container ID:${id}"
     $refreshResponse | ConvertTo-Json -Depth 4
 }
 

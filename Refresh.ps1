@@ -40,12 +40,12 @@ if (Test-Path -Path $envFilePath -PathType Leaf) {
     # Clear plaintext variable
     $p_apiKey = $null
     # Dispose of the SecureString to minimize its exposure in memory
-    $secureString.Dispose()
+    $apiKeySecure.Dispose()
 }
 
 # Get the API key from environment variables
 $apiKey = $env:apiKey
-Write-Host "apiKey value: $apiKey"
+#Write-Host "apiKey value: $apiKey"
 
 # Prepare headers with the API key
 $headers = @{

@@ -18,37 +18,26 @@ $url = "https://dbpool.datto.net/api/v2/containers"
 
 # Check if the Override.env file exists, otherwise ask the user for their API key
 if (Test-Path -Path $envFilePath -PathType Leaf) {
-    # Read the file and convert it into key-value pairs
-    $envVariables = Get-Content $envFilePath | ForEach-Object {
-        $line = $_.Trim()
-        $name, $value = $line -split '=', 2
-        [PSCustomObject]@{
-            Name = $name
-            Value = $value
+    $envLines = Get-Content -Path $envFilePath
+
+    foreach ($line in $envLines) {
+        $line = $line.Trim()
+        if (-not [string]::IsNullOrWhiteSpace($line) -and $line -match '^(.*?)=(.*)$') {
+            $envName = $matches[1]
+            $envValue = $matches[2]
+            Write-Host "Setting environment variable: $envName=$envValue"
+            [Environment]::SetEnvironmentVariable($envName, $envValue, "Process")
         }
     }
-
-    # Import variables into the current session
-    $envVariables | ForEach-Object {
-        $envName = $_.Name
-        $envValue = $_.Value
-        Write-Host "Overriding variable: $envName with value: $envValue"
-        Set-Item -Path "env:$envName" -Value $envValue
-    }
-
-    # Display the environment variables
-    #$envVariables | ForEach-Object {
-    #    Write-Host "Variable: $($_.Name), Value: $($_.Value)"
-    #}
 } else {
     $p_apiKeySecure = Read-Host "Please enter your DBPool Personal API Key" -AsSecureString
     # Convert the secure string to a plain text string
-    $p_apiKey = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($p_apiKeySecure))
+    $env:p_apiKey = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($p_apiKeySecure))
 }
 
 # Prepare headers with the API key
 $headers = @{
-    "X-App-Apikey" = $p_apiKey
+    "X-App-Apikey" = $env:p_apiKey
 }
 
 # Make an API request with the API key in the headers

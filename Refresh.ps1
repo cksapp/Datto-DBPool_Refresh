@@ -30,14 +30,26 @@ if (Test-Path -Path $envFilePath -PathType Leaf) {
         }
     }
 } else {
-    $p_apiKeySecure = Read-Host "Please enter your DBPool Personal API Key" -AsSecureString
+    $apiKeySecure = Read-Host "Please enter your DBPool Personal API Key" -AsSecureString
     # Convert the secure string to a plain text string
-    $env:p_apiKey = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($p_apiKeySecure))
+    $p_apiKey = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($apiKeySecure))
+    
+    # Set environment variable using [Environment]::SetEnvironmentVariable
+    [Environment]::SetEnvironmentVariable("apiKey", $p_apiKey, "Process")
+
+    # Clear plaintext variable
+    $p_apiKey = $null
+    # Dispose of the SecureString to minimize its exposure in memory
+    $secureString.Dispose()
 }
+
+# Get the API key from environment variables
+$apiKey = $env:apiKey
+Write-Host "apiKey value: $apiKey"
 
 # Prepare headers with the API key
 $headers = @{
-    "X-App-Apikey" = $env:p_apiKey
+    "X-App-Apikey" = $apiKey
 }
 
 # Make an API request with the API key in the headers

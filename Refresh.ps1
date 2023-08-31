@@ -8,6 +8,9 @@ $envFilePath = "$PSScriptRoot\override.env"
 # Set the URL of the API you want to access
 $url = "https://dbpool.datto.net/api/v2/containers"
 
+# Define the path for the log file
+$logFile = "$PSScriptRoot\logs\LogFile.log"
+
 <#
     Please do not make any changes below this line unless you know what you are doing.
     If you would like to suggest a change, Pull Requests are always welcome.
@@ -55,8 +58,17 @@ $headers = @{
 # Make an API request with the API key in the headers
 $getContainers = Invoke-WebRequest -Uri $url -Headers $headers -Method Get
 
+# Display the response content
+#$getContainers.Content
+
+
 # Convert JSON to PowerShell object
 $json = ConvertFrom-Json $getContainers
+
+# Start recording the transcript
+Start-Transcript -Path $logFile -Append
+Write-Output "Logging Started."
+
 # Extract and print the 'id' values under 'containers'
 $json.containers | ForEach-Object {
     $id = $_.id
@@ -70,9 +82,9 @@ $json.containers | ForEach-Object {
     $refreshResponse | ConvertTo-Json -Depth 4
 }
 
-# $apiResponse = 
-# Display the response content
-#$apiResponse.Content
+# Stop recording the transcript
+Stop-Transcript
+Write-Output "Logging Stopped."
 
 # Close Session
 Exit-PSSession

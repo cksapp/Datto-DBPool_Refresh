@@ -73,7 +73,6 @@ $json.containers | ForEach-Object {
 # $apiResponse = 
 # Display the response content
 #$apiResponse.Content
-#Write-Host "IDs: $ids"
 
 # Close Session
-#Exit-PSSession
+Exit-PSSession

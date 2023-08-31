@@ -9,7 +9,7 @@ $envFilePath = "$PSScriptRoot\override.env"
 $url = "https://dbpool.datto.net/api/v2/containers"
 
 # Define the path for the log file
-$logFile = "$PSScriptRoot\logs\LogFile.log"
+$logFilePath = "$PSScriptRoot\logs\LogFile.log"
 
 <#
     Please do not make any changes below this line unless you know what you are doing.
@@ -65,8 +65,13 @@ $getContainers = Invoke-WebRequest -Uri $url -Headers $headers -Method Get
 # Convert JSON to PowerShell object
 $json = ConvertFrom-Json $getContainers
 
+# Check if the directory of the log file exists, and create it if not
+$logDirectory = [System.IO.Path]::GetDirectoryName($logFilePath)
+if (-not (Test-Path $logDirectory)) {
+    New-Item -Path $logDirectory -ItemType Directory
+}
 # Start recording the transcript
-Start-Transcript -Path $logFile -Append
+Start-Transcript -Path $logFilePath -Append
 Write-Output "Logging Started."
 
 # Extract and print the 'id' values under 'containers'

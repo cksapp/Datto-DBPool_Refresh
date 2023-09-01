@@ -59,7 +59,7 @@ $headers = @{
 $getContainers = Invoke-WebRequest -Uri $url -Headers $headers -Method Get
 
 # Display the response content
-#$getContainers.Content
+#Write-Host $getContainers.Content
 
 
 # Convert JSON to PowerShell object
@@ -74,22 +74,26 @@ if (-not (Test-Path $logDirectory)) {
 Start-Transcript -Path $logFilePath -Append
 Write-Output "Logging Started."
 
+#Start-Job -ScriptBlock {
 # Extract and print the 'id' values under 'containers'
 $json.containers | ForEach-Object {
-    $id = $_.id
+    $ids = $_.id
+    $names = $_.name
 
     # Perform API call for each 'id'
-    $refreshUrl = "$url/${id}/actions/refresh"
+    $refreshUrl = "$url/${ids}/actions/refresh"
     $refreshResponse = Invoke-WebRequest -Uri $refreshUrl -Headers $headers -Method Post
 
     # Display the API response
-    Write-Host "API Response for Refresh of container ID:${id}"
+    Write-Host "API Response for Refresh of container:${names}"
     $refreshResponse | ConvertTo-Json -Depth 4
 }
+#}
+
 
 # Stop recording the transcript
-Stop-Transcript
 Write-Output "Logging Stopped."
+Stop-Transcript
 
 # Close Session
 Exit-PSSession

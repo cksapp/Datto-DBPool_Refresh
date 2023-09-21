@@ -24,6 +24,11 @@ if (Test-Path -Path $envFilePath -PathType Leaf) {
     $envLines = Get-Content -Path $envFilePath
 
     foreach ($line in $envLines) {
+        # Skip commented lines that start with `#`
+        if ($line -match '^\s*#') {
+            continue
+        }
+
         $line = $line.Trim()
         if (-not [string]::IsNullOrWhiteSpace($line) -and $line -match '^(.*?)=(.*)$') {
             $envName = $matches[1]

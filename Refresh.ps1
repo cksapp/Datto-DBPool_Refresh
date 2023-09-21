@@ -19,7 +19,7 @@ $logFilePath = "$PSScriptRoot\logs\LogFile.log"
 # Sets the Security Protocol for a .NET application to use TLS 1.2
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-# Check if the Override.env file exists, otherwise ask the user for their API key
+# Check if the override.env file exists and import variables to session
 if (Test-Path -Path $envFilePath -PathType Leaf) {
     $envLines = Get-Content -Path $envFilePath
 
@@ -33,6 +33,12 @@ if (Test-Path -Path $envFilePath -PathType Leaf) {
         }
     }
 } else {
+    Write-Host "Override file does not exist at $envFilePath"
+}
+
+# Check if the variable $p_apiKey exists from override.env file, otherwise ask the user for their API key
+if (-not (Test-Path variable:p_apiKey)) {
+    # If it doesn't exist, ask the user for input
     $apiKeySecure = Read-Host "Please enter your DBPool Personal API Key" -AsSecureString
     # Convert the secure string to a plain text string
     $p_apiKey = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($apiKeySecure))
@@ -62,7 +68,7 @@ $getContainers = Invoke-WebRequest -Uri $url -Headers $headers -Method Get
 #Write-Host $getContainers.Content
 
 
-# Convert JSON to PowerShell object
+# Convert JSON response to PowerShell object
 $json = ConvertFrom-Json $getContainers
 
 # Check if the directory of the log file exists, and create it if not
@@ -74,7 +80,7 @@ if (-not (Test-Path $logDirectory)) {
 Start-Transcript -Path $logFilePath -Append
 Write-Output "Logging Started."
 
-#Start-Job -ScriptBlock {
+
 # Extract and print the 'id' values under 'containers'
 $json.containers | ForEach-Object {
     $ids = $_.id
@@ -88,7 +94,6 @@ $json.containers | ForEach-Object {
     Write-Host "API Response for Refresh of container:${names}"
     $refreshResponse | ConvertTo-Json -Depth 4
 }
-#}
 
 
 # Stop recording the transcript

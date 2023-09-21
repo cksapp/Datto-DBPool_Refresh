@@ -6,7 +6,7 @@
 $envFilePath = "$PSScriptRoot\override.env"
 
 # Set the URL of the API you want to access
-$url = "https://dbpool.datto.net/api/v2/containers"
+$apiUrl = "https://dbpool.datto.net/api/v2/containers"
 
 # Define the path for the log file
 $logFilePath = "$PSScriptRoot\logs\LogFile.log"
@@ -67,7 +67,7 @@ $headers = @{
 }
 
 # Make an API request with the API key in the headers
-$getContainers = Invoke-WebRequest -Uri $url -Headers $headers -Method Get
+$getContainers = Invoke-WebRequest -Uri $apiUrl -Headers $headers -Method Get
 
 # Display the response content
 #Write-Host $getContainers.Content
@@ -92,7 +92,7 @@ $json.containers | ForEach-Object {
     $names = $_.name
 
     # Perform API call for each 'id'
-    $refreshUrl = "$url/${ids}/actions/refresh"
+    $refreshUrl = "$apiUrl/${ids}/actions/refresh"
     $refreshResponse = Invoke-WebRequest -Uri $refreshUrl -Headers $headers -Method Post
 
     # Display the API response

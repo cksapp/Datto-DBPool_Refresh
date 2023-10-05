@@ -17,7 +17,7 @@ $logFilePath = "$PSScriptRoot\logs\LogFile.log"
 #>
 
 # Sets the Security Protocol for a .NET application to use TLS 1.2
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Set-Security
 
 # Check if the override.env file exists and import variables to session
 if (Test-Path -Path $envFilePath -PathType Leaf) {

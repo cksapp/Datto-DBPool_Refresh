@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Checks if the override.env file exists and imports the variables to current session
+    Checks if the override.ps1 file exists and imports the variables to current session
 .DESCRIPTION
     This allows for a user specified file location for 
 .NOTES
@@ -16,30 +16,40 @@ function Import-Env {
     [CmdletBinding()]
     param (
         [Parameter( 
-            Mandatory = $False, 
-            Position = 0, 
-            ValueFromPipeline = $True, 
-            ValueFromPipelineByPropertyName = $True, 
+            Mandatory = $False,
+            Position = 0,
+            ValueFromPipeline = $True,
+            ValueFromPipelineByPropertyName = $True,
             HelpMessage = "The path for environment override file."
         )]
         [String]
         $envFilePath,
 
         [Parameter( 
-            Mandatory = $False, 
-            Position = 1, 
-            ValueFromPipeline = $True, 
-            ValueFromPipelineByPropertyName = $True, 
+            Mandatory = $False,
+            Position = 1,
+            ValueFromPipeline = $True,
+            ValueFromPipelineByPropertyName = $True,
             HelpMessage = "The environment override file name."
         )]
         [String]
-        $envFileName = "override.env",
+        $envFileName = "env_override",
+
+        [Parameter(
+            Mandatory = $False,
+            Position = 2,
+            ValueFromPipeline = $True,
+            ValueFromPipelineByPropertyName = $True,
+            HelpMessage = "Environment override file extenstion."
+        )]
+        [String]
+        $envFileExt = "ps1",
 
         [Parameter( 
-            Mandatory = $False, 
-            Position = 2, 
-            ValueFromPipeline = $True, 
-            ValueFromPipelineByPropertyName = $True, 
+            Mandatory = $False,
+            Position = 3,
+            ValueFromPipeline = $True,
+            ValueFromPipelineByPropertyName = $True,
             HelpMessage = "The environment override file filter. Defaults to remove lines begining with `#` comments"
         )]
         [regex]
@@ -55,24 +65,28 @@ function Import-Env {
     
     begin
     {
-        # Set the variables used
+        $envFile = "$($envFileName).$($envFileExt)"
         $currentLocation = Get-Location
-        $envFilePath = Join-Path -Path $currentLocation -ChildPath $envFileName
-        $envFilter = '^\s*#'
+        $envFilePath = Join-Path -Path $currentLocation -ChildPath $envFile
 
         if (Test-Path -Path $envFilePath -PathType Leaf) {
             # Convert path only if the file exists
             $envFilePath = Convert-Path $envFilePath
-            $envContent = Get-Content -Path $envFilePath | Where-Object { $_ -notmatch $envFilter }
+
+            # Dot source env override if file exists
+            . $envFilePath
         }
         else {
             Write-Verbose -Message "Override file does not exist at $envFilePath"
         }
-        Continue
+        #Continue
     }
 
     
     process {
+        <#
+        $envFilter = '^\s*#'
+        $envContent = Get-Content -Path $envFilePath | Where-Object { $_ -notmatch $envFilter }
         foreach ($line in $envContent) {
             # Skip commented lines that start with `#`
             if ($line -match $envFilter) {
@@ -87,8 +101,10 @@ function Import-Env {
                 Set-Variable -Name "$varName" -Value "$varValue" #-Force -Scope $varScope
             }
         }
+        #>
+
         <#
-        # Check if the variable $p_apiKey exists from override.env file, otherwise ask the user for their API key
+        # Check if the variable $p_apiKey exists from override.ps1 file, otherwise ask the user for their API key
         if (-not (Test-Path variable:apiKey)) {
             # If it doesn't exist, ask the user for input
             $apiKeySecure = Read-Host "Please enter your DBPool Personal API Key" -AsSecureString
@@ -104,7 +120,7 @@ function Import-Env {
             $apiKeySecure.Dispose()
         }#>
     }
-    end {
+    <#end {
         return $envContent
-    }
+    }#>
 }

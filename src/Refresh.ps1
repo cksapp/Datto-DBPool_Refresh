@@ -1,109 +1,150 @@
-<#
-    Feel free to change these varaibles as needed for your environment if needed.
+
+<#PSScriptInfo
+
+.VERSION 2023.11.0
+
+.GUID 74cd4100-d57e-4660-b681-39148119afd3
+
+.AUTHOR Kent Sapp
+
+.COMPANYNAME
+
+.COPYRIGHT © 2023 Kent sapp. All rights reserved.
+
+.TAGS
+
+.LICENSEURI https://github.com/cksapp/DBPool_Refresh/blob/main/LICENSE
+
+.PROJECTURI https://github.com/cksapp/DBPool_Refresh
+
+.ICONURI
+
+.EXTERNALMODULEDEPENDENCIES DattoDBPool PowerShellGet
+
+.REQUIREDSCRIPTS
+
+.EXTERNALSCRIPTDEPENDENCIES
+
+.RELEASENOTES
+
+
+.PRIVATEDATA
+
 #>
 
-# Set the path to the environment variable file
-$envFilePath = "$PSScriptRoot\override.env"
 
-# Set the URL of the API you want to access
-$apiUrl = "https://dbpool.datto.net/api/v2/containers"
+<# 
 
-# Define the path for the log file
-$logFilePath = "$PSScriptRoot\logs\LogFile.log"
+.DESCRIPTION 
+ PowerShell script to `Refresh` all child containers in Datto (Kaseya) DBPool, this can be combined with Scheduled Tasks in Windows or a Cron job to automate the refresh script on a set interval. 
 
-<#
-    Please do not make any changes below this line unless you know what you are doing.
-    If you would like to suggest a change, Pull Requests are always welcome.
-#>
+#> 
+[CmdletBinding(SupportsShouldProcess)]
+Param(
+    [Parameter(
+        Position = 0, 
+        Mandatory = $False, 
+        ValueFromPipeline = $True, 
+        ValueFromPipelineByPropertyName = $True
+    )]
+    $apiUrl = "https://dbpool.datto.net",
 
-# Sets the Security Protocol for a .NET application to use TLS 1.2
-Set-Security
+    [Parameter(
+        Position = 1, 
+        Mandatory = $False, 
+        ValueFromPipeline = $True, 
+        ValueFromPipelineByPropertyName = $True
+    )]
+    $apiKey,
 
-# Check if the override.env file exists and import variables to session
-if (Test-Path -Path $envFilePath -PathType Leaf) {
-    $envLines = Get-Content -Path $envFilePath
+    [Parameter(
+        Mandatory = $False,
+        ValueFromPipeline = $True,
+        ValueFromPipelineByPropertyName = $True
+    )]
+    $varScope = "Script"
+)
 
-    foreach ($line in $envLines) {
-        # Skip commented lines that start with `#`
-        if ($line -match '^\s*#') {
-            continue
-        }
+Begin {
+    # Functions Directory Path
+    $functionsPath = Join-Path -path $PSScriptRoot -ChildPath "functions" -AdditionalChildPath "*.ps1"
 
-        $line = $line.Trim()
-        if (-not [string]::IsNullOrWhiteSpace($line) -and $line -match '^(.*?)=(.*)$') {
-            $envName = $matches[1]
-            $envValue = $matches[2]
-            Write-Host "Setting environment variable: $envName=$envValue"
-            [Environment]::SetEnvironmentVariable($envName, $envValue, "Process")
+    # Import functions
+    $Functions = @( Get-ChildItem -Path $functionsPath -ErrorAction SilentlyContinue ) 
+    foreach ($Import in @($Functions)) {
+        try {
+            . $Import.fullname
+        } catch {
+            throw "Could not import function $($Import.fullname): $_"
         }
     }
-} else {
-    Write-Host "Override file does not exist at $envFilePath"
+
+    #Import environment override variables
+    . Import-Env
+
+    # Specify the module name
+    $moduleName = "DattoDBPool"
+
+    # Check if the module is installed
+    $installedModule = Get-InstalledModule $moduleName -ErrorAction SilentlyContinue
+    $onlineModule = Find-Module -Name $moduleName
+
+    if (!$installedModule) {
+        try {
+            Write-Output "Module $moduleName was not installed, attempting to install."
+            Install-Module $moduleName -Force -ErrorAction Stop
+            Write-Output "Module $moduleName installed successfully."
+        } catch {
+            Write-Error "Error installing module $moduleName`: $_"
+            throw
+        }
+    } else {
+        Write-Verbose -Message "Module $moduleName is already installed."
+        
+        #Update the module if the version is higher
+        if ($installedModule.version -lt $onlineModule.version) {
+            Write-Verbose -Message "Updating $moduleName from version $installedModuleVersion to $onlineModuleVersion."
+            Update-Module -Name $moduleName -Force
+        } elseif ($installedModule.version -eq $onlineModule.version) {
+            Write-Verbose -Message "$moduleName version installed is $installedModuleVersion which matches $onlineModuleVersion."
+        }
+    }
 }
 
-# Check if the variable $p_apiKey exists from override.env file, otherwise ask the user for their API key
-if (-not (Test-Path variable:p_apiKey)) {
-    # If it doesn't exist, ask the user for input
-    $apiKeySecure = Read-Host "Please enter your DBPool Personal API Key" -AsSecureString
-    # Convert the secure string to a plain text string
-    $p_apiKey = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($apiKeySecure))
-    
-    # Set environment variable using [Environment]::SetEnvironmentVariable
-    [Environment]::SetEnvironmentVariable("apiKey", $p_apiKey, "Process")
+Process {
+    Import-Module -Name $moduleName -Force
+    Set-SecurityProtocol
 
-    # Clear plaintext variable
-    $p_apiKey = $null
-    # Dispose of the SecureString to minimize its exposure in memory
-    $apiKeySecure.Dispose()
+    # Set API parameters
+    If ($apiUrl -and $apiKey) {
+        Set-DdbpApiParameters -apiUrl $apiUrl -apiKey $apiKey -varScope "$varScope"
+    }
+
+    # Get Containers only if API is available
+    while (Test-ApiAvailability -apiUrl $apiUrl -apiKey $apiKey -Verbose) {
+        $Containers = Get-Containers -apiUrl $apiUrl -apiKey $apiKey -Verbose -varScope "$varScope"
+        
+        $Containers | ForEach-Object -Parallel {
+            Import-Module -Name $using:moduleName -Force
+
+            Write-Output "Refreshing Container $($_.name) with ID: $($_.id)."
+            Sync-Containers -apiUrl $using:apiUrl -apiKey $using:apiKey -id $_.id -Verbose
+        } -ThrottleLimit 10
+    }
+
+<#
+    if (Test-ApiAvailability -apiUrl $apiUrl -apiKey $apiKey -Verbose) {
+        $Containers = Get-Containers -apiUrl $apiUrl -apiKey $apiKey -Verbose -varScope "$varScope"
+        
+        $Containers | ForEach-Object -Parallel {
+            Import-Module -Name $using:moduleName -Force
+
+            Write-Output "Refreshing Container $($_.name) with ID: $($_.id)."
+            Sync-Containers -apiUrl $using:apiUrl -apiKey $using:apiKey -id $_.id -Verbose
+        } -ThrottleLimit 10
+    }#>
 }
 
-# Get the API key from environment variables
-$apiKey = $env:apiKey
-#Write-Host "apiKey value: $apiKey"
+End {
 
-# Prepare headers with the API key
-$headers = @{
-    "X-App-Apikey" = $apiKey
 }
-
-# Make an API request with the API key in the headers
-$getContainers = Invoke-WebRequest -Uri $apiUrl -Headers $headers -Method Get
-
-# Display the response content
-#Write-Host $getContainers.Content
-
-
-# Convert JSON response to PowerShell object
-$json = ConvertFrom-Json $getContainers
-
-# Check if the directory of the log file exists, and create it if not
-$logDirectory = [System.IO.Path]::GetDirectoryName($logFilePath)
-if (-not (Test-Path $logDirectory)) {
-    New-Item -Path $logDirectory -ItemType Directory
-}
-# Start recording the transcript
-Start-Transcript -Path $logFilePath -Append
-Write-Output "Logging Started."
-
-
-# Extract and print the 'id' values under 'containers'
-$json.containers | ForEach-Object {
-    $ids = $_.id
-    $names = $_.name
-
-    # Perform API call for each 'id'
-    $refreshUrl = "$apiUrl/${ids}/actions/refresh"
-    $refreshResponse = Invoke-WebRequest -Uri $refreshUrl -Headers $headers -Method Post
-
-    # Display the API response
-    Write-Host "API Response for Refresh of container:${names}"
-    $refreshResponse | ConvertTo-Json -Depth 4
-}
-
-
-# Stop recording the transcript
-Write-Output "Logging Stopped."
-Stop-Transcript
-
-# Close Session
-Exit-PSSession

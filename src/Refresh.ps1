@@ -19,7 +19,7 @@
 
 .ICONURI
 
-.EXTERNALMODULEDEPENDENCIES DattoDBPool PowerShellGet
+.EXTERNALMODULEDEPENDENCIES DattoDBPool, PowerShellGet
 
 .REQUIREDSCRIPTS
 
@@ -66,21 +66,9 @@ Param(
 )
 
 Begin {
-    # Functions Directory Path
-    $functionsPath = Join-Path -path $PSScriptRoot -ChildPath "functions" -AdditionalChildPath "*.ps1"
+    # Set the execution policy within the session scope
+    Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 
-    # Import functions
-    $Functions = @( Get-ChildItem -Path $functionsPath -ErrorAction SilentlyContinue ) 
-    foreach ($Import in @($Functions)) {
-        try {
-            . $Import.fullname
-        } catch {
-            throw "Could not import function $($Import.fullname): $_"
-        }
-    }
-
-    #Import environment override variables
-    . Import-Env
 
     # Specify the module name
     $moduleName = "DattoDBPool"
@@ -92,7 +80,7 @@ Begin {
     if (!$installedModule) {
         try {
             Write-Output "Module $moduleName was not installed, attempting to install."
-            Install-Module $moduleName -Force -ErrorAction Stop
+            Install-Module $moduleName -Scope CurrentUser -Force -ErrorAction Stop
             Write-Output "Module $moduleName installed successfully."
         } catch {
             Write-Error "Error installing module $moduleName`: $_"
@@ -109,6 +97,9 @@ Begin {
             Write-Verbose -Message "$moduleName version installed is $installedModuleVersion which matches $onlineModuleVersion."
         }
     }
+
+    #Import environment override variables
+    . Import-Env -Verbose
 }
 
 Process {
@@ -122,27 +113,45 @@ Process {
 
     # Get Containers only if API is available
     while (Test-ApiAvailability -apiUrl $apiUrl -apiKey $apiKey -Verbose) {
+        $timeoutSeconds = 60  # Set the timeout in seconds
         $Containers = Get-Containers -apiUrl $apiUrl -apiKey $apiKey -Verbose -varScope "$varScope"
         
-        $Containers | ForEach-Object -Parallel {
-            Import-Module -Name $using:moduleName -Force
+        $Containers | ForEach-Object {
+            $name = $_.name
+            $id = $_.id
 
-            Write-Output "Refreshing Container $($_.name) with ID: $($_.id)."
-            Sync-Containers -apiUrl $using:apiUrl -apiKey $using:apiKey -id $_.id -Verbose
-        } -ThrottleLimit 10
+            Start-Job -ScriptBlock {
+                param (
+                    $name,
+                    $id
+                )
+                Import-Module -Name $using:moduleName -Force
+
+                Write-Output "Refreshing Container $name with ID: $id."
+                Sync-Containers -apiUrl $using:apiUrl -apiKey $using:apiKey -id $id -Verbose
+            } -ArgumentList $name, $id
+        }
+
+        # Wait for all jobs to complete with a timeout
+        $null = $jobs | Wait-Job -Timeout $timeoutSeconds
+
+        # Retrieve all jobs (completed and potentially still running)
+        $allJobs = Get-Job
+
+        # Filter completed jobs
+        $completedJobs = $allJobs | Where-Object { $_.State -eq 'Completed' }
+
+        # Receive results from completed jobs
+        $jobResults = Receive-Job -Job $completedJobs
+
+        # Handle the results as needed
+        foreach ($result in $jobResults) {
+            Write-Output $result
+        }
+
+        # Remove all jobs (optional)
+        Remove-Job -Job $allJobs
     }
-
-<#
-    if (Test-ApiAvailability -apiUrl $apiUrl -apiKey $apiKey -Verbose) {
-        $Containers = Get-Containers -apiUrl $apiUrl -apiKey $apiKey -Verbose -varScope "$varScope"
-        
-        $Containers | ForEach-Object -Parallel {
-            Import-Module -Name $using:moduleName -Force
-
-            Write-Output "Refreshing Container $($_.name) with ID: $($_.id)."
-            Sync-Containers -apiUrl $using:apiUrl -apiKey $using:apiKey -id $_.id -Verbose
-        } -ThrottleLimit 10
-    }#>
 }
 
 End {

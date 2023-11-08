@@ -1,6 +1,6 @@
 # DBPool_Refresh
 
- PowerShell script to `Refresh` all child containers in Datto (Kaseya) DBPool, this can be combined with Scheduled Tasks in Windows or a Cron job to automate the refresh script on a set interval. The recommended is ~30 mins. prior to the start of your shift.
+ PowerShell script to `Refresh` all child containers in Datto (Kaseya) DBPool, this can be combined with Scheduled Tasks in Windows or a Cron job to automate the refresh script on a set interval. The recommended is ~30 - 60 minutes prior to the start of your shift.
 
 ## Script
 

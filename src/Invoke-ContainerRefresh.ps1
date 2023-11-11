@@ -76,7 +76,14 @@ Param(
 
 Begin {
     # Set the execution policy within the session scope
-    Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+    if ((Get-ExecutionPolicy) -ne "Bypass") {
+        Set-ExecutionPolicy "Bypass" -Scope Process
+    }
+
+    # Runs check for NuGet provider and installed minimum version
+    if ($(Get-PackageProvider -Name "NuGet" -Force).version -lt "2.8.5.201") {
+        Install-PackageProvider -Name "Nuget" -MinimumVersion "2.8.5.201" -Force
+    }
 
 
     # Specify the module name
@@ -173,7 +180,7 @@ Process {
         Default {
             # Get Containers only if API is available
             if (Test-ApiAvailability -apiUrl $apiUrl -apiKey $apiKey -Verbose) {
-                $Containers = Get-Containers -apiUrl $apiUrl -apiKey $apiKey -Verbose -varScope "$VariableScope"
+                $Containers = Get-Containers -apiUrl $apiUrl -apiKey $apiKey -Verbose -VariableScope "$VariableScope"
                 $refreshJobs = @()
 
                 $Containers | ForEach-Object {
@@ -218,5 +225,6 @@ Process {
 }
 
 End {
-    #exit
+    $null = $apiKey
+    exit
 }

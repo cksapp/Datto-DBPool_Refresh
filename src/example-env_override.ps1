@@ -34,6 +34,9 @@ function Import-EnvironmentOverride {
 
         # URL of the API to be checked, defaulted to "https://dbpool.datto.net" in the script already and should not need to be changed or uncommented.
         #apiUrl = "https://dbpool.datto.net"
+
+        # Eanbles logging, True or False (Default) value
+        #Logging = $True
     }
 
     # Loop through the hashtable and create variables with default values

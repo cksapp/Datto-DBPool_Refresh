@@ -64,7 +64,23 @@ Param(
         ValueFromPipelineByPropertyName = $True,
         HelpMessage = "Set the wait timeout in seconds."
     )]
-    $waitSeconds = 60,
+    $waitSeconds = 0,
+
+    [Parameter(
+        Position = 3,
+        Mandatory = $False,
+        ValueFromPipeline = $True,
+        ValueFromPipelineByPropertyName = $True
+    )]
+    [Boolean]$Logging = $False,
+
+    [Parameter(
+        Position = 4,
+        Mandatory = $False,
+        ValueFromPipeline = $True,
+        ValueFromPipelineByPropertyName = $True
+    )]
+    [String]$logPath = $(Get-Location),
 
     [Parameter(
         Mandatory = $False,
@@ -77,12 +93,13 @@ Param(
 Begin {
     # Set the execution policy within the session scope
     if ((Get-ExecutionPolicy) -ne "Bypass") {
-        Set-ExecutionPolicy "Bypass" -Scope Process
+        Set-ExecutionPolicy "Bypass" -Force -Scope Process
     }
 
     # Runs check for NuGet provider and installed minimum version
     if ($(Get-PackageProvider -Name "NuGet" -Force).version -lt "2.8.5.201") {
         Install-PackageProvider -Name "Nuget" -MinimumVersion "2.8.5.201" -Force
+        Install-Module PowerShellGet -AllowClobber -Force
     }
 
 
@@ -96,7 +113,7 @@ Begin {
     if (!$installedModule) {
         try {
             Write-Output "Module $moduleName was not installed, attempting to install."
-            Install-Module $moduleName -Scope CurrentUser -Force -ErrorAction Stop
+            Install-Module $moduleName -Scope "CurrentUser" -Force -ErrorAction Stop
             Write-Output "Module $moduleName installed successfully."
         } catch {
             Write-Error "Error installing module $moduleName`: $_"
@@ -108,20 +125,27 @@ Begin {
         #Update the module if the version is higher
         if ($installedModule.version -lt $onlineModule.version) {
             Write-Verbose -Message "Updating $moduleName from version $installedModule.version to $onlineModule.version."
-            Update-Module -Name $moduleName -Force
+            Update-Module -Name $moduleName -Scope "CurrentUser" -Force
         } elseif ($installedModule.version -eq $onlineModule.version) {
             Write-Verbose -Message "$moduleName version installed is $installedModule.version which matches $onlineModule.version."
         }
     }
 
-    # Imports the Module into the scope
+    # Imports the required Module into the scope
     Import-Module -Name $moduleName -Force
+
+
+    #Import environment override variables
+    . Import-Env -Verbose -VariableScope $VariableScope
+
+    # Set logs
+    . Set-Logging -logPath $logPath -doLogs $Logging -VariableScope "Global"
+    if (![string]::IsNullOrEmpty($logFile)) {
+        Start-Transcript -Path $logFile -NoClobber -Append
+    }
     
     # Set the security for the session, defaults to TLS 1.2
     Set-SecurityProtocol
-
-    #Import environment override variables
-    . Import-Env -VariableScope $VariableScope -Verbose
 }
 
 Process {
@@ -225,6 +249,7 @@ Process {
 }
 
 End {
+    Stop-Transcript
     $null = $apiKey
     exit
 }

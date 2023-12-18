@@ -13,9 +13,9 @@
 
 .TAGS
 
-.LICENSEURI https://github.com/cksapp/DBPool_Refresh/blob/main/LICENSE
+.LICENSEURI https://github.com/cksapp/Datto-DBPool_Refresh/blob/main/LICENSE
 
-.PROJECTURI https://github.com/cksapp/DBPool_Refresh
+.PROJECTURI https://github.com/cksapp/Datto-DBPool_Refresh
 
 .ICONURI
 

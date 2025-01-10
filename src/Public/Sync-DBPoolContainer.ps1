@@ -23,22 +23,27 @@ function Sync-DBPoolContainer {
 
     .EXAMPLE
         Sync-DBPoolContainer
+
         Refreshes all DBPool containers.
 
     .EXAMPLE
         Sync-DBPoolContainer -Id 1234
+
         Refreshes the DBPool container with the ID 1234.
 
     .EXAMPLE
         Sync-DBPoolContainer -Id 1234, 5678
+
         Refreshes the DBPool containers with the IDs 1234 and 5678.
 
     .EXAMPLE
         Sync-DBPoolContainer -Id $(Get-DBPoolContainer -DefaultDatabase "Database_Name").Id
+
         Refreshes all DBPool containers matching the specified database name.
 
     .EXAMPLE
         Sync-DBPoolContainer -Id $(Get-DBPoolContainer -NotLike -Name "*Container_Name*").Id -Force
+
         Refreshes all DBPool containers not matching the specified container name.
 
     .NOTES
@@ -50,7 +55,8 @@ function Sync-DBPoolContainer {
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
     param (
         [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
-        [ValidateRange(1, [int]::MaxValue)]
+        [AllowNull()]
+        [AllowEmptyCollection()]
         [Alias('ContainerId')]
         [int[]]$Id = $RefreshDBPool_Container_Ids,
 
@@ -96,7 +102,12 @@ function Sync-DBPoolContainer {
         }
 
         if ($IdsToRefresh.Count -gt 0) {
-            Invoke-DBPoolContainerAction -Action refresh -Id $IdsToRefresh -Force -Verbose:$VerbosePreference -ThrottleLimit $IdsToRefresh.Count -TimeoutSeconds $TimeoutSeconds
+            try {
+                Invoke-DBPoolContainerAction -Action refresh -Id $IdsToRefresh -Force -Verbose:$VerbosePreference -ThrottleLimit $IdsToRefresh.Count -TimeoutSeconds $TimeoutSeconds -ErrorAction Continue
+            }
+            catch {
+                Write-Error $_
+            }
         } elseif ($IdsToRefresh.Count -eq 0) {
             Write-Warning 'No containers refreshed.'
         }

@@ -42,6 +42,12 @@ function Get-RefreshDBPoolModuleSetting {
         The location of the DBPool configuration file in this example is:
             C:\RefreshDBPool\MyConfig.psd1
 
+    .INPUTS
+        N/A
+
+    .OUTPUTS
+        N/A
+
     .NOTES
         N/A
 

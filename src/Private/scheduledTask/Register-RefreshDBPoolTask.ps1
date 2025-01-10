@@ -7,13 +7,19 @@ function Register-RefreshDBPoolTask {
         This function sets up a scheduled task that runs a PowerShell script to refresh Datto DBPool containers.
         The task can be configured to run on specific days of the week and at a specified time.
 
-    .PARAMETER NotDaysOfWeek
-        Specifies the days of the week on which the scheduled task should NOT be run.
-        This will generally be your days off of work, by default the task will not run on Sundays and Saturdays.
-
     .PARAMETER TriggerTime
         Specifies the time of day at which the scheduled task should run.
         This should be set to roughly ~1 hour before shift start, so that all containers are refreshed and ready for use.
+
+    .PARAMETER ExcludeDaysOfWeek
+        Specifies the days of the week on which the scheduled task should NOT be run.
+        This will generally be days off work, by default the task will not run on Sundays and Saturdays.
+
+    .INPUTS
+        N/A
+
+    .OUTPUTS
+        N/A
 
     .EXAMPLE
         Register-RefreshDBPoolTask -TriggerTime "7AM"
@@ -26,7 +32,7 @@ function Register-RefreshDBPoolTask {
         This example creates a scheduled task that runs every day at 3:00 PM, except on Sundays and Saturdays.
 
     .EXAMPLE
-        Register-RefreshDBPoolTask -NotDaysOfWeek 'Sunday','Monday' -TriggerTime "4:30PM"
+        Register-RefreshDBPoolTask -ExcludeDaysOfWeek 'Sunday','Monday' -TriggerTime "4:30PM"
 
         This example creates a scheduled task that runs every day at 4:30 PM, except on Sunday and Monday.
 
@@ -40,18 +46,20 @@ function Register-RefreshDBPoolTask {
 
     [CmdletBinding()]
     [Alias('New-RefreshDBPoolTask')]
+    [OutputType([System.Void])]
     param (
         [Parameter(Mandatory = $true, HelpMessage = "The time of day at which the scheduled task should run.")]
-        [datetime]$TriggerTime,
+        [DateTime]$TriggerTime,
 
         [Parameter(Mandatory = $false, HelpMessage = "The days of the week on which the scheduled task should NOT be run.")]
-        [DayOfWeek[]]$ExcludedDaysOfWeek = @('Sunday','Saturday')
+        [ValidateSet('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday')]
+        [string[]]$ExcludeDaysOfWeek = @('Sunday','Saturday')
     )
 
     begin {
 
         # Days of the week to run the task
-        $daysToRun = $( [System.DayOfWeek].GetEnumValues() ) | Where-Object { $ExcludedDaysOfWeek -notcontains $_ }
+        $daysToRun = $( [System.DayOfWeek].GetEnumValues() ) | Where-Object { $ExcludeDaysOfWeek -notcontains [System.DayOfWeek]::$_ }
 
         if ($PSEdition -eq 'Desktop') {
             #$PSExecutable = Join-Path -Path $PSHOME -ChildPath 'powershell.exe'
@@ -135,7 +143,7 @@ function Register-RefreshDBPoolTask {
 
                 try {
                     $scheduledTask.Date = '2023-08-30T12:34:56.7890000'
-                    Set-ScheduledTask -InputObject $scheduledTask -Verbose:$VerbosePreference -ErrorAction Stop
+                    Set-ScheduledTask -InputObject $scheduledTask -Verbose:$VerbosePreference -ErrorAction Stop | Out-Null
                 }
                 catch {
                     Write-Warning "Error updating 'Created Date' for scheduled task [ $taskName ]: $_"

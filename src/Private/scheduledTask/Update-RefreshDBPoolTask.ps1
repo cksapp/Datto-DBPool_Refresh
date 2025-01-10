@@ -9,6 +9,12 @@ function Update-RefreshDBPoolTask {
     .PARAMETER Force
         Forces the update of the scheduled task.
 
+    .INPUTS
+        N/A
+
+    .OUTPUTS
+        N/A
+
     .EXAMPLE
         Update-RefreshDBPoolTask
 

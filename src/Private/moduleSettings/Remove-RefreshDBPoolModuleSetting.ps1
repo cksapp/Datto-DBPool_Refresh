@@ -10,7 +10,7 @@ function Remove-RefreshDBPoolModuleSetting {
         By default configuration files are stored in the following location and will be removed:
             $env:USERPROFILE\RefreshDBPool
 
-    .PARAMETER DBPoolConfPath
+    .PARAMETER RefreshDBPoolConfPath
         Define the location of the Refresh DBPool configuration folder.
 
         By default the configuration folder is located at:
@@ -30,13 +30,19 @@ function Remove-RefreshDBPoolModuleSetting {
             $env:USERPROFILE\RefreshDBPool
 
     .EXAMPLE
-        Remove-RefreshDBPoolModuleSetting -DBPoolConfPath C:\RefreshDBPool -andVariables
+        Remove-RefreshDBPoolModuleSetting -RefreshDBPoolConfPath C:\RefreshDBPool -andVariables
 
         Checks to see if the defined configuration folder exists and removes it if it does.
         If sensitive Refresh DBPool variables exist then they are removed as well.
 
         The location of the Refresh DBPool configuration folder in this example is:
             C:\RefreshDBPool
+
+    .INPUTS
+        N/A
+
+    .OUTPUTS
+        N/A
 
     .NOTES
         N/A

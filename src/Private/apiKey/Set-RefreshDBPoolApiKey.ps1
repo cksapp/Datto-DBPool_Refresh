@@ -24,12 +24,20 @@ function Set-RefreshDBPoolApiKey {
 
     .EXAMPLE
         Set-RefreshDBPoolApiKey -DBPool_ApiKey $secureApiKey -Verbose
+
         Adds the DBPool API key to the default SecretManagement vault with the name 'DBPool_ApiKey'.
 
     .EXAMPLE
         Set-RefreshDBPoolApiKey -DBPool_ApiKey $secureApiKey -SecretName 'Custom_ApiKey' -SecretStoreName 'MySecretStore' -Force
+
         Adds the DBPool API key to the 'MySecretStore' SecretManagement vault with the name 'Custom_ApiKey'.
         If the secret already exists, it will be overwritten.
+
+    .INPUTS
+        [securestring] - The secure string containing the DBPool API key.
+
+    .OUTPUTS
+        N/A
 
     .NOTES
         Ensure that the PowerShell SecretManagement module is installed and configured before using this function.

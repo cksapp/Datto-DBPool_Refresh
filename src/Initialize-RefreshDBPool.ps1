@@ -319,7 +319,7 @@ try {
             param ($modulePath)
             try {
                 Import-Module -Name $modulePath
-                Copy-DBPoolParentContainer -Verbose
+                Copy-DBPoolParentContainer -Id @(17, 27, 14) -Verbose
                 Start-Sleep -Seconds 5
             } catch {
                 Write-Error "Error in runspace execution: $_"

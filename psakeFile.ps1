@@ -10,6 +10,7 @@ properties {
     $PSBPreference.Help.DefaultLocale = 'en-US'
     $PSBPreference.Test.OutputFile = 'out/testResults.xml'
     $PSBPreference.Test.ImportModule = $true
+    $PSBPreference.Docs.RootDir = "./docs/generated"
 }
 
 task Default -depends Test

@@ -7,30 +7,46 @@ function Get-RefreshDBPoolApiKey {
         This function gets the DBPool API key from the default PowerShell SecretManagement vault and sets the global variable.
         If the global variable is already set, confirm with the user before overwriting the value or set the value without confirmation using the -Force switch.
 
-    .NOTES
-        This function is designed to work with the default SecretManagement vault. Ensure the vault is installed and configured before using this function.
-
-    .LINK
-        N/A
-
-    .EXAMPLE
-        Get-RefreshDBPoolApiKey -Verbose
-        Retrieves the DBPool API key from the default SecretManagement vault with the default name 'DBPool_ApiKey'.
-
-    .EXAMPLE
-        Get-RefreshDBPoolApiKey -SecretName 'Different_SecretName' -SecretStoreName 'Custom_SecretsVault' -Force
-        Retrieves the DBPool API key and adds it to the 'Custom_SecretsVault' SecretManagement vault with the name 'Different_SecretName'.
-        If the secret already exists, it will be overwritten.
-
     .PARAMETER SecretName
         The name to use for the secret in the SecretManagement vault. Defaults to 'DBPool_ApiKey'.
 
     .PARAMETER SecretStoreName
         The name of the SecretManagement vault where the secret will be stored. Defaults to the value of the environment variable 'Datto_SecretStore'.
 
+    .PARAMETER AsPlainText
+        If specified, the function will return the API key as a plaintext string.
+
     .PARAMETER Force
         If specified, forces the function to overwrite the existing secret if it already exists in the vault.
 
+    .EXAMPLE
+        Get-RefreshDBPoolApiKey
+
+        Retrieves the DBPool API key from the default SecretManagement vault with the default name 'DBPool_ApiKey' as a secure string.
+
+    .EXAMPLE
+        Get-RefreshDBPoolApiKey -AsPlainText
+
+        Retrieves the DBPool API key from the default SecretManagement vault with the default name 'DBPool_ApiKey' as a plaintext string.
+
+    .EXAMPLE
+        Get-RefreshDBPoolApiKey -SecretName 'Different_SecretName' -SecretStoreName 'Custom_SecretsVault' -Force
+
+        Retrieves the DBPool API key and adds it to the 'Custom_SecretsVault' SecretManagement vault with the name 'Different_SecretName'.
+        If the secret already exists, it will be overwritten.
+
+    .INPUTS
+        N/A
+
+    .OUTPUTS
+        [securestring] - The DBPool API key as a secure string.
+        [string] - The DBPool API key as a plaintext string.
+
+    .NOTES
+        This function is designed to work with the default SecretManagement vault. Ensure the vault is installed and configured before using this function.
+
+    .LINK
+        N/A
 #>
 
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
@@ -42,7 +58,8 @@ function Get-RefreshDBPoolApiKey {
         [Parameter(Mandatory = $false)]
         [string]$SecretStoreName = 'Datto_SecretStore',
 
-        [Parameter()]
+        [switch]$AsPlainText,
+
         [switch]$Force
 
     )
@@ -75,6 +92,8 @@ function Get-RefreshDBPoolApiKey {
 
     }
 
-    end {}
+    end {
+        (Get-DBPoolApiKey -AsPlainText:$AsPlainText -ErrorAction SilentlyContinue).ApiKey
+    }
 
 }

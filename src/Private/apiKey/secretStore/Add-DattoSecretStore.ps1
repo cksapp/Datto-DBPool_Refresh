@@ -1,4 +1,40 @@
 function Add-DattoSecretStore {
+<#
+    .SYNOPSIS
+        Adds a local secret store using the Microsoft.PowerShell.SecretStore module.
+
+    .DESCRIPTION
+        This function adds a local secret store using the Microsoft.PowerShell.SecretStore module. Checks if the secret store is installed and install if not found.
+        The function also sets the secret store configuration for the default vault.
+
+    .PARAMETER Name
+        The name of the secret store to add. Defaults to 'Datto_SecretStore'.
+
+    .PARAMETER ModuleName
+        The name of the module to use for the secret store. Defaults to 'Microsoft.PowerShell.SecretStore'.
+
+    .EXAMPLE
+        Add-DattoSecretStore
+
+        Adds a local secret store named 'Datto_SecretStore' using the Microsoft.PowerShell.SecretStore module.
+
+    .EXAMPLE
+        Add-DattoSecretStore -Name 'Custom_SecretsVault' -ModuleName 'Custom.SecretStore'
+
+        Adds a local secret store named 'Custom_SecretsVault' using the 'Custom.SecretStore' module.
+
+    .INPUTS
+        N/A
+
+    .OUTPUTS
+        N/A
+
+    .NOTES
+        N/A
+
+    .LINK
+        N/A
+#>
     [CmdletBinding()]
     param (
        [Parameter(Mandatory = $false)]

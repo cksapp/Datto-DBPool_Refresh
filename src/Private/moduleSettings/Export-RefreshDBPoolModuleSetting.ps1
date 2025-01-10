@@ -32,6 +32,12 @@ function Export-RefreshDBPoolModuleSetting {
         to the current user's DBPool configuration file located at:
             C:\RefreshDBPool\MyConfig.psd1
 
+    .INPUTS
+        N/A
+
+    .OUTPUTS
+        N/A
+
     .NOTES
         N/A
 

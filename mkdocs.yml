@@ -1,7 +1,7 @@
 site_name: Datto.DBPool.Refresh
 site_url: https://datto-dbpool-refresh.kentsapp.com/
 site_description: PowerShell module is used to refresh all child containers in Datto (Kaseya) DBPool
-site_dir: site
+site_dir: ./site/
 docs_dir: ./docs/site/
 exclude_docs: |
   /en-US/

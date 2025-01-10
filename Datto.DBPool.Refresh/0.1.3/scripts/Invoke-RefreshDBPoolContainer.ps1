@@ -61,7 +61,7 @@ begin {
     if ($Bootstrap) {
         Import-Module -Name $modulePath -Force -Verbose:$false
 
-        Write-Information 'Bootstrap complete.'
+        Write-Verbose 'Bootstrap complete.'
     }
 }
 

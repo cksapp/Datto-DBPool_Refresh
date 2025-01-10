@@ -1,18 +1,67 @@
 function Copy-DBPoolParentContainer {
+<#
+    .SYNOPSIS
+        Clones the specified DBPool parent container(s) using the DBPool API.
+
+    .DESCRIPTION
+        This function clones the specified DBPool parent container(s) using the DBPool API. By default, this function will clone all containers if no IDs or DefaultDatabase values are provided.
+
+    .PARAMETER Id
+        The ID(s) of the parent container(s) to clone.
+
+    .PARAMETER DefaultDatabase
+        The DefaultDatabase(s) of the parent container(s) to clone.
+
+    .PARAMETER ContainerName_Append
+        The string to append to the cloned container name. The default value is 'clone'.
+
+    .PARAMETER Duplicate
+        If specified, the function will clone the parent container(s) even if a similar container already exists.
+
+    .INPUTS
+        [int] - Array of ID(s) of the parent container(s) to clone.
+        [string] - Array of DefaultDatabase(s) of the parent container(s) to clone.
+
+    .OUTPUTS
+        [PSCustomObject] - Object containing the cloned container(s) information.
+
+    .EXAMPLE
+        Copy-DBPoolParentContainer -Id 1234
+
+        Clones the DBPool parent container with the ID 1234.
+
+    .EXAMPLE
+        Copy-DBPoolParentContainer -DefaultDatabase 'exampleParentA'
+
+        Clones the DBPool parent container with the DefaultDatabase 'exampleParentA'.
+
+    .EXAMPLE
+        Copy-DBPoolParentContainer -Id 1234, 5678 -ContainerName_Append 'copy'
+
+        Clones the DBPool parent containers with the IDs 1234 and 5678 and appends 'copy' to the cloned container name.
+
+    .EXAMPLE
+        Copy-DBPoolParentContainer -DefaultDatabase 'exampleParentA', 'exampleParentB' -Duplicate
+
+        Clones the DBPool parent containers with the DefaultDatabase 'exampleParentA' and 'exampleParentB' even if similar containers already exist.
+
+    .NOTES
+        N/A
+
+    .LINK
+        N/A
+#>
     [CmdletBinding(DefaultParameterSetName = 'byId')]
     [Alias('Clone-DBPoolParentContainer')]
     param (
-        [Parameter(ParameterSetName = 'byId')]
-        [int[]]$Id = @(17, 27, 14),
+        [Parameter(Mandatory = $true, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName = 'byId')]
+        [int[]]$Id,
 
-        [Parameter(ParameterSetName = 'byDefaultDatabase')]
-        [string[]]$DefaultDatabase = @('dattoAuth', 'dattoSystem', 'legoCloud'),
+        [Parameter(Mandatory = $true, ParameterSetName = 'byDefaultDatabase')]
+        [string[]]$DefaultDatabase,
 
         [Parameter()]
         [string]$ContainerName_Append = 'clone',
-
-        [Parameter(DontShow = $true)]
-        [int]$LegoCloudCloneCount = 2,
 
         [switch]$Duplicate
     )
@@ -35,7 +84,7 @@ function Copy-DBPoolParentContainer {
         $parentContainer = Get-DBPoolContainer -ParentContainer
 
         switch ($PSCmdlet.ParameterSetName) {
-            'ById' {
+            'byId' {
                 $myContainers = Get-DBPoolContainer
                 # Filter containers based on Id and exclude those with 'BETA' in the name
                 $filteredParentContainer = $parentContainer | Where-Object {
@@ -43,7 +92,7 @@ function Copy-DBPoolParentContainer {
                 }
             }
 
-            'ByDefaultDatabase' {
+            'byDefaultDatabase' {
                 $myContainers = Get-DBPoolContainer -DefaultDatabase $DefaultDatabase
                 # Filter containers based on DefaultDatabase and exclude those with 'BETA' in the name
                 $filteredParentContainer = $parentContainer | Where-Object {
@@ -62,46 +111,36 @@ function Copy-DBPoolParentContainer {
         $runspacePool.Open()
         $runspaces = New-Object System.Collections.ArrayList
         foreach ($parent in $filteredParentContainer) {
-            # Extract the first part of the container name before 'on'
+            # Extract the first part of the container name before 'on'; i.e. 'Parent Container Name on Database v1.2.3'
             $baseContainerName = $parent.Name -split ' on ' | Select-Object -First 1
 
             Write-Verbose "Checking DBPool for any container matching Parent: $($parent | Select-Object -Property 'id','name','defaultDatabase')"
             # Check if similar container already exists based on the parent container
-            $existingContainer = $myContainers | Where-Object { $_.parent -match $parent }
+            $existingContainerClone = $myContainers | Where-Object { $_.parent -match $parent }
 
-            if ($existingContainer -and -not $Duplicate) {
-                $existingContainerInfo = ($existingContainer | ForEach-Object { "Id: $($_.Id), Name: $($_.Name)" }) -join '; '
-                Write-Warning "Container with parent [ $($parent | Select-Object -Property 'id','name','defaultDatabase') ] already exists for container(s) [ $existingContainerInfo ] - Skipping clone."
+            if ($existingContainerClone -and -not $Duplicate) {
+                $existingContainerCloneInfo = ($existingContainerClone | ForEach-Object { "Id: $($_.Id), Name: $($_.Name)" }) -join '; '
+                Write-Warning "Container with parent [ $($parent | Select-Object -Property 'id','name','defaultDatabase') ] already exists for container(s) [ $existingContainerCloneInfo ] - Skipping clone."
                 Write-Debug "Use '-Duplicate' switch to force clone of existing containers."
                 continue
             }
 
+            # Determine the starting index for the clone name
+            $existingCloneCount = ($existingContainerClone | Measure-Object).Count + 1
 
-            if ($parent.defaultDatabase -eq 'legoCloud') {
-                for ($i = 1; $i -le $LegoCloudCloneCount; $i++) {
-                    try {
-                        $newContainerName = "$baseContainerName($ContainerName_Append-$i)"
-                        $runspace = [powershell]::Create().AddScript({
-                                param ($containerName, $parentId, $apiKey)
-                                try {
-                                    Import-Module 'Datto.DBPool.API'
-                                    Add-DBPoolApiKey -apiKey $apiKey
-                                    New-DBPoolContainer -ParentId $parentId -ContainerName $containerName -Force
-                                } catch {
-                                    Write-Error "Error in runspace execution: $_"
-                                }
-                            }).AddArgument($newContainerName).AddArgument($parent.Id).AddArgument($DBPool_ApiKey)
+            # Clone the parent container as many times as it appears in the Id or DefaultDatabase parameter
+            $cloneCount = switch ($PSCmdlet.ParameterSetName) {
+                'byId' { ($Id | Where-Object { $_ -eq $parent.Id }).Count }
+                'byDefaultDatabase' { ($DefaultDatabase | Where-Object { $_ -eq $parent.defaultDatabase }).Count }
+            }
 
-                        $runspace.RunspacePool = $runspacePool
-                        $runspaces.Add(@{Runspace = $runspace; Handle = $runspace.BeginInvoke(); ContainerName = $newContainerName }) | Out-Null
-                        Write-Information "Parent Container [ Id: $($parent.Id), Name: $($parent.Name) ] 'create' command sent for new Container [ $newContainerName ]"
-                    } catch {
-                        Write-Error "Error sending 'create' command for new Container [ $newContainerName ]: $_"
-                    }
-                }
-            } else {
+            for ($i = 0; $i -lt $cloneCount; $i++) {
                 try {
-                    $newContainerName = "$baseContainerName($ContainerName_Append)"
+                    if ($existingCloneCount + $i -eq 1 -and $cloneCount -eq 1) {
+                        $newContainerName = "$baseContainerName($ContainerName_Append)"
+                    } else {
+                        $newContainerName = "$baseContainerName($ContainerName_Append-$($existingCloneCount + $i))"
+                    }
                     $runspace = [powershell]::Create().AddScript({
                             param ($containerName, $parentId, $apiKey)
                             try {

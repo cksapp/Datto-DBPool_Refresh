@@ -24,6 +24,7 @@ function Update-RefreshDBPoolModule {
 
     .EXAMPLE
         Update-RefreshDBPoolModule -ModuleName 'Datto.DBPool.Refresh' -AutoUpdate:$true -AllowPrerelease:$false
+
         Updates the Datto.DBPool.Refresh module if a newer version is available online.
 
     .NOTES
@@ -32,7 +33,7 @@ function Update-RefreshDBPoolModule {
     .LINK
         N/A
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Low')]
     param (
         [Parameter( Position = 0, Mandatory = $False, ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True )]
         [String]$ModuleName = 'Datto.DBPool.Refresh',

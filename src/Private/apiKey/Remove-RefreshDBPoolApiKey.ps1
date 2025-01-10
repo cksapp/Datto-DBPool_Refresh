@@ -16,11 +16,23 @@ function Remove-RefreshDBPoolApiKey {
         If specified, forces the function to remove the secret from the vault.
 
     .EXAMPLE
-        Remove-RefreshDBPoolApiKey -Force
+        Remove-RefreshDBPoolApiKey
+
         Removes the API key from the SecretManagement vault.
 
+    .EXAMPLE
+        Remove-RefreshDBPoolApiKey -SecretName 'Different_SecretName' -SecretStoreName 'Custom_SecretsVault' -Force
+
+        Removes the API key from the 'Custom_SecretsVault' SecretManagement vault with the name 'Different_SecretName'.
+
+    .INPUTS
+        N/A
+
+    .OUTPUTS
+        N/A
+
     .NOTES
-        N\A
+        N/A
 
     .LINK
         N/A

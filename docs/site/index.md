@@ -35,6 +35,20 @@ The module handles automation by creating schedule task in Windows to run refres
 
 ## Installation
 
-Install from Powershell Gallery
+Install from [Powershell Gallery](https://www.powershellgallery.com/packages/Datto.DBPool.Refresh)
+
+### Install Script
+
+The install script is user interactive with a few prompts to set up the initial install and variables needed to automate the container refresh.
+
+Use the following [script](https://github.com/cksapp/Datto-DBPool_Refresh/blob/main/src/Invoke-RefreshDBPoolInstall.ps1) to install.
+
+1. Copy the full script
+2. Open PowerShell _(will work with both Windows PowerShell, and PowerShell)_
+3. Paste the script content and enter _(sometimes it seems this may hang, in which case pressing 'Enter' or 'Spacebar' will allow continued run)_
+
+```PowerShell
+$scriptFile = 'https://raw.githubusercontent.com/cksapp/Datto-DBPool_Refresh/refs/heads/main/src/Initialize-RefreshDBPool.ps1'; $fileName = [System.IO.Path]::GetFileName($scriptFile); $tempFile = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), $fileName); if ($PSEdition -eq 'Desktop' -or $IsWindows) { Set-ExecutionPolicy Bypass -Scope Process -Force }; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; (New-Object System.Net.WebClient).DownloadFile($scriptFile, $tempFile); & $tempFile
+```
 
 ## Examples

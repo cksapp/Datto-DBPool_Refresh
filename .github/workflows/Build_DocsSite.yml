@@ -31,25 +31,10 @@ jobs:
           key: ${{ runner.os }}-mkdocs
           path: .cache
 
-      - name: Cache PowerShell modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.local/share/powershell/Modules
-          key: ${{ runner.os }}-psmodules-${{ hashFiles('requirements.psd1') }}
-          restore-keys: |
-            ${{ runner.os }}-psmodules-
-
       - name: Setup PowerShell
         uses: bjompen/UpdatePWSHAction@v1.0.1
         with:
           FixedVersion: '7.3.12'
-
-      - name: Install dependencies
-        run: |
-          Install-Module -Name PSDepend -Scope CurrentUser -Force
-          Import-Module -Name PSDepend
-          Invoke-PSDepend -Path './requirements.psd1' -Install -Force
-        shell: pwsh
 
       - name: MkDocs GH-Deploy
         if: github.ref == 'refs/heads/main'

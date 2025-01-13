@@ -62,8 +62,28 @@ begin {
     }
 
     if ($Bootstrap) {
-        $modulePath = Join-Path -Path $( Split-Path -Path $PSScriptRoot -Parent ) -ChildPath 'Datto.DBPool.Refresh.psm1'
-        Import-Module -Name $modulePath -Force -Verbose:$false
+        if (!(Get-Module -Name 'Datto.DBPool.API' -ListAvailable)) {
+            if (Get-Command -Name 'Install-PSResource' -ErrorAction SilentlyContinue) {
+                Install-PSResource -Name 'Datto.DBPool.API' -Scope CurrentUser -Reinstall -TrustRepository -Verbose:$false -Prerelease
+            } else {
+                Install-Module -Name 'Datto.DBPool.API' -Scope CurrentUser -AllowClobber -Force -Verbose:$false -AllowPrerelease
+            }
+        }
+        try {
+            Import-Module -Name 'Datto.DBPool.API' -Force -Verbose:$false
+        }
+        catch {
+            Write-Error $_
+            return
+        }
+
+        if (!(Get-Module -Name 'Datto.DBPool.Refresh' -ListAvailable)) {
+            if (Get-Command -Name 'Install-PSResource' -ErrorAction SilentlyContinue) {
+                Install-PSResource -Name 'Datto.DBPool.Refresh' -Scope CurrentUser -Reinstall -TrustRepository -Verbose:$false -Prerelease
+            } else {
+                Install-Module -Name 'Datto.DBPool.Refresh' -Scope CurrentUser -AllowClobber -Force -Verbose:$false -AllowPrerelease
+            }
+        }
 
         Write-Information 'Bootstrap complete.'
     }
@@ -89,9 +109,9 @@ process {
     }
 
     if (Test-DBPoolApi -Verbose:$false) {
-        Write-PSFMessage -Level Verbose -Message "API Uri 200 Sucess"
+        Write-Verbose -Message "API Uri 200 Sucess"
         if ($(Test-DBPoolApiKey -Verbose:$false).StatusCode -eq 200) {
-            Write-PSFMessage -ModuleName 'Datto.DBPool.Refresh' -Level Verbose -Message "ApiKey 200 Sucess"
+            Write-Verbose -Message "ApiKey 200 Sucess"
             Sync-DBPoolContainer -Id $ContainerId -Force -Verbose:$PSBoundParameters.ContainsKey('Verbose')
         }
     }

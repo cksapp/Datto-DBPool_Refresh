@@ -63,11 +63,11 @@ if ((Get-ExecutionPolicy) -ne "Bypass") {
 
 # Upgrade PowerShellGet according to https://learn.microsoft.com/en-us/powershell/gallery/powershellget/update-powershell-51?view=powershellget-3.x
 # Archive URL: https://web.archive.org/web/20240701020907/https://learn.microsoft.com/en-us/powershell/gallery/powershellget/update-powershell-51?view=powershellget-3.x
-if ($PSEdition -eq 'Desktop' -and !( (Get-Module -Name PowerShellGet -Verbose:$false).Version -gt '1.0.0.1') ) {
+if (!(Get-Module -Name PowerShellGet -ListAvailable -Verbose:$false).Version -gt '1.0.0.1' ) {
     # Install NuGet provider and PowerShellGet module
     try {
         Install-PackageProvider -Name NuGet -Scope CurrentUser -Force -ErrorAction Stop | Out-Null
-        Install-Module -Name PowerShellGet -Force -AllowClobber -Scope CurrentUser -Repository PSGallery -ErrorAction Stop
+        Install-Module -Name PowerShellGet -Scope CurrentUser -Repository PSGallery -Force -AllowClobber -ErrorAction Stop
     }
     catch {
         Write-Warning $_
@@ -122,66 +122,51 @@ if ($PSEdition -eq 'Desktop') {
     try {
         # Check if pwsh is installed
         if (Get-Command pwsh -ErrorAction SilentlyContinue) {
-            Write-Verbose 'PowerShell Core is already installed.'
             # Relaunch the script in the new PowerShell Core session
-            $scriptPath = $PSCommandPath
-            pwsh -NoExit -File $scriptPath -InformationAction:$InformationPreference -Verbose:$PSBoundParameters.ContainsKey('Verbose')
+            Write-Information 'PowerShell Core is already installed. Running in a new session...'
+            Start-Process pwsh -ArgumentList "-NoExit -ExecutionPolicy Bypass -File `"$PSCommandPath`" -InformationAction:$InformationPreference -Verbose:$($PSBoundParameters.ContainsKey('Verbose'))"
+            Start-Sleep -Seconds 3
+            exit
         } else {
-            Write-Information 'PowerShell Core is not installed. Installing the latest version... This may take some time...'
+            $installPwshCore = Read-Host 'PowerShell Core not installed. Do you want to install the latest version? (Yes/no)'
+            if ($installPwshCore -imatch '^(yes|y|)$') {
+                Write-Information 'Installing the latest version of PowerShell Core... This may take some time...'
 
-            # Define the URL for the latest PowerShell Core installer
-            $pwshInstallerUrl = 'https://github.com/PowerShell/PowerShell/releases/latest/download/PowerShell-7.4.6-win-x64.msi'
-            $pwshInstallerHash = 'ED331A04679B83D4C013705282D1F3F8D8300485EB04C081F36E11EAF1148BD0'
+                # Define the URL for the latest PowerShell Core installer
+                $pwshInstallerUrl = 'https://github.com/PowerShell/PowerShell/releases/latest/download/PowerShell-7.4.6-win-x64.msi'
+                $pwshInstallerHash = 'ED331A04679B83D4C013705282D1F3F8D8300485EB04C081F36E11EAF1148BD0'
 
-            $pwshInstallerPath = Join-Path -Path $env:TEMP -ChildPath 'PowerShell-7.4.6-win-x64.msi'
+                $pwshInstallerPath = Join-Path -Path $env:TEMP -ChildPath 'PowerShell-7.4.6-win-x64.msi'
 
-            # Function to handle download progress
-            function DownloadFileWithProgress {
-                param (
-                    [string]$url,
-                    [string]$outputPath
-                )
+                # Function to handle download progress
+                function DownloadFileWithProgress {
+                    param (
+                        [string]$url,
+                        [string]$outputPath
+                    )
 
-                $webClient = New-Object System.Net.WebClient
-                $uri = New-Object System.Uri($url)
-                $totalBytes = 0
-                $webClient.OpenRead($uri) | Out-Null
-                $totalBytes = $webClient.ResponseHeaders['Content-Length']
-                $webClient.Dispose()
+                    $webClient = New-Object System.Net.WebClient
+                    $uri = New-Object System.Uri($url)
+                    $totalBytes = 0
+                    $webClient.OpenRead($uri) | Out-Null
+                    $totalBytes = $webClient.ResponseHeaders['Content-Length']
+                    $webClient.Dispose()
 
-                $webClient = New-Object System.Net.WebClient
-                $webClient.DownloadFileAsync($uri, $outputPath)
+                    $webClient = New-Object System.Net.WebClient
+                    $webClient.DownloadFileAsync($uri, $outputPath)
 
-                while ($webClient.IsBusy) {
-                    $downloadedBytes = (Get-Item $outputPath).length
-                    $percentComplete = [math]::Round(($downloadedBytes / $totalBytes) * 100, 2)
-                    Write-Progress -Activity 'Downloading PowerShell Core Installer' -Status "$percentComplete% Complete" -PercentComplete $percentComplete
-                    Start-Sleep -Milliseconds 500
-                }
-
-                $webClient.Dispose()
-            }
-
-            # Check if the installer file already exists
-            if (-Not (Test-Path $pwshInstallerPath)) {
-                # Download the installer
-                try {
-                    DownloadFileWithProgress -url $pwshInstallerUrl -outputPath $pwshInstallerPath
-                    Write-Verbose 'Installer downloaded successfully.'
-                    # Verify the installer file exists
-                    if (-Not (Test-Path $pwshInstallerPath)) {
-                        Write-Warning "Installer file not found at $pwshInstallerPath"
-                        return
+                    while ($webClient.IsBusy) {
+                        $downloadedBytes = (Get-Item $outputPath).length
+                        $percentComplete = [math]::Round(($downloadedBytes / $totalBytes) * 100, 2)
+                        Write-Progress -Activity 'Downloading PowerShell Core Installer' -Status "$percentComplete% Complete" -PercentComplete $percentComplete
+                        Start-Sleep -Milliseconds 500
                     }
-                } catch {
-                    Write-Warning "Failed to download the installer. Error: $_"
-                    return
+
+                    $webClient.Dispose()
                 }
-            } else {
-                Write-Verbose 'Installer already exists. Skipping download.'
-                if ($(Get-FileHash -Path $pwshInstallerPath -Algorithm SHA256).Hash -ne $pwshInstallerHash) {
-                    Write-Warning 'Installer file hash does not match. Redownloading...'
-                    Remove-Item $pwshInstallerPath -ErrorAction SilentlyContinue
+
+                # Check if the installer file already exists
+                if (-Not (Test-Path $pwshInstallerPath)) {
                     # Download the installer
                     try {
                         DownloadFileWithProgress -url $pwshInstallerUrl -outputPath $pwshInstallerPath
@@ -195,45 +180,66 @@ if ($PSEdition -eq 'Desktop') {
                         Write-Warning "Failed to download the installer. Error: $_"
                         return
                     }
-                }
-            }
-
-            Start-Sleep -Seconds 1
-            # Unblock the downloaded file
-            try {
-                Unblock-File -Path $pwshInstallerPath
-                Write-Information 'Installer file unblocked successfully.'
-            } catch {
-                Write-Warning "Failed to unblock the installer file. Error: $_"
-                return
-            }
-
-            # Install PowerShell Core with additional parameters
-            try {
-                $process = Start-Process msiexec.exe -ArgumentList @(
-                    '/package', $pwshInstallerPath, '/norestart',
-                    'ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1',
-                    'ADD_FILE_CONTEXT_MENU_RUNPOWERSHELL=1',
-                    'ENABLE_PSREMOTING=0',
-                    'REGISTER_MANIFEST=1',
-                    'USE_MU=1',
-                    'ENABLE_MU=1',
-                    'ADD_PATH=1'
-                ) -PassThru -Wait
-
-                if ($process.ExitCode -eq 0) {
-                    Write-Information 'PowerShell Core has been installed successfully.'
-                    # Relaunch the script in the new PowerShell Core session
-                    Start-Process pwsh -ArgumentList "-NoExit -ExecutionPolicy Bypass -File `"$PSCommandPath`" -InformationAction:$InformationPreference -Verbose:$($PSBoundParameters.ContainsKey('Verbose'))"
-                    Start-Sleep -Seconds 1
-                    exit
                 } else {
-                    Write-Warning "PowerShell Core installation failed with exit code $($process.ExitCode)."
+                    Write-Verbose 'Installer already exists. Skipping download.'
+                    if ($(Get-FileHash -Path $pwshInstallerPath -Algorithm SHA256).Hash -ne $pwshInstallerHash) {
+                        Write-Warning 'Installer file hash does not match. Redownloading...'
+                        Remove-Item $pwshInstallerPath -ErrorAction SilentlyContinue
+                        # Download the installer
+                        try {
+                            DownloadFileWithProgress -url $pwshInstallerUrl -outputPath $pwshInstallerPath
+                            Write-Verbose 'Installer downloaded successfully.'
+                            # Verify the installer file exists
+                            if (-Not (Test-Path $pwshInstallerPath)) {
+                                Write-Warning "Installer file not found at $pwshInstallerPath"
+                                return
+                            }
+                        } catch {
+                            Write-Warning "Failed to download the installer. Error: $_"
+                            return
+                        }
+                    }
                 }
-            } catch {
-                Write-Error $_
-            } finally {
-                #Remove-Item $pwshInstallerPath -ErrorAction SilentlyContinue
+
+                Start-Sleep -Seconds 1
+                # Unblock the downloaded file
+                try {
+                    Unblock-File -Path $pwshInstallerPath
+                    Write-Information 'Installer file unblocked successfully.'
+                } catch {
+                    Write-Warning "Failed to unblock the installer file. Error: $_"
+                    return
+                }
+
+                # Install PowerShell Core with additional parameters
+                try {
+                    $process = Start-Process msiexec.exe -ArgumentList @(
+                        '/package', $pwshInstallerPath, '/norestart',
+                        'ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1',
+                        'ADD_FILE_CONTEXT_MENU_RUNPOWERSHELL=1',
+                        'ENABLE_PSREMOTING=0',
+                        'REGISTER_MANIFEST=1',
+                        'USE_MU=1',
+                        'ENABLE_MU=1',
+                        'ADD_PATH=1'
+                    ) -PassThru -Wait
+
+                    if ($process.ExitCode -eq 0) {
+                        Write-Information 'PowerShell Core has been installed successfully.'
+                        # Relaunch the script in the new PowerShell Core session
+                        Start-Process pwsh -ArgumentList "-NoExit -ExecutionPolicy Bypass -File `"$PSCommandPath`" -InformationAction:$InformationPreference -Verbose:$($PSBoundParameters.ContainsKey('Verbose'))"
+                        Start-Sleep -Seconds 3
+                        exit
+                    } else {
+                        Write-Warning "PowerShell Core installation failed with exit code $($process.ExitCode)."
+                    }
+                } catch {
+                    Write-Error $_
+                } finally {
+                    #Remove-Item $pwshInstallerPath -ErrorAction SilentlyContinue
+                }
+            } else {
+                Write-Information 'PowerShell Core installation was skipped by the user.'
             }
         }
     } catch {
@@ -458,8 +464,8 @@ if ($(Test-DBPoolApi -Verbose:$false -WarningAction SilentlyContinue -ErrorActio
 # Export the module settings and prompt the user for any configuration changes
 try {
     Export-RefreshDBPoolModuleSetting -Verbose -ErrorAction Stop
-    $userConfigChoice = Read-Host 'Would you like to make any configuration changes now? (yes/no)'
-    if ($userConfigChoice -imatch '^(yes|y)$') {
+    $userConfigChoice = Read-Host 'Would you like to make any configuration changes now? (Yes/no)'
+    if ($userConfigChoice -imatch '^(yes|y|)$') {
         Get-RefreshDBPoolModuleSetting -openConfFile -ErrorAction Stop
     } else {
         Write-Host "Configuration settings exported. Use 'Get-RefreshDBPoolModuleSetting' to view or update setting later." -ForegroundColor Green

@@ -243,7 +243,7 @@ if ($PSEdition -eq 'Desktop') {
                     #Remove-Item $pwshInstallerPath -ErrorAction SilentlyContinue
                 }
             } else {
-                Write-Information 'PowerShell Core installation was skipped by the user.'
+                Write-Information 'PowerShell Core installation skipped by user.'
             }
         }
     } catch {

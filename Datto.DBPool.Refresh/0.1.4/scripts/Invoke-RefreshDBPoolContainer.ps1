@@ -85,6 +85,12 @@ begin {
                 Install-Module -Name 'Datto.DBPool.Refresh' -Scope CurrentUser -AllowClobber -Force -Verbose:$false -AllowPrerelease
             }
         }
+        try {
+            Import-Module -Name 'Datto.DBPool.Refresh' -Force -Verbose:$false
+        } catch {
+            Write-Error $_
+            return
+        }
 
         Write-Information 'Bootstrap complete.'
     }

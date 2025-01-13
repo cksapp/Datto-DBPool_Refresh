@@ -470,6 +470,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Script
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1152,6 +1167,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Script
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1205,7 +1235,17 @@ First login to the web-portal <a href="https://dbpool.datto.net">https://dbpool.
 <h3 id="automating">Automating</h3>
 <p>The module handles automation by creating schedule task in Windows to run refresh script daily.</p>
 <h2 id="installation">Installation</h2>
-<p>Install from Powershell Gallery</p>
+<p>Install from <a href="https://www.powershellgallery.com/packages/Datto.DBPool.Refresh">Powershell Gallery</a></p>
+<h3 id="install-script">Install Script</h3>
+<p>The install script is user interactive with a few prompts to set up the initial install and variables needed to automate the container refresh.</p>
+<p>Use the following <a href="https://github.com/cksapp/Datto-DBPool_Refresh/blob/main/src/Invoke-RefreshDBPoolInstall.ps1">script</a> to install.</p>
+<ol>
+<li>Copy the full script</li>
+<li>Open PowerShell <em>(will work with both Windows PowerShell, and PowerShell)</em></li>
+<li>Paste the script content and enter <em>(sometimes it seems this may hang, in which case pressing 'Enter' or 'Spacebar' will allow continued run)</em></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nv">$scriptFile</span> <span class="p">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/cksapp/Datto-DBPool_Refresh/refs/heads/main/src/Initialize-RefreshDBPool.ps1&#39;</span><span class="p">;</span> <span class="nv">$fileName</span> <span class="p">=</span> <span class="no">[System.IO.Path]</span><span class="p">::</span><span class="n">GetFileName</span><span class="p">(</span><span class="nv">$scriptFile</span><span class="p">);</span> <span class="nv">$tempFile</span> <span class="p">=</span> <span class="no">[System.IO.Path]</span><span class="p">::</span><span class="n">Combine</span><span class="p">(</span><span class="no">[System.IO.Path]</span><span class="p">::</span><span class="n">GetTempPath</span><span class="p">(),</span> <span class="nv">$fileName</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$PSEdition</span> <span class="o">-eq</span> <span class="s1">&#39;Desktop&#39;</span> <span class="o">-or</span> <span class="nv">$IsWindows</span><span class="p">)</span> <span class="p">{</span> <span class="nb">Set-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="n">-Scope</span> <span class="k">Process</span> <span class="n">-Force</span> <span class="p">};</span> <span class="no">[System.Net.ServicePointManager]</span><span class="p">::</span><span class="n">SecurityProtocol</span> <span class="p">=</span> <span class="no">[System.Net.ServicePointManager]</span><span class="p">::</span><span class="n">SecurityProtocol</span> <span class="o">-bor</span> <span class="n">3072</span><span class="p">;</span> <span class="p">(</span><span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">WebClient</span><span class="p">).</span><span class="n">DownloadFile</span><span class="p">(</span><span class="nv">$scriptFile</span><span class="p">,</span> <span class="nv">$tempFile</span><span class="p">);</span> <span class="p">&amp;</span> <span class="nv">$tempFile</span>
+</code></pre></div>
 <h2 id="examples">Examples</h2>
 
 

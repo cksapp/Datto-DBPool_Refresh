@@ -23,4 +23,5 @@
     'PSScriptAnalyzer' = @{
         Version = '1.22.0'
     }
+    'Datto.DBPool.API' = @{}
 }

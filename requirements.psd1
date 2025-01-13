@@ -23,5 +23,9 @@
     'PSScriptAnalyzer' = @{
         Version = '1.22.0'
     }
-    'Datto.DBPool.API' = @{}
+    'Datto.DBPool.API' = @{
+        Parameters = @{
+            AllowPrerelease = $true
+        }
+    }
 }

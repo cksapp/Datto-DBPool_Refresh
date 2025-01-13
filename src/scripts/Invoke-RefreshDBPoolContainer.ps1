@@ -64,9 +64,9 @@ begin {
     if ($Bootstrap) {
         if (!(Get-Module -Name 'Datto.DBPool.API' -ListAvailable)) {
             if (Get-Command -Name 'Install-PSResource' -ErrorAction SilentlyContinue) {
-                Install-PSResource -Name 'Datto.DBPool.API' -Scope CurrentUser -Reinstall -TrustRepository -Verbose:$false -Prerelease
+                Install-PSResource -Name 'Datto.DBPool.API' -Scope CurrentUser -Reinstall -TrustRepository -Verbose:$false
             } else {
-                Install-Module -Name 'Datto.DBPool.API' -Scope CurrentUser -AllowClobber -Force -Verbose:$false -AllowPrerelease
+                Install-Module -Name 'Datto.DBPool.API' -Scope CurrentUser -AllowClobber -Force -Verbose:$false
             }
         }
         try {

@@ -271,7 +271,7 @@ try {
         Add-DattoSecretStore -ErrorAction Stop
     }
 
-    Get-RefreshDBPoolApiKey -Verbose:$false -Force -ErrorAction Ignore -InformationAction SilentlyContinue | Out-Null
+    Get-RefreshDBPoolApiKey -Verbose:$false -Force -ErrorAction SilentlyContinue -InformationAction SilentlyContinue | Out-Null
     if (!((Test-DBPoolApiKey -Verbose:$false -WarningAction SilentlyContinue -ErrorAction SilentlyContinue).StatusCode -eq 200)) {
         $apiKeyValid = $false
         $attempts = 0

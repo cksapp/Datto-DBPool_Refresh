@@ -17,10 +17,10 @@ You will need to get your personal API key, which will be needed by the module t
 First login to the web-portal [https://dbpool.datto.net](https://dbpool.datto.net)
 
 1. Select your **User Profile** at the top-right, select **My profile** from the drop-down
-   ![profile_Settings](./docs/site/assets/ApiKey/profile_Settings.png)
+   ![profile_Settings](./assets/ApiKey/profile_Settings.png)
 2. Under **Profile** → **Metadata** → **API key**, listed is your personal API key
    Make a record of this in a safe-place.
-   ![personal_ApiKey](./docs/site/assets/ApiKey/personal_ApiKey.png)
+   ![personal_ApiKey](./assets/ApiKey/personal_ApiKey.png)
 3. Use `Set-RefreshDBPoolApiKey` to add the API key to module secret store
 
 ### Environment Override

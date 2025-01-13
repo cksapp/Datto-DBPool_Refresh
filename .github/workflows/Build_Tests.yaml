@@ -1,0 +1,33 @@
+name: Build_Tests
+
+on:
+  push:
+    paths:
+      - /src
+      - /src/**
+      - /Datto.DBPool.Refresh/**
+      - .github/workflows/Build_Tests.yaml
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  test:
+    name: Run Tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup PowerShell
+      uses: bjompen/UpdatePWSHAction@v1.0.1
+      with:
+        FixedVersion: '7.3.12'
+
+    - name: Test
+      shell: pwsh
+      run: ./build.ps1 -Task Test -Bootstrap

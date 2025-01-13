@@ -23,9 +23,6 @@
     'PSScriptAnalyzer' = @{
         Version = '1.22.0'
     }
-    'Datto.DBPool.API' = @{
-        Parameters = @{
-            AllowPrerelease = $true
-        }
-    }
+    'Datto.DBPool.API' = @{}
+    'Microsoft.PowerShell.SecretManagement' = @{}
 }

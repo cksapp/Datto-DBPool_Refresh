@@ -64,7 +64,7 @@ function Add-DattoSecretStore {
                 } else {
                     # Fall back to using Install-Module
                     try {
-                        Install-Module -Name $ModuleName -Scope CurrentUser -Force -ErrorAction Stop
+                        Install-Module -Name $ModuleName -Scope CurrentUser -Force -ErrorAction Stop -AllowClobber
                     } catch {
                         Write-Error "Failed to install $ModuleName module using 'Install-Module': $_"
                         return
@@ -80,6 +80,17 @@ function Add-DattoSecretStore {
 
     process {
 
+        if ($ModuleName -eq 'Microsoft.PowerShell.SecretStore') {
+            $storeConfiguration = @{
+                Authentication  = 'None'
+                PasswordTimeout = 600 # 10 minutes
+                Interaction     = 'None'
+                #Password        = $password
+                Confirm         = $False
+            }
+            Set-SecretStoreConfiguration @storeConfiguration
+        }
+
         $secretStore = Get-SecretVault -ErrorAction SilentlyContinue | Where-Object { $_.Name -eq $Name }
         if ($null -eq $secretStore) {
             # Add a local secret store if the specified one is not found
@@ -91,17 +102,6 @@ function Add-DattoSecretStore {
             }
         } else {
             Write-Information "The secret store [ $Name ] is already set."
-        }
-
-        if ($ModuleName -eq 'Microsoft.PowerShell.SecretStore') {
-            $storeConfiguration = @{
-                Authentication  = 'None'
-                PasswordTimeout = 600 # 10 minutes
-                Interaction     = 'None'
-                #Password        = $password
-                Confirm         = $false
-            }
-            Set-SecretStoreConfiguration @storeConfiguration
         }
 
     }

@@ -1,4 +1,4 @@
-
+﻿
 <#PSScriptInfo
 
 .VERSION 1.0
@@ -57,11 +57,15 @@ begin {
         $Bootstrap = $true
     }
 
-    $modulePath = Join-Path -Path $( Split-Path -Path $PSScriptRoot -Parent ) -ChildPath 'Datto.DBPool.Refresh.psm1'
+    if ((Get-ExecutionPolicy) -ne "Bypass") {
+        Set-ExecutionPolicy "Bypass" -Force -Scope Process
+    }
+
     if ($Bootstrap) {
+        $modulePath = Join-Path -Path $( Split-Path -Path $PSScriptRoot -Parent ) -ChildPath 'Datto.DBPool.Refresh.psm1'
         Import-Module -Name $modulePath -Force -Verbose:$false
 
-        Write-Verbose 'Bootstrap complete.'
+        Write-Information 'Bootstrap complete.'
     }
 }
 

@@ -129,6 +129,7 @@ function Get-RefreshDBPoolApiKey {
 
         if ( !(Test-SecretVault -Name $SecretStoreName -ErrorAction SilentlyContinue -Verbose:$false) -or !($secretExists) ) {
             Write-Error "Ensure the default SecretManagement Vault is installed and configured. Use 'Set-RefreshDBPoolApiKey' first!"
+            return
         } else {
             try {
 
@@ -148,7 +149,7 @@ function Get-RefreshDBPoolApiKey {
     }
 
     end {
-        (Get-DBPoolApiKey -AsPlainText:$AsPlainText -ErrorAction SilentlyContinue).ApiKey
+        (Get-DBPoolApiKey -AsPlainText:$AsPlainText -WarningAction SilentlyContinue -ErrorAction SilentlyContinue).ApiKey
     }
 
 }
@@ -410,7 +411,7 @@ function Add-DattoSecretStore {
                 } else {
                     # Fall back to using Install-Module
                     try {
-                        Install-Module -Name $ModuleName -Scope CurrentUser -Force -ErrorAction Stop
+                        Install-Module -Name $ModuleName -Scope CurrentUser -Force -ErrorAction Stop -AllowClobber
                     } catch {
                         Write-Error "Failed to install $ModuleName module using 'Install-Module': $_"
                         return
@@ -426,6 +427,17 @@ function Add-DattoSecretStore {
 
     process {
 
+        if ($ModuleName -eq 'Microsoft.PowerShell.SecretStore') {
+            $storeConfiguration = @{
+                Authentication  = 'None'
+                PasswordTimeout = 600 # 10 minutes
+                Interaction     = 'None'
+                #Password        = $password
+                Confirm         = $False
+            }
+            Set-SecretStoreConfiguration @storeConfiguration
+        }
+
         $secretStore = Get-SecretVault -ErrorAction SilentlyContinue | Where-Object { $_.Name -eq $Name }
         if ($null -eq $secretStore) {
             # Add a local secret store if the specified one is not found
@@ -439,39 +451,11 @@ function Add-DattoSecretStore {
             Write-Information "The secret store [ $Name ] is already set."
         }
 
-        if ($ModuleName -eq 'Microsoft.PowerShell.SecretStore') {
-            $storeConfiguration = @{
-                Authentication  = 'None'
-                PasswordTimeout = 600 # 10 minutes
-                Interaction     = 'None'
-                #Password        = $password
-                Confirm         = $false
-            }
-            Set-SecretStoreConfiguration @storeConfiguration
-        }
-
     }
 
     end {
         #$Env:Datto_SecretStore = $Name
     }
-}
-#EndRegion
-
-#Region
-function Unlock-DattoSecretStore {
-    [CmdletBinding()]
-    param (
-
-    )
-
-    begin {}
-
-    process {
-
-    }
-
-    end {}
 }
 #EndRegion
 
@@ -608,79 +592,6 @@ function Update-RefreshDBPoolModule {
 
     end {}
 
-}
-#EndRegion
-
-#Region
-function Initialize-RefreshDBPoolLog {
-    [CmdletBinding()]
-    param ()
-
-    begin {
-
-        if ($RefreshDBPool_Logging_Enabled -eq $false) {
-            Write-Verbose "Logging is disabled in the module settings. Skipping log initialization."
-            return
-        } elseif ($RefreshDBPool_Logging_Enabled -eq $true) {
-            Write-Verbose "Logging is enabled in the module settings. Initializing log."
-        } elseif ($null -eq $RefreshDBPool_Logging_Enabled) {
-            Write-Warning "Logging is not set in the module settings. Defaulting to enabled."
-            $Global:RefreshDBPool_Logging_Enabled = $true
-        }
-
-        if (!(Get-Module -Name 'PSFramework' -ListAvailable)) {
-            try {
-                Import-Module PSFramework -ErrorAction Stop
-            }
-            catch {
-                Write-Error $_
-                return
-            }
-        }
-
-        $logDirectory = $RefreshDBPool_LogPath
-        $logFileName = "%date%-$RefreshDBPool_LogFileName"
-        $logFilePath = Join-Path -Path $logDirectory -ChildPath $logFileName
-
-    }
-
-    process {
-
-        if (-not (Test-Path -Path $logDirectory)) {
-            try {
-                New-Item -Path $logDirectory -ItemType Directory -Force | Out-Null
-            } catch {
-                Write-Error -Message "Failed to create log directory: $_"
-                return
-            }
-        }
-
-        try {
-            # Configure PSFramework logging provider
-            $paramSetPSFLoggingProvider = @{
-                Name            = 'logfile'
-                InstanceName    = 'RefreshDBPool'
-                FilePath        = $logFilePath
-                FileType        = 'CSV'
-                Headers         = @('Timestamp', 'Level', 'Message', 'DataCompact')
-                EnableException = $true
-                Enabled         = $true
-                LogRotatePath   = $logDirectory
-                LogRetentionTime    = $RefreshDBPool_LogRotationDays
-
-            }
-            Set-PSFLoggingProvider @paramSetPSFLoggingProvider -ErrorAction Stop
-            Write-Verbose "Logging configured successfully. Logs will be written to: $logFilePath"
-        } catch {
-            Write-Error $_
-            return
-        }
-
-    }
-
-    end {
-
-    }
 }
 #EndRegion
 

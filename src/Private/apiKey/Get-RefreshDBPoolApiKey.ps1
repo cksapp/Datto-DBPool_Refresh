@@ -74,6 +74,7 @@ function Get-RefreshDBPoolApiKey {
 
         if ( !(Test-SecretVault -Name $SecretStoreName -ErrorAction SilentlyContinue -Verbose:$false) -or !($secretExists) ) {
             Write-Error "Ensure the default SecretManagement Vault is installed and configured. Use 'Set-RefreshDBPoolApiKey' first!"
+            return
         } else {
             try {
 
@@ -93,7 +94,7 @@ function Get-RefreshDBPoolApiKey {
     }
 
     end {
-        (Get-DBPoolApiKey -AsPlainText:$AsPlainText -ErrorAction SilentlyContinue).ApiKey
+        (Get-DBPoolApiKey -AsPlainText:$AsPlainText -WarningAction SilentlyContinue -ErrorAction SilentlyContinue).ApiKey
     }
 
 }

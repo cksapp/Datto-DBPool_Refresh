@@ -54,8 +54,9 @@
     RequiredModules   = @(
         @{
             ModuleName = 'Datto.DBPool.API'
-            ModuleVersion = '0.1.5'
-            MaximumVersion = '0.99.99.*'
+            #ModuleVersion = '0.1.5'
+            #MaximumVersion = '0.99.99.*'
+            RequiredVersion = '0.2.0'
         }
         'Microsoft.PowerShell.SecretManagement'
         #'PSFramework'
@@ -116,6 +117,9 @@
 
             # ReleaseNotes of this module
             # ReleaseNotes = ''
+
+            # Prerelease string of this module
+            Prerelease = 'BETA'
 
         } # End of PSData hashtable
 

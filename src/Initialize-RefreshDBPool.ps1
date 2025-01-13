@@ -109,7 +109,11 @@ if (!(Get-InstalledPSResource -Name Microsoft.PowerShell.SecretStore -Verbose:$f
 # Install main Datto.DBPool.Refresh module
 if (-not ((Get-InstalledPSResource -Name Datto.DBPool.Refresh -Verbose:$false -ErrorAction SilentlyContinue) -or (Get-Module -Name Datto.DBPool.Refresh -Verbose:$false -ListAvailable -ErrorAction SilentlyContinue))) {
     try {
-        Install-PSResource -Name Datto.DBPool.Refresh -Scope CurrentUser -Repository PSGallery -TrustRepository -Reinstall -ErrorAction Stop -Prerelease
+        if (Get-Command -Name Install-PSResource -ErrorAction SilentlyContinue) {
+            Install-PSResource -Name Datto.DBPool.Refresh -Scope CurrentUser -Repository PSGallery -TrustRepository -Reinstall -ErrorAction Stop -Prerelease
+        } else {
+            Install-Module -Name Datto.DBPool.Refresh -Scope CurrentUser -AllowClobber -Force -Repository PSGallery -ErrorAction Stop -AllowPrerelease
+        }
     }
     catch {
         Write-Error $_
@@ -225,7 +229,7 @@ if ($PSEdition -eq 'Desktop') {
                     ) -PassThru -Wait
 
                     if ($process.ExitCode -eq 0) {
-                        Write-Information 'PowerShell Core has been installed successfully.'
+                        Write-Information 'PowerShell Core has been installed successfully. Relaunching the script in the new session...'
                         # Relaunch the script in the new PowerShell Core session
                         Start-Process pwsh -ArgumentList "-NoExit -ExecutionPolicy Bypass -File `"$PSCommandPath`" -InformationAction:$InformationPreference -Verbose:$($PSBoundParameters.ContainsKey('Verbose'))"
                         Start-Sleep -Seconds 3

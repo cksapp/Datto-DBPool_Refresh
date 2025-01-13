@@ -13,7 +13,7 @@ Creates a scheduled task to automate the refresh of Datto DBPool containers.
 ## SYNTAX
 
 ```
-Register-RefreshDBPoolTask [-TriggerTime] <DateTime> [[-ExcludeDaysOfWeek] <DayOfWeek[]>] [<CommonParameters>]
+Register-RefreshDBPoolTask [-TriggerTime] <DateTime> [[-ExcludeDaysOfWeek] <String[]>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -66,10 +66,9 @@ Specifies the days of the week on which the scheduled task should NOT be run.
 This will generally be days off work, by default the task will not run on Sundays and Saturdays.
 
 ```yaml
-Type: DayOfWeek[]
+Type: String[]
 Parameter Sets: (All)
 Aliases:
-Accepted values: Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
 
 Required: False
 Position: 2

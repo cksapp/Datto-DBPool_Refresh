@@ -78,7 +78,7 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = '*'
+    FunctionsToExport = @('Copy-DBPoolParentContainer','Sync-DBPoolContainer','Add-DattoSecretStore','Get-RefreshDBPoolApiKey','Remove-RefreshDBPoolApiKey','Set-RefreshDBPoolApiKey','Update-RefreshDBPoolModule','Remove-RefreshDBPoolLog','Export-RefreshDBPoolModuleSetting','Get-RefreshDBPoolModuleSetting','Import-RefreshDBPoolModuleSetting','Initialize-RefreshDBPoolModuleSetting','Remove-RefreshDBPoolModuleSetting','Register-RefreshDBPoolTask','Update-RefreshDBPoolTask','Set-DBPoolSecurityProtocol')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport   = '*'
@@ -132,4 +132,3 @@
     # DefaultCommandPrefix = ''
 
 }
-

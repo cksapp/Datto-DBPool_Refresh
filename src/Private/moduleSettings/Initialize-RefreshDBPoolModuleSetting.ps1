@@ -3,7 +3,7 @@ Import-RefreshDBPoolModuleSetting -Verbose:$VerbosePreference
 
 if (Test-SecretVault -Name 'Datto_SecretStore' -WarningAction SilentlyContinue -ErrorAction SilentlyContinue) {
     try {
-        Get-RefreshDBPoolApiKey -Force -ErrorAction SilentlyContinue
+        Get-RefreshDBPoolApiKey -Force -ErrorAction SilentlyContinue | Out-Null
     }
     catch {
         Write-Warning $_

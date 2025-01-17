@@ -310,7 +310,7 @@ try {
     $shiftStartTimeValid = $false
     $shiftRunOffsetHours = 1
     do {
-        $shiftStartTime = Read-Host "Enter your shift start time (HH:mm). The script will run '$shiftRunOffsetHours' hour prior"
+        $shiftStartTime = Read-Host "Enter your shift start time (HH:mm). The script will auto-adjust to run '$shiftRunOffsetHours' hour prior"
         try {
             [void][System.DateTime]::Parse($shiftStartTime)
             $shiftStartTimeValid = $true
@@ -354,7 +354,7 @@ try {
     } until ($excludeDaysValid)
 
     Register-RefreshDBPoolTask -TriggerTime $scriptRunTime -ExcludeDaysOfWeek $excludedDays -ErrorAction Stop | Out-Null
-    $daysToRun = $( [System.DayOfWeek].GetEnumValues() ) | Where-Object { $ExcludedDaysOfWeek -notcontains $_ }
+    $daysToRun = $( [System.DayOfWeek].GetEnumValues() ) | Where-Object { $excludedDays -notcontains $_ }
     Write-Host "Scheduled task created to run the 'Datto.DBPool.Refresh' module at $scriptRunTime on $($daysToRun -join ', ')." -ForegroundColor Green
 }
 catch {

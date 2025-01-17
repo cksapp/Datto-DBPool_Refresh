@@ -83,7 +83,7 @@ function Update-RefreshDBPoolModule {
                             if (Get-Command -Name Install-PSResource -ErrorAction SilentlyContinue) {
                                 Install-PSResource -Name $ModuleName -Scope 'CurrentUser' -TrustRepository -Prerelease:$AllowPrerelease -ErrorAction Stop -Verbose:$false
                             } else {
-                                Install-Module $ModuleName -Scope 'CurrentUser' -Force -AllowPrerelease:$AllowPrerelease -ErrorAction Stop -Verbose:$false
+                                Install-Module $ModuleName -Scope 'CurrentUser' -Force -AllowPrerelease:$AllowPrerelease -SkipPublisherCheck -ErrorAction Stop -Verbose:$false
                             }
                             Write-Information "Module [ $ModuleName ] successfully installed."
                             Import-Module -Name $ModuleName -Force -Verbose:$false

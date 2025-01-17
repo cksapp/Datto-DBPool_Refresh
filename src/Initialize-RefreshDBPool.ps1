@@ -66,15 +66,16 @@ if ((Get-ExecutionPolicy) -ne "Bypass") {
 if (!(Get-Module -Name PowerShellGet -ListAvailable -Verbose:$false).Version -gt '1.0.0.1' ) {
     # Install NuGet provider and PowerShellGet module
     try {
-        Install-PackageProvider -Name NuGet -Scope CurrentUser -Force -ErrorAction Stop | Out-Null
-        Install-Module -Name PowerShellGet -Scope CurrentUser -Repository PSGallery -Force -AllowClobber -ErrorAction Stop
+        Install-PackageProvider -Name NuGet -Scope CurrentUser -Force -ErrorAction Stop
     }
     catch {
-        Write-Warning $_
+        Install-Module -Name PowerShellGet -Scope CurrentUser -Repository PSGallery -Force -AllowClobber -ErrorAction Stop
+    }
+    finally {
+        # Set the PSGallery repository as trusted
+        Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -ErrorAction SilentlyContinue
     }
 
-    # Set the PSGallery repository as trusted
-    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -ErrorAction SilentlyContinue
 }
 
 # Install PSResourceGet after upgrading PowerShellGet version based on https://learn.microsoft.com/en-us/powershell/gallery/powershellget/install-powershellget?view=powershellget-3.x
@@ -82,41 +83,14 @@ if (!(Get-Module -Name PowerShellGet -ListAvailable -Verbose:$false).Version -gt
 if ( !(Get-Module -Name Microsoft.PowerShell.PSResourceGet -Verbose:$false) ) {
     try {
         Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force -AllowClobber -Scope CurrentUser -Repository PSGallery -ErrorAction Stop
-    }
-    catch {
+    } catch {
         Write-Warning $_
     }
 
     # Set the PSGallery repository as trusted
     if (Get-Module -Name Microsoft.PowerShell.PSResourceGet -Verbose:$false) {
-        Import-Module -Name Microsoft.PowerShell.PSResourceGet -ErrorAction SilentlyContinue
+        Import-Module -Name Microsoft.PowerShell.PSResourceGet -Verbose:$false -ErrorAction SilentlyContinue
         Set-PSResourceRepository -Name PSGallery -Trusted -Confirm:$false -ErrorAction SilentlyContinue
-    }
-}
-
-
-# Install dependencies for DattoDBPool module
-# Install Microsoft.PowerShell.SecretManagement and Microsoft.PowerShell.SecretStore module for storing secrets
-if (!(Get-InstalledPSResource -Name Microsoft.PowerShell.SecretStore -Verbose:$false -ErrorAction SilentlyContinue)) {
-    try {
-        Install-PSResource -Name Microsoft.PowerShell.SecretStore -Scope CurrentUser -Repository PSGallery -TrustRepository -Reinstall -ErrorAction Stop
-    }
-    catch {
-        Write-Error $_
-    }
-}
-
-# Install main Datto.DBPool.Refresh module
-if (-not ((Get-InstalledPSResource -Name Datto.DBPool.Refresh -Verbose:$false -ErrorAction SilentlyContinue) -or (Get-Module -Name Datto.DBPool.Refresh -Verbose:$false -ListAvailable -ErrorAction SilentlyContinue))) {
-    try {
-        if (Get-Command -Name Install-PSResource -ErrorAction SilentlyContinue) {
-            Install-PSResource -Name Datto.DBPool.Refresh -Scope CurrentUser -Repository PSGallery -TrustRepository -Reinstall -ErrorAction Stop -Prerelease
-        } else {
-            Install-Module -Name Datto.DBPool.Refresh -Scope CurrentUser -AllowClobber -Force -Repository PSGallery -ErrorAction Stop -AllowPrerelease
-        }
-    }
-    catch {
-        Write-Error $_
     }
 }
 
@@ -252,6 +226,29 @@ if ($PSEdition -eq 'Desktop') {
 }
 
 
+# Install dependencies for DattoDBPool module
+# Install Microsoft.PowerShell.SecretManagement and Microsoft.PowerShell.SecretStore module for storing secrets
+if (!(Get-InstalledPSResource -Name Microsoft.PowerShell.SecretStore -Verbose:$false -ErrorAction SilentlyContinue)) {
+    try {
+        Install-PSResource -Name Microsoft.PowerShell.SecretStore -Scope CurrentUser -Repository PSGallery -TrustRepository -Reinstall -ErrorAction Stop
+    } catch {
+        Write-Error $_
+    }
+}
+
+# Install main Datto.DBPool.Refresh module
+if (-not ((Get-InstalledPSResource -Name Datto.DBPool.Refresh -Verbose:$false -ErrorAction SilentlyContinue) -or (Get-Module -Name Datto.DBPool.Refresh -Verbose:$false -ListAvailable -ErrorAction SilentlyContinue))) {
+    try {
+        if (Get-Command -Name Install-PSResource -ErrorAction SilentlyContinue) {
+            Install-PSResource -Name Datto.DBPool.Refresh -Scope CurrentUser -Repository PSGallery -TrustRepository -Reinstall -ErrorAction Stop -Prerelease
+        } else {
+            Install-Module -Name Datto.DBPool.Refresh -Scope CurrentUser -AllowClobber -Force -Repository PSGallery -SkipPublisherCheck -ErrorAction Stop -AllowPrerelease
+        }
+    } catch {
+        Write-Error $_
+    }
+}
+
 # Import the Datto.DBPool.Refresh module
 if (-not (Get-Module -Name Datto.DBPool.Refresh -Verbose:$false)) {
     try {
@@ -261,6 +258,7 @@ if (-not (Get-Module -Name Datto.DBPool.Refresh -Verbose:$false)) {
         throw $_
     }
 }
+
 
 # Set the environment variables for the Datto.DBPool.Refresh module
 try {
@@ -378,7 +376,7 @@ if ($(Test-DBPoolApi -Verbose:$false -WarningAction SilentlyContinue -ErrorActio
                 param ($modulePath)
                 try {
                     Import-Module -Name $modulePath
-                    Copy-DBPoolParentContainer -Id @(17, 27, 14) -Verbose
+                    Copy-DBPoolParentContainer -Id @(17, 27, 14, 14) -Verbose
                     Start-Sleep -Seconds 5
                 } catch {
                     Write-Error "Error in runspace execution: $_"

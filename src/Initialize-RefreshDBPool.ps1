@@ -313,25 +313,26 @@ try {
         $shiftStartTime = Read-Host "Enter your shift start time (HH:mm). The script will auto-adjust to run '$shiftRunOffsetHours' hour prior"
         try {
             [void][System.DateTime]::Parse($shiftStartTime)
+            $scriptRunTime = (Get-Date $shiftStartTime).AddHours( - ($shiftRunOffsetHours)).ToString('HH:mm')
+            Write-Debug "Script run time set to: $scriptRunTime"
             $shiftStartTimeValid = $true
         } catch {
             Write-Warning 'Invalid format. Please enter a valid start time.'
         }
     } until ($shiftStartTimeValid)
-    $scriptRunTime = (Get-Date $shiftStartTime).AddHours(-($shiftRunOffsetHours)).ToString('HH:mm')
 
 
     # Get days of the week to exclude
-    $defaultExcludedDays = 'Saturday,Sunday'
+    $defaultExcludedDays = 'Saturday, Sunday'
     $validDaysOfWeek = [Enum]::GetNames([System.DayOfWeek])
 
     do {
-        $inputDays = Read-Host "Enter the days of the week to exclude (comma-separated, default is $defaultExcludedDays). Enter 'none' to run every day"
+        $inputDays = Read-Host "Enter the days of the week to exclude comma-separated (leave blank for default '$defaultExcludedDays'). Enter 'none' to run every day"
         if ($inputDays -eq 'none') {
             $excludedDays = @()
             $excludeDaysValid = $true
         } elseif ([string]::IsNullOrWhiteSpace($inputDays)) {
-            $excludedDays = $defaultExcludedDays -split ','
+            $excludedDays = $defaultExcludedDays -split ',' | ForEach-Object { $_.Trim() }
             $excludeDaysValid = $true
         } else {
             $excludedDays = $inputDays -split ',' | ForEach-Object { $_.Trim() }
@@ -376,6 +377,7 @@ if ($(Test-DBPoolApi -Verbose:$false -WarningAction SilentlyContinue -ErrorActio
                 param ($modulePath)
                 try {
                     Import-Module -Name $modulePath
+                    # Copy the parent container(s) to create child containers: Default parent container for DattoAuth, AdminDB, and x2 legoDB
                     Copy-DBPoolParentContainer -Id @(17, 27, 14, 14) -Verbose
                     Start-Sleep -Seconds 5
                 } catch {
@@ -470,9 +472,11 @@ try {
     if ($userConfigChoice -imatch '^(yes|y|)$') {
         Get-RefreshDBPoolModuleSetting -openConfFile -ErrorAction Stop
     } else {
-        Write-Host "Configuration settings exported. Use 'Get-RefreshDBPoolModuleSetting' to view or update setting later." -ForegroundColor Green
+        Write-Host "Configuration settings exported. Use 'Get-RefreshDBPoolModuleSetting -openConfFile' to view or update setting later." -ForegroundColor DarkMagenta
     }
 } catch {
     Write-Error $_
     Write-Warning "An error occurred, please use 'Export-RefreshDBPoolModuleSetting' to export the module settings later on."
 }
+
+Write-Host 'Datto DBPool initialization script completed!' -ForegroundColor Green

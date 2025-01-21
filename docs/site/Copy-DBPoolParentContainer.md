@@ -29,7 +29,7 @@ Copy-DBPoolParentContainer -DefaultDatabase <String[]> [-ContainerName_Append <S
 ## DESCRIPTION
 
 This function clones the specified DBPool parent container(s) using the DBPool API.
-By default, this function will clone all containers if no IDs or DefaultDatabase values are provided.
+The cloned container(s) will have the same parent container as the original container(s) and will be appended with the specified string.
 
 ## EXAMPLES
 
@@ -152,4 +152,4 @@ N/A
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Copy-DBPoolParentContainer/](https://datto-dbpool-refresh.kentsapp.com/Copy-DBPoolParentContainer/)

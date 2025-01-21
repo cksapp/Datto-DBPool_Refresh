@@ -25,7 +25,7 @@ function Set-DBPoolSecurityProtocol {
         Make sure to run this function in the appropriate context, as it affects .NET-wide security settings.
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Internal/Set-DBPoolSecurityProtocol/
 #>
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Low')]
     param (

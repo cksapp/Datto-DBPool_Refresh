@@ -33,7 +33,7 @@ function Add-DattoSecretStore {
         N/A
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Add-DattoSecretStore/
 #>
     [CmdletBinding()]
     param (

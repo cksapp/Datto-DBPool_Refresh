@@ -133,4 +133,4 @@ N/A
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Get-RefreshDBPoolModuleSetting/](https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Get-RefreshDBPoolModuleSetting/)

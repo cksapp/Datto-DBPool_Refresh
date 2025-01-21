@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Update-RefreshDBPoolTask/
 schema: 2.0.0
 ---
 
@@ -90,5 +90,5 @@ This function is currently only supported on Windows systems.
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Update-RefreshDBPoolTask/](https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Update-RefreshDBPoolTask/)
 

@@ -48,7 +48,7 @@ function Remove-RefreshDBPoolModuleSetting {
         N/A
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Remove-RefreshDBPoolModuleSetting/
 #>
 
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'set')]

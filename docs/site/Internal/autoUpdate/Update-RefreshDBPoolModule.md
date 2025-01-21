@@ -137,4 +137,4 @@ N/A
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/autoUpdate/Update-RefreshDBPoolModule/](https://datto-dbpool-refresh.kentsapp.com/Internal/autoUpdate/Update-RefreshDBPoolModule/)

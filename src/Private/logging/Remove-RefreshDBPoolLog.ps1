@@ -48,7 +48,7 @@ function Remove-RefreshDBPoolLog {
         N/A
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Internal/logging/Remove-RefreshDBPoolLog/
 #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     param (

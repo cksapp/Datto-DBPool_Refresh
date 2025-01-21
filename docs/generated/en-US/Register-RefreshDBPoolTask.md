@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version: https://docs.microsoft.com/en-us/powershell/module/scheduledtasks/new-scheduledtask
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Register-RefreshDBPoolTask/
 schema: 2.0.0
 ---
 
@@ -92,6 +92,8 @@ It uses the Task Scheduler to create and manage the scheduled task.
 Will look to add support for Linux/MacOS using cron jobs or similar such as anacron in the future.
 
 ## RELATED LINKS
+
+[https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Register-RefreshDBPoolTask/](https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Register-RefreshDBPoolTask/)
 
 [https://docs.microsoft.com/en-us/powershell/module/scheduledtasks/new-scheduledtask](https://docs.microsoft.com/en-us/powershell/module/scheduledtasks/new-scheduledtask)
 

@@ -4,7 +4,7 @@ function Copy-DBPoolParentContainer {
         Clones the specified DBPool parent container(s) using the DBPool API.
 
     .DESCRIPTION
-        This function clones the specified DBPool parent container(s) using the DBPool API. By default, this function will clone all containers if no IDs or DefaultDatabase values are provided.
+        This function clones the specified DBPool parent container(s) using the DBPool API. The cloned container(s) will have the same parent container as the original container(s) and will be appended with the specified string.
 
     .PARAMETER Id
         The ID(s) of the parent container(s) to clone.
@@ -45,11 +45,23 @@ function Copy-DBPoolParentContainer {
 
         Clones the DBPool parent containers with the DefaultDatabase 'exampleParentA' and 'exampleParentB' even if similar containers already exist.
 
+    .EXAMPLE
+        Copy-DBPoolParentContainer -DefaultDatabase 'exampleParentA', 'exampleParentB', 'exampleParentA
+
+        Clones the DBPool parent containers with the DefaultDatabase 'exampleParentA' and 'exampleParentB' and appends a number to any duplicate clones.
+
+        ------------------------------
+        Parent Container [ Id: 7, Name: exampleParentB staging ] 'create' command sent for new Container [ exampleB staging(clone) ]
+        Parent Container [ Id: 3, Name: exampleParentA on SQL 1.2.3 ] 'create' command sent for new Container [ exampleA(clone-1) ]
+        Parent Container [ Id: 3, Name: exampleParentA on SQL 1.2.3 ] 'create' command sent for new Container [ exampleA(clone-2) ]
+        Parent Container [ Id: 4, Name: exampleParentB on 4.5.6 ] 'create' command sent for new Container [ exampleB(clone) ]
+
     .NOTES
-        N/A
+        Does not clone any parent containers with 'BETA' in the name. Also removes parent name suffixes like 'on Database v1.2.3' before appending the ContainerName_Append string.
+        This function will also append a number to the cloned container name if multiple matching clones are created with same parent at once, or for any matching clones that already exist when using the -Duplicate switch.
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Copy-DBPoolParentContainer/
 #>
     [CmdletBinding(DefaultParameterSetName = 'byId')]
     [Alias('Clone-DBPoolParentContainer')]

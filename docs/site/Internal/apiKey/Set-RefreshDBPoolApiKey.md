@@ -164,4 +164,4 @@ Ensure that the PowerShell SecretManagement module is installed and configured b
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Set-RefreshDBPoolApiKey/](https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Set-RefreshDBPoolApiKey/)

@@ -102,4 +102,4 @@ Make sure to run this function in the appropriate context, as it affects .NET-wi
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/Set-DBPoolSecurityProtocol/](https://datto-dbpool-refresh.kentsapp.com/Internal/Set-DBPoolSecurityProtocol/)

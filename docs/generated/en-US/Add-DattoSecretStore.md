@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Add-DattoSecretStore/
 schema: 2.0.0
 ---
 
@@ -85,5 +85,5 @@ N/A
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Add-DattoSecretStore/](https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Add-DattoSecretStore/)
 

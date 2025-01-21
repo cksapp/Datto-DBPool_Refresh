@@ -102,4 +102,4 @@ N/A
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Export-RefreshDBPoolModuleSetting/](https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Export-RefreshDBPoolModuleSetting/)

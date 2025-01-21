@@ -100,4 +100,4 @@ This function is currently only supported on Windows systems.
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Update-RefreshDBPoolTask/](https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Update-RefreshDBPoolTask/)

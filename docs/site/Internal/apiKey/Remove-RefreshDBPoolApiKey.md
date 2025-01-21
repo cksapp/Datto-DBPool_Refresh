@@ -143,4 +143,4 @@ N/A
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Remove-RefreshDBPoolApiKey/](https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Remove-RefreshDBPoolApiKey/)

@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/Set-DBPoolSecurityProtocol/
 schema: 2.0.0
 ---
 
@@ -92,5 +92,5 @@ Make sure to run this function in the appropriate context, as it affects .NET-wi
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/Set-DBPoolSecurityProtocol/](https://datto-dbpool-refresh.kentsapp.com/Internal/Set-DBPoolSecurityProtocol/)
 

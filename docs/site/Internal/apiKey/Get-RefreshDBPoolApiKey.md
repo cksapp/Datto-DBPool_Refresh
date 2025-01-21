@@ -172,4 +172,4 @@ Ensure the vault is installed and configured before using this function.
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Get-RefreshDBPoolApiKey/](https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Get-RefreshDBPoolApiKey/)

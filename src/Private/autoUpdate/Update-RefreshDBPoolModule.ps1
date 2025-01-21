@@ -31,7 +31,7 @@ function Update-RefreshDBPoolModule {
         N/A
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Internal/autoUpdate/Update-RefreshDBPoolModule/
 #>
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Low')]
     param (

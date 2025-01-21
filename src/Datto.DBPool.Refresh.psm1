@@ -9,7 +9,7 @@
 
     .COPYRIGHT
     Copyright (c) Kent Sapp. All rights reserved. Licensed under the MIT license.
-    See https://github.com/cksapp/Datto.DBPool.Refresh/blob/main/LICENSE for license information.
+    See https://github.com/cksapp/Datto-DBPool_Refresh/blob/main/LICENSE for license information.
 
 #>
 

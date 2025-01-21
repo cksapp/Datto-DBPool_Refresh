@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/logging/Remove-RefreshDBPoolLog/
 schema: 2.0.0
 ---
 
@@ -28,14 +28,16 @@ By default, log files are stored in the following location and will be removed:
 ### EXAMPLE 1
 ```
 Remove-RefreshDBPoolLog
-Remove log files older than 90 days.
 ```
+
+Remove log files older than 90 days.
 
 ### EXAMPLE 2
 ```
 Remove-RefreshDBPoolLog -LogPath C:\RefreshDBPool\Logs -LogFileName "RefreshDBPool_*.log" -LogRotationDays 7 -Force
-Remove log files older than 7 days from the specified location.
 ```
+
+Remove log files older than 7 days from the specified location.
 
 ## PARAMETERS
 
@@ -151,5 +153,5 @@ N/A
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/logging/Remove-RefreshDBPoolLog/](https://datto-dbpool-refresh.kentsapp.com/Internal/logging/Remove-RefreshDBPoolLog/)
 

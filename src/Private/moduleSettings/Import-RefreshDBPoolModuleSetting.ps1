@@ -50,7 +50,7 @@ function Import-RefreshDBPoolModuleSetting {
         N/A
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Import-RefreshDBPoolModuleSetting/
 #>
 
     [CmdletBinding(DefaultParameterSetName = 'set')]

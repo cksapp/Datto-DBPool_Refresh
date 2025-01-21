@@ -141,4 +141,4 @@ N/A
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Remove-RefreshDBPoolModuleSetting/](https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Remove-RefreshDBPoolModuleSetting/)

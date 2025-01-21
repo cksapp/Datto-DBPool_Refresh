@@ -169,4 +169,4 @@ N/A
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Sync-DBPoolContainer/](https://datto-dbpool-refresh.kentsapp.com/Sync-DBPoolContainer/)

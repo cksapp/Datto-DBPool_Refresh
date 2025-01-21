@@ -41,6 +41,9 @@ function Register-RefreshDBPoolTask {
         Will look to add support for Linux/MacOS using cron jobs or similar such as anacron in the future.
 
     .LINK
+        https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Register-RefreshDBPoolTask/
+
+    .LINK
         https://docs.microsoft.com/en-us/powershell/module/scheduledtasks/new-scheduledtask
 #>
 

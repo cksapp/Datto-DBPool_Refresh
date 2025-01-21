@@ -42,7 +42,7 @@ function Export-RefreshDBPoolModuleSetting {
         N/A
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Export-RefreshDBPoolModuleSetting/
 #>
 
     [CmdletBinding(DefaultParameterSetName = 'set')]

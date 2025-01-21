@@ -52,7 +52,7 @@ function Get-RefreshDBPoolModuleSetting {
         N/A
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Get-RefreshDBPoolModuleSetting/
 #>
 
     [CmdletBinding(DefaultParameterSetName = 'index')]

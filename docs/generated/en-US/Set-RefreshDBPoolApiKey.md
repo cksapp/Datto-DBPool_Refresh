@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Set-RefreshDBPoolApiKey/
 schema: 2.0.0
 ---
 
@@ -150,5 +150,5 @@ Ensure that the PowerShell SecretManagement module is installed and configured b
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Set-RefreshDBPoolApiKey/](https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Set-RefreshDBPoolApiKey/)
 

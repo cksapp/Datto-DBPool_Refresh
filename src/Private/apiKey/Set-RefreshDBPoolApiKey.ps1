@@ -43,7 +43,7 @@ function Set-RefreshDBPoolApiKey {
         Ensure that the PowerShell SecretManagement module is installed and configured before using this function.
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Set-RefreshDBPoolApiKey/
 #>
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
     [Alias('Add-RefreshDBPoolApiKey')]

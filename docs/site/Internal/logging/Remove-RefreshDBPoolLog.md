@@ -164,4 +164,4 @@ N/A
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/logging/Remove-RefreshDBPoolLog/](https://datto-dbpool-refresh.kentsapp.com/Internal/logging/Remove-RefreshDBPoolLog/)

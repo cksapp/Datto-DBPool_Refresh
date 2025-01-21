@@ -95,4 +95,4 @@ N/A
 
 ## RELATED LINKS
 
-[N/A]()
+[https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Add-DattoSecretStore/](https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Add-DattoSecretStore/)

@@ -110,8 +110,8 @@
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Add-DattoSecretStore/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Add-DattoSecretStore/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -125,7 +125,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function clones the specified DBPool parent container(s) using the DBPool API. By default, this function will clone all containers if no IDs or DefaultDatabase values are provided.</maml:para>
+      <maml:para>This function clones the specified DBPool parent container(s) using the DBPool API. The cloned container(s) will have the same parent container as the original container(s) and will be appended with the specified string.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -285,7 +285,7 @@
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para>N/A</maml:para>
+        <maml:para>Does not clone any parent containers with 'BETA' in the name. Also removes parent name suffixes like 'on Database v1.2.3' before appending the ContainerName_Append string. This function will also append a number to the cloned container name if multiple matching clones are created with same parent at once, or for any matching clones that already exist when using the -Duplicate switch.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -317,11 +317,19 @@
           <maml:para>Clones the DBPool parent containers with the DefaultDatabase 'exampleParentA' and 'exampleParentB' even if similar containers already exist.</maml:para>
         </dev:remarks>
       </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 5 --------------------------</maml:title>
+        <dev:code>Copy-DBPoolParentContainer -DefaultDatabase 'exampleParentA', 'exampleParentB', 'exampleParentA</dev:code>
+        <dev:remarks>
+          <maml:para>Clones the DBPool parent containers with the DefaultDatabase 'exampleParentA' and 'exampleParentB' and appends a number to any duplicate clones.</maml:para>
+          <maml:para>------------------------------ Parent Container [ Id: 7, Name: exampleParentB staging ] 'create' command sent for new Container [ exampleB staging(clone) ] Parent Container [ Id: 3, Name: exampleParentA on SQL 1.2.3 ] 'create' command sent for new Container [ exampleA(clone-1) ] Parent Container [ Id: 3, Name: exampleParentA on SQL 1.2.3 ] 'create' command sent for new Container [ exampleA(clone-2) ] Parent Container [ Id: 4, Name: exampleParentB on 4.5.6 ] 'create' command sent for new Container [ exampleB(clone) ]</maml:para>
+        </dev:remarks>
+      </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Copy-DBPoolParentContainer/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Copy-DBPoolParentContainer/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -439,8 +447,8 @@
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Export-RefreshDBPoolModuleSetting/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Export-RefreshDBPoolModuleSetting/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -661,8 +669,8 @@
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Get-RefreshDBPoolApiKey/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Get-RefreshDBPoolApiKey/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -809,8 +817,8 @@
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Get-RefreshDBPoolModuleSetting/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Get-RefreshDBPoolModuleSetting/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -931,8 +939,8 @@
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Import-RefreshDBPoolModuleSetting/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Import-RefreshDBPoolModuleSetting/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1052,6 +1060,10 @@
       </command:example>
     </command:examples>
     <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Register-RefreshDBPoolTask/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Register-RefreshDBPoolTask/</maml:uri>
+      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>https://docs.microsoft.com/en-us/powershell/module/scheduledtasks/new-scheduledtask</maml:linkText>
         <maml:uri>https://docs.microsoft.com/en-us/powershell/module/scheduledtasks/new-scheduledtask</maml:uri>
@@ -1237,8 +1249,8 @@
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Remove-RefreshDBPoolApiKey/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Remove-RefreshDBPoolApiKey/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1435,25 +1447,23 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Remove-RefreshDBPoolLog
-Remove log files older than 90 days.</dev:code>
+        <dev:code>Remove-RefreshDBPoolLog</dev:code>
         <dev:remarks>
-          <maml:para></maml:para>
+          <maml:para>Remove log files older than 90 days.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
-        <dev:code>Remove-RefreshDBPoolLog -LogPath C:\RefreshDBPool\Logs -LogFileName "RefreshDBPool_*.log" -LogRotationDays 7 -Force
-Remove log files older than 7 days from the specified location.</dev:code>
+        <dev:code>Remove-RefreshDBPoolLog -LogPath C:\RefreshDBPool\Logs -LogFileName "RefreshDBPool_*.log" -LogRotationDays 7 -Force</dev:code>
         <dev:remarks>
-          <maml:para></maml:para>
+          <maml:para>Remove log files older than 7 days from the specified location.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Internal/logging/Remove-RefreshDBPoolLog/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Internal/logging/Remove-RefreshDBPoolLog/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1619,8 +1629,8 @@ Remove log files older than 7 days from the specified location.</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Remove-RefreshDBPoolModuleSetting/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Remove-RefreshDBPoolModuleSetting/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1749,8 +1759,8 @@ Remove log files older than 7 days from the specified location.</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Internal/Set-DBPoolSecurityProtocol/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Internal/Set-DBPoolSecurityProtocol/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1957,8 +1967,8 @@ Remove log files older than 7 days from the specified location.</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Set-RefreshDBPoolApiKey/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Set-RefreshDBPoolApiKey/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2162,8 +2172,8 @@ Remove log files older than 7 days from the specified location.</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Sync-DBPoolContainer/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Sync-DBPoolContainer/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2338,8 +2348,8 @@ Remove log files older than 7 days from the specified location.</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Internal/autoUpdate/Update-RefreshDBPoolModule/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Internal/autoUpdate/Update-RefreshDBPoolModule/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2467,8 +2477,8 @@ Remove log files older than 7 days from the specified location.</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>N/A</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Update-RefreshDBPoolTask/</maml:linkText>
+        <maml:uri>https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Update-RefreshDBPoolTask/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>

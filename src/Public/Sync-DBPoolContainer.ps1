@@ -50,7 +50,7 @@ function Sync-DBPoolContainer {
         N/A
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Sync-DBPoolContainer/
 #>
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
     param (

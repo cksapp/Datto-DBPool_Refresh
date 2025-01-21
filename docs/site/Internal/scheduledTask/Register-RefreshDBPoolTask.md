@@ -105,4 +105,6 @@ Will look to add support for Linux/MacOS using cron jobs or similar such as anac
 
 ## RELATED LINKS
 
+[https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Register-RefreshDBPoolTask/](https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Register-RefreshDBPoolTask/)
+
 [https://docs.microsoft.com/en-us/powershell/module/scheduledtasks/new-scheduledtask](https://docs.microsoft.com/en-us/powershell/module/scheduledtasks/new-scheduledtask)

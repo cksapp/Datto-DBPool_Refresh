@@ -35,7 +35,7 @@ function Remove-RefreshDBPoolApiKey {
         N/A
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Remove-RefreshDBPoolApiKey/
 #>
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact = 'Medium')]
     param (

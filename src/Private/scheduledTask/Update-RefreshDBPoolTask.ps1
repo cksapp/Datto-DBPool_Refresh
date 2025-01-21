@@ -24,7 +24,7 @@ function Update-RefreshDBPoolTask {
         This function is currently only supported on Windows systems.
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Update-RefreshDBPoolTask/
 #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
     param (

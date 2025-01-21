@@ -46,7 +46,7 @@ function Get-RefreshDBPoolApiKey {
         This function is designed to work with the default SecretManagement vault. Ensure the vault is installed and configured before using this function.
 
     .LINK
-        N/A
+        https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Get-RefreshDBPoolApiKey/
 #>
 
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]

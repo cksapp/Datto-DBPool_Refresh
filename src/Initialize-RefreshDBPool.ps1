@@ -111,10 +111,10 @@ if ($PSEdition -eq 'Desktop') {
                 Write-Information 'Installing the latest version of PowerShell Core... This may take some time...'
 
                 # Define the URL for the latest PowerShell Core installer
-                $pwshInstallerUrl = 'https://github.com/PowerShell/PowerShell/releases/latest/download/PowerShell-7.4.6-win-x64.msi'
-                $pwshInstallerHash = 'ED331A04679B83D4C013705282D1F3F8D8300485EB04C081F36E11EAF1148BD0'
+                $pwshInstallerUrl = 'https://github.com/PowerShell/PowerShell/releases/download/v7.4.7/PowerShell-7.4.7-win-x64.msi'
+                $pwshInstallerHash = '217B5575398D5E4A0AC67AFF7B468C696A66C3E209685CF338032FC0A5F032EC'
 
-                $pwshInstallerPath = Join-Path -Path $env:TEMP -ChildPath 'PowerShell-7.4.6-win-x64.msi'
+                $pwshInstallerPath = Join-Path -Path $env:TEMP -ChildPath 'PowerShell-7.4.7-win-x64.msi'
 
                 # Function to handle download progress
                 function DownloadFileWithProgress {

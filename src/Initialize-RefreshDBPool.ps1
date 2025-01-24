@@ -82,7 +82,7 @@ if (!(Get-Module -Name PowerShellGet -ListAvailable -Verbose:$false).Version -gt
 # Archive URL: https://web.archive.org/web/20240625180431/https://learn.microsoft.com/en-us/powershell/gallery/powershellget/install-powershellget?view=powershellget-3.x
 if ( !(Get-Module -Name Microsoft.PowerShell.PSResourceGet -Verbose:$false) ) {
     try {
-        Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force -AllowClobber -Scope CurrentUser -Repository PSGallery -ErrorAction Stop
+        Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force -AllowClobber -Scope CurrentUser -Repository PSGallery -WarningAction SilentlyContinue -ErrorAction Stop
     } catch {
         Write-Warning $_
     }
@@ -230,7 +230,7 @@ if ($PSEdition -eq 'Desktop') {
 # Install Microsoft.PowerShell.SecretManagement and Microsoft.PowerShell.SecretStore module for storing secrets
 if (!(Get-InstalledPSResource -Name Microsoft.PowerShell.SecretStore -Verbose:$false -ErrorAction SilentlyContinue)) {
     try {
-        Install-PSResource -Name Microsoft.PowerShell.SecretStore -Scope CurrentUser -Repository PSGallery -TrustRepository -Reinstall -ErrorAction Stop
+        Install-PSResource -Name Microsoft.PowerShell.SecretStore -Scope CurrentUser -Repository PSGallery -TrustRepository -Reinstall -WarningAction SilentlyContinue -ErrorAction Stop
     } catch {
         Write-Error $_
     }
@@ -435,7 +435,7 @@ if ($(Test-DBPoolApi -Verbose:$false -WarningAction SilentlyContinue -ErrorActio
                             Write-Error "'Copy-DBPoolParentContainer' encountered an error: $($runspaceError.Exception.Message)"
                         }
                     } else {
-                        Write-Host "Parent container(s) 'clone' command sent. Review at [ $( (Get-DBPoolBaseURI) + '/web/containers' ) ] " -ForegroundColor Blue
+                        Write-Host "Parent container(s) 'clone' command sent. Review at [ $( (Get-DBPoolBaseURI) + '/web/containers' ) ] " -ForegroundColor Cyan
                     }
                 } catch {
                     Write-Error "'Copy-DBPoolParentContainer' encountered an error: $_"
@@ -472,7 +472,7 @@ try {
     if ($userConfigChoice -imatch '^(yes|y|)$') {
         Get-RefreshDBPoolModuleSetting -openConfFile -ErrorAction Stop
     } else {
-        Write-Host "Configuration settings exported. Use 'Get-RefreshDBPoolModuleSetting -openConfFile' to view or update setting later." -ForegroundColor DarkMagenta
+        Write-Host "Configuration settings exported. Use 'Get-RefreshDBPoolModuleSetting -openConfFile' to view or update setting later." -ForegroundColor Magenta
     }
 } catch {
     Write-Error $_

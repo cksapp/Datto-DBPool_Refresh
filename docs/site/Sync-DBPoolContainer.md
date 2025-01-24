@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Sync-DBPoolContainer/
 schema: 2.0.0
 ---
 
@@ -28,43 +28,43 @@ By default, this function will refresh all containers if no IDs are provided.
 
 ### EXAMPLE 1
 
+Refreshes all DBPool containers.
+
 ```PowerShell
 Sync-DBPoolContainer
 ```
 
-Refreshes all DBPool containers.
-
 ### EXAMPLE 2
+
+Refreshes the DBPool container with the ID 1234.
 
 ```PowerShell
 Sync-DBPoolContainer -Id 1234
 ```
 
-Refreshes the DBPool container with the ID 1234.
-
 ### EXAMPLE 3
+
+Refreshes the DBPool containers with the IDs 1234 and 5678.
 
 ```PowerShell
 Sync-DBPoolContainer -Id 1234, 5678
 ```
 
-Refreshes the DBPool containers with the IDs 1234 and 5678.
-
 ### EXAMPLE 4
+
+Refreshes all DBPool containers matching the specified database name.
 
 ```PowerShell
 Sync-DBPoolContainer -Id $(Get-DBPoolContainer -DefaultDatabase "Database_Name").Id
 ```
 
-Refreshes all DBPool containers matching the specified database name.
-
 ### EXAMPLE 5
+
+Refreshes all DBPool containers not matching the specified container name.
 
 ```PowerShell
 Sync-DBPoolContainer -Id $(Get-DBPoolContainer -NotLike -Name "*Container_Name*").Id -Force
 ```
-
-Refreshes all DBPool containers not matching the specified container name.
 
 ## PARAMETERS
 

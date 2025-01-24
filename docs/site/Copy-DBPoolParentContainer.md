@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Copy-DBPoolParentContainer/
 schema: 2.0.0
 ---
 
@@ -35,35 +35,50 @@ The cloned container(s) will have the same parent container as the original cont
 
 ### EXAMPLE 1
 
+Clones the DBPool parent container with the ID 1234.
+
 ```PowerShell
 Copy-DBPoolParentContainer -Id 1234
 ```
 
-Clones the DBPool parent container with the ID 1234.
-
 ### EXAMPLE 2
+
+Clones the DBPool parent container with the DefaultDatabase 'exampleParentA'.
 
 ```PowerShell
 Copy-DBPoolParentContainer -DefaultDatabase 'exampleParentA'
 ```
 
-Clones the DBPool parent container with the DefaultDatabase 'exampleParentA'.
-
 ### EXAMPLE 3
+
+Clones the DBPool parent containers with the IDs 1234 and 5678 and appends 'copy' to the cloned container name.
 
 ```PowerShell
 Copy-DBPoolParentContainer -Id 1234, 5678 -ContainerName_Append 'copy'
 ```
 
-Clones the DBPool parent containers with the IDs 1234 and 5678 and appends 'copy' to the cloned container name.
-
 ### EXAMPLE 4
+
+Clones the DBPool parent containers with the DefaultDatabase 'exampleParentA' and 'exampleParentB' even if similar containers already exist.
 
 ```PowerShell
 Copy-DBPoolParentContainer -DefaultDatabase 'exampleParentA', 'exampleParentB' -Duplicate
 ```
 
-Clones the DBPool parent containers with the DefaultDatabase 'exampleParentA' and 'exampleParentB' even if similar containers already exist.
+### EXAMPLE 5
+
+Clones the DBPool parent containers with the DefaultDatabase 'exampleParentA' and 'exampleParentB' and appends a number to any duplicate clones.
+
+```PowerShell
+Copy-DBPoolParentContainer -DefaultDatabase 'exampleParentA', 'exampleParentB', 'exampleParentA
+```
+
+```PowerShell
+Parent Container [ Id: 7, Name: exampleParentB staging ] 'create' command sent for new Container [ exampleB staging(clone) ]
+Parent Container [ Id: 3, Name: exampleParentA on SQL 1.2.3 ] 'create' command sent for new Container [ exampleA(clone-1) ]
+Parent Container [ Id: 3, Name: exampleParentA on SQL 1.2.3 ] 'create' command sent for new Container [ exampleA(clone-2) ]
+Parent Container [ Id: 4, Name: exampleParentB on 4.5.6 ] 'create' command sent for new Container [ exampleB(clone) ]
+```
 
 ## PARAMETERS
 
@@ -148,7 +163,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## NOTES
 
-N/A
+Does not clone any parent containers with 'BETA' in the name.
+
+Also removes parent name suffixes like 'on Database v1.2.3' before appending the ContainerName_Append string.
+
+This function will also append a number to the cloned container name if multiple matching clones are created with same parent at once, or for any matching clones that already exist when using the -Duplicate switch.
 
 ## RELATED LINKS
 

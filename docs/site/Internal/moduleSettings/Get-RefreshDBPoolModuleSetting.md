@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Get-RefreshDBPoolModuleSetting/
 schema: 2.0.0
 ---
 
@@ -32,32 +32,35 @@ The Get-RefreshDBPoolModuleSetting cmdlet gets the saved DBPool refresh configur
 from the local system.
 
 By default the configuration file is stored in the following location:
-    $env:USERPROFILE\RefreshDBPool
+
+- `$env:USERPROFILE\RefreshDBPool`
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 
-```PowerShell
-Get-RefreshDBPoolModuleSetting
-```
-
 Gets the contents of the configuration file that was created with the
 Export-RefreshDBPoolModuleSettings
 
 The default location of the DBPool configuration file is:
-    $env:USERPROFILE\RefreshDBPool\config.psd1
 
-### EXAMPLE 2
+- `$env:USERPROFILE\RefreshDBPool\config.psd1`
 
 ```PowerShell
-Get-RefreshDBPoolModuleSetting -RefreshDBPoolConfig C:\RefreshDBPool -DBPoolConfFile MyConfig.psd1 -openConfFile
+Get-RefreshDBPoolModuleSetting
 ```
+
+### EXAMPLE 2
 
 Opens the configuration file from the defined location in the default editor
 
 The location of the DBPool configuration file in this example is:
-    C:\RefreshDBPool\MyConfig.psd1
+
+- `C:\RefreshDBPool\MyConfig.psd1`
+
+```PowerShell
+Get-RefreshDBPoolModuleSetting -RefreshDBPoolConfig C:\RefreshDBPool -DBPoolConfFile MyConfig.psd1 -openConfFile
+```
 
 ## PARAMETERS
 
@@ -66,7 +69,8 @@ The location of the DBPool configuration file in this example is:
 Define the location to store the DBPool configuration file.
 
 By default the configuration file is stored in the following location:
-    $env:USERPROFILE\RefreshDBPool
+
+- `$env:USERPROFILE\RefreshDBPool`
 
 ```yaml
 Type: String
@@ -85,7 +89,8 @@ Accept wildcard characters: False
 Define the name of the DBPool configuration file.
 
 By default the configuration file is named:
-    config.psd1
+
+- `config.psd1`
 
 ```yaml
 Type: String

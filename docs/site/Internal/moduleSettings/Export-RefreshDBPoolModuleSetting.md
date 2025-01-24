@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Export-RefreshDBPoolModuleSetting/
 schema: 2.0.0
 ---
 
@@ -26,23 +26,25 @@ The Export-RefreshDBPoolSettings cmdlet exports various module settings to a con
 
 ### EXAMPLE 1
 
+Validates that the BaseURI, and JSON depth are set then exports their values
+to the current user's DBPool configuration file located at:
+
+- `$env:USERPROFILE\RefreshDBPool\config.psd1`
+
 ```PowerShell
 Export-RefreshDBPoolSettings
 ```
 
+### EXAMPLE 2
+
 Validates that the BaseURI, and JSON depth are set then exports their values
 to the current user's DBPool configuration file located at:
-    $env:USERPROFILE\RefreshDBPool\config.psd1
 
-### EXAMPLE 2
+- `C:\RefreshDBPool\MyConfig.psd1`
 
 ```PowerShell
 Export-RefreshDBPoolSettings -DBPoolConfPath C:\RefreshDBPool -DBPoolConfFile MyConfig.psd1
 ```
-
-Validates that the BaseURI, and JSON depth are set then exports their values
-to the current user's DBPool configuration file located at:
-    C:\RefreshDBPool\MyConfig.psd1
 
 ## PARAMETERS
 
@@ -51,7 +53,8 @@ to the current user's DBPool configuration file located at:
 Define the location to store the Refresh DBPool configuration file.
 
 By default the configuration file is stored in the following location:
-    $env:USERPROFILE\RefreshDBPool
+
+- `$env:USERPROFILE\RefreshDBPool`
 
 ```yaml
 Type: String
@@ -70,7 +73,8 @@ Accept wildcard characters: False
 Define the name of the refresh DBPool configuration file.
 
 By default the configuration file is named:
-    config.psd1
+
+- `config.psd1`
 
 ```yaml
 Type: String

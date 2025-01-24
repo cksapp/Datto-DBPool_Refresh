@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Update-RefreshDBPoolTask/
 schema: 2.0.0
 ---
 
@@ -25,11 +25,11 @@ This function updates the scheduled task that runs the refresh DBPool script by 
 
 ### EXAMPLE 1
 
+This example updates the scheduled task that runs the refresh DBPool script.
+
 ```PowerShell
 Update-RefreshDBPoolTask
 ```
-
-This example updates the scheduled task that runs the refresh DBPool script.
 
 ## PARAMETERS
 

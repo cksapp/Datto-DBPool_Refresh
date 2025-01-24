@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/autoUpdate/Update-RefreshDBPoolModule/
 schema: 2.0.0
 ---
 
@@ -21,17 +21,17 @@ Update-RefreshDBPoolModule [[-ModuleName] <String>] [-AutoUpdate] [-AllowPrerele
 ## DESCRIPTION
 
 This function checks for updates to the Datto.DBPool.Refresh module and updates it if a newer version is available online.
-The auto-update feature can be disabled by setting the AutoUpdate parameter to $false otherwise, it will default to $true.
+The auto-update feature can be disabled by setting the AutoUpdate parameter to `$false` otherwise, it will default to `$true`.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 
+Updates the Datto.DBPool.Refresh module if a newer version is available online.
+
 ```PowerShell
 Update-RefreshDBPoolModule -ModuleName 'Datto.DBPool.Refresh' -AutoUpdate:$true -AllowPrerelease:$false
 ```
-
-Updates the Datto.DBPool.Refresh module if a newer version is available online.
 
 ## PARAMETERS
 
@@ -55,7 +55,7 @@ Accept wildcard characters: False
 ### -AutoUpdate
 
 If specified, the module will be updated if a newer version is available online.
-Defaults to $RefreshDBPool_Enable_AutoUpdate variable.
+Defaults to `$RefreshDBPool_Enable_AutoUpdate` variable.
 
 ```yaml
 Type: SwitchParameter
@@ -72,7 +72,7 @@ Accept wildcard characters: False
 ### -AllowPrerelease
 
 If specified, the module will be updated to the latest prerelease version if available.
-Defaults to $false.
+Defaults to `$false`.
 
 ```yaml
 Type: SwitchParameter

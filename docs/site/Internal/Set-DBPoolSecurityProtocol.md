@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/Set-DBPoolSecurityProtocol/
 schema: 2.0.0
 ---
 
@@ -26,11 +26,11 @@ This function is useful for ensuring secure communication in .NET applications.
 
 ### EXAMPLE 1
 
+Sets the Security Protocol to use TLS 1.2
+
 ```PowerShell
 Set-DBPoolSecurityProtocol -Protocol Tls12
 ```
-
-Sets the Security Protocol to use TLS 1.2.
 
 ## PARAMETERS
 

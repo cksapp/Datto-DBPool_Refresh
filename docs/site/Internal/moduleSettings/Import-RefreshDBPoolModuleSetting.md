@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Import-RefreshDBPoolModuleSetting/
 schema: 2.0.0
 ---
 
@@ -24,33 +24,36 @@ The Import-RefreshDBPoolModuleSetting cmdlet imports the DBPool BaseURI, API, & 
 information stored in the DBPool refresh configuration file to the users current session.
 
 By default the configuration file is stored in the following location:
-    $env:USERPROFILE\RefreshDBPool
+
+- `$env:USERPROFILE\RefreshDBPool`
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 
-```PowerShell
-Import-RefreshDBPoolModuleSetting
-```
-
 Validates that the configuration file created with the Export-RefreshDBPoolModuleSettings cmdlet exists
 then imports the stored data into the current users session.
 
 The default location of the DBPool configuration file is:
-    $env:USERPROFILE\RefreshDBPool\config.psd1
 
-### EXAMPLE 2
+- `$env:USERPROFILE\RefreshDBPool\config.psd1`
 
 ```PowerShell
-Import-RefreshDBPoolModuleSetting -RefreshDBPoolConfPath C:\RefreshDBPool -RefreshDBPoolConfFile MyConfig.psd1
+Import-RefreshDBPoolModuleSetting
 ```
+
+### EXAMPLE 2
 
 Validates that the configuration file created with the Export-RefreshDBPoolModuleSettings cmdlet exists
 then imports the stored data into the current users session.
 
 The location of the DBPool configuration file in this example is:
-    C:\RefreshDBPool\MyConfig.psd1
+
+- `C:\RefreshDBPool\MyConfig.psd1`
+
+```PowerShell
+Import-RefreshDBPoolModuleSetting -RefreshDBPoolConfPath C:\RefreshDBPool -RefreshDBPoolConfFile MyConfig.psd1
+```
 
 ## PARAMETERS
 
@@ -59,7 +62,8 @@ The location of the DBPool configuration file in this example is:
 Define the location to store the DBPool configuration file.
 
 By default the configuration file is stored in the following location:
-    $env:USERPROFILE\RefreshDBPool
+
+- `$env:USERPROFILE\RefreshDBPool`
 
 ```yaml
 Type: String
@@ -78,7 +82,8 @@ Accept wildcard characters: False
 Define the name of the DBPool configuration file.
 
 By default the configuration file is named:
-    config.psd1
+
+- `config.psd1`
 
 ```yaml
 Type: String

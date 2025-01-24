@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version: https://docs.microsoft.com/en-us/powershell/module/scheduledtasks/new-scheduledtask
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Register-RefreshDBPoolTask/
 schema: 2.0.0
 ---
 
@@ -26,27 +26,27 @@ The task can be configured to run on specific days of the week and at a specifie
 
 ### EXAMPLE 1
 
+This example creates a scheduled task that runs every day at 7:00 AM, except on Sundays and Saturdays.
+
 ```PowerShell
 Register-RefreshDBPoolTask -TriggerTime "7AM"
 ```
 
-This example creates a scheduled task that runs every day at 7:00 AM, except on Sundays and Saturdays.
-
 ### EXAMPLE 2
+
+This example creates a scheduled task that runs every day at 3:00 PM, except on Sundays and Saturdays.
 
 ```PowerShell
 Register-RefreshDBPoolTask -TriggerTime "15:00"
 ```
 
-This example creates a scheduled task that runs every day at 3:00 PM, except on Sundays and Saturdays.
-
 ### EXAMPLE 3
+
+This example creates a scheduled task that runs every day at 4:30 PM, except on Sunday and Monday.
 
 ```PowerShell
 Register-RefreshDBPoolTask -ExcludeDaysOfWeek 'Sunday','Monday' -TriggerTime "4:30PM"
 ```
-
-This example creates a scheduled task that runs every day at 4:30 PM, except on Sunday and Monday.
 
 ## PARAMETERS
 

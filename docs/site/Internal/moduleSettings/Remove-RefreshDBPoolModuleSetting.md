@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Remove-RefreshDBPoolModuleSetting/
 schema: 2.0.0
 ---
 
@@ -24,32 +24,35 @@ The Remove-RefreshDBPoolModuleSetting cmdlet removes the Refresh DBPool folder a
 This cmdlet also has the option to remove sensitive Refresh DBPool variables as well.
 
 By default configuration files are stored in the following location and will be removed:
-    $env:USERPROFILE\RefreshDBPool
+
+- `$env:USERPROFILE\RefreshDBPool`
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 
+Checks to see if the default configuration folder exists and removes it if it does.
+
+The default location of the Refresh DBPool configuration folder is:
+
+- `$env:USERPROFILE\RefreshDBPool`
+
 ```PowerShell
 Remove-RefreshDBPoolModuleSetting
 ```
 
-Checks to see if the default configuration folder exists and removes it if it does.
-
-The default location of the Refresh DBPool configuration folder is:
-    $env:USERPROFILE\RefreshDBPool
-
 ### EXAMPLE 2
-
-```PowerShell
-Remove-RefreshDBPoolModuleSetting -RefreshDBPoolConfPath C:\RefreshDBPool -andVariables
-```
 
 Checks to see if the defined configuration folder exists and removes it if it does.
 If sensitive Refresh DBPool variables exist then they are removed as well.
 
 The location of the Refresh DBPool configuration folder in this example is:
-    C:\RefreshDBPool
+
+- `C:\RefreshDBPool`
+
+```PowerShell
+Remove-RefreshDBPoolModuleSetting -RefreshDBPoolConfPath C:\RefreshDBPool -andVariables
+```
 
 ## PARAMETERS
 
@@ -58,7 +61,8 @@ The location of the Refresh DBPool configuration folder in this example is:
 Define the location of the Refresh DBPool configuration folder.
 
 By default the configuration folder is located at:
-    $env:USERPROFILE\RefreshDBPool
+
+- `$env:USERPROFILE\RefreshDBPool`
 
 ```yaml
 Type: String

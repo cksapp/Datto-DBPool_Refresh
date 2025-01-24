@@ -50,7 +50,8 @@ function Copy-DBPoolParentContainer {
 
         Clones the DBPool parent containers with the DefaultDatabase 'exampleParentA' and 'exampleParentB' and appends a number to any duplicate clones.
 
-        ------------------------------
+        ----------------------------------------------------------------
+
         Parent Container [ Id: 7, Name: exampleParentB staging ] 'create' command sent for new Container [ exampleB staging(clone) ]
         Parent Container [ Id: 3, Name: exampleParentA on SQL 1.2.3 ] 'create' command sent for new Container [ exampleA(clone-1) ]
         Parent Container [ Id: 3, Name: exampleParentA on SQL 1.2.3 ] 'create' command sent for new Container [ exampleA(clone-2) ]

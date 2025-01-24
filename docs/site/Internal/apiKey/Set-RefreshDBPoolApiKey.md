@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Set-RefreshDBPoolApiKey/
 schema: 2.0.0
 ---
 
@@ -28,20 +28,20 @@ If the secret already exists, the function can overwrite it if the -Force switch
 
 ### EXAMPLE 1
 
+Adds the DBPool API key to the default SecretManagement vault with the name 'DBPool_ApiKey'.
+
 ```PowerShell
 Set-RefreshDBPoolApiKey -DBPool_ApiKey $secureApiKey -Verbose
 ```
 
-Adds the DBPool API key to the default SecretManagement vault with the name 'DBPool_ApiKey'.
-
 ### EXAMPLE 2
+
+Adds the DBPool API key to the 'MySecretStore' SecretManagement vault with the name 'Custom_ApiKey'.
+If the secret already exists, it will be overwritten.
 
 ```PowerShell
 Set-RefreshDBPoolApiKey -DBPool_ApiKey $secureApiKey -SecretName 'Custom_ApiKey' -SecretStoreName 'MySecretStore' -Force
 ```
-
-Adds the DBPool API key to the 'MySecretStore' SecretManagement vault with the name 'Custom_ApiKey'.
-If the secret already exists, it will be overwritten.
 
 ## PARAMETERS
 

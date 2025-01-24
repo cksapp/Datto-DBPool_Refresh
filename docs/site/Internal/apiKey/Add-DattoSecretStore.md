@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Add-DattoSecretStore/
 schema: 2.0.0
 ---
 
@@ -27,19 +27,19 @@ The function also sets the secret store configuration for the default vault.
 
 ### EXAMPLE 1
 
+Adds a local secret store named 'Datto_SecretStore' using the Microsoft.PowerShell.SecretStore module.
+
 ```PowerShell
 Add-DattoSecretStore
 ```
 
-Adds a local secret store named 'Datto_SecretStore' using the Microsoft.PowerShell.SecretStore module.
-
 ### EXAMPLE 2
+
+Adds a local secret store named 'Custom_SecretsVault' using the 'Custom.SecretStore' module.
 
 ```PowerShell
 Add-DattoSecretStore -Name 'Custom_SecretsVault' -ModuleName 'Custom.SecretStore'
 ```
-
-Adds a local secret store named 'Custom_SecretsVault' using the 'Custom.SecretStore' module.
 
 ## PARAMETERS
 

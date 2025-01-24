@@ -13,7 +13,7 @@ function Set-DBPoolSecurityProtocol {
     .EXAMPLE
         Set-DBPoolSecurityProtocol -Protocol Tls12
 
-        Sets the Security Protocol to use TLS 1.2.
+        Sets the Security Protocol to use TLS 1.2
 
     .INPUTS
         [string] - The security protocol to use.

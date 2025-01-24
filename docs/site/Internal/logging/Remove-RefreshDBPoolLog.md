@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/logging/Remove-RefreshDBPoolLog/
 schema: 2.0.0
 ---
 
@@ -23,22 +23,25 @@ Remove-RefreshDBPoolLog [[-LogPath] <String>] [[-LogFileName] <String>] [[-LogRo
 The Remove-RefreshDBPoolLog cmdlet removes log files older than a specified number of days.
 
 By default, log files are stored in the following location and will be removed:
-    $env:USERPROFILE\RefreshDBPool\Logs
+
+- `$env:USERPROFILE\RefreshDBPool\Logs`
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 
+Remove log files older than 90 days.
+
 ```PowerShell
 Remove-RefreshDBPoolLog
-Remove log files older than 90 days.
 ```
 
 ### EXAMPLE 2
 
+Remove log files older than 7 days from the specified location.
+
 ```PowerShell
 Remove-RefreshDBPoolLog -LogPath C:\RefreshDBPool\Logs -LogFileName "RefreshDBPool_*.log" -LogRotationDays 7 -Force
-Remove log files older than 7 days from the specified location.
 ```
 
 ## PARAMETERS
@@ -48,7 +51,8 @@ Remove log files older than 7 days from the specified location.
 Define the location of the log files.
 
 By default, log files are stored in the following location:
-    $env:USERPROFILE\RefreshDBPool\Logs
+
+- `$env:USERPROFILE\RefreshDBPool\Logs`
 
 ```yaml
 Type: String
@@ -67,7 +71,8 @@ Accept wildcard characters: False
 Define the name of the log files.
 
 By default, log files are named:
-    RefreshDBPool_*.log
+
+- `RefreshDBPool_*.log`
 
 ```yaml
 Type: String
@@ -115,6 +120,7 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
+
 Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
 

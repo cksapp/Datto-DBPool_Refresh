@@ -1,7 +1,7 @@
 ---
 external help file: Datto.DBPool.Refresh-help.xml
 Module Name: Datto.DBPool.Refresh
-online version:
+online version: https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Remove-RefreshDBPoolApiKey/
 schema: 2.0.0
 ---
 
@@ -26,19 +26,19 @@ This function removes the DBPool API key from the specified SecretManagement vau
 
 ### EXAMPLE 1
 
+Removes the API key from the SecretManagement vault.
+
 ```PowerShell
 Remove-RefreshDBPoolApiKey
 ```
 
-Removes the API key from the SecretManagement vault.
-
 ### EXAMPLE 2
+
+Removes the API key from the 'Custom_SecretsVault' SecretManagement vault with the name 'Different_SecretName'.
 
 ```PowerShell
 Remove-RefreshDBPoolApiKey -SecretName 'Different_SecretName' -SecretStoreName 'Custom_SecretsVault' -Force
 ```
-
-Removes the API key from the 'Custom_SecretsVault' SecretManagement vault with the name 'Different_SecretName'.
 
 ## PARAMETERS
 

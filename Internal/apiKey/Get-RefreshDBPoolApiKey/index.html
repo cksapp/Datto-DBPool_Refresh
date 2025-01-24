@@ -1526,18 +1526,18 @@
 If the global variable is already set, confirm with the user before overwriting the value or set the value without confirmation using the -Force switch.</p>
 <h2 id="examples">EXAMPLES</h2>
 <h3 id="example-1">EXAMPLE 1</h3>
+<p>Retrieves the DBPool API key from the default SecretManagement vault with the default name 'DBPool_ApiKey' as a secure string.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Get-RefreshDBPoolApiKey</span>
 </code></pre></div>
-<p>Retrieves the DBPool API key from the default SecretManagement vault with the default name 'DBPool_ApiKey' as a secure string.</p>
 <h3 id="example-2">EXAMPLE 2</h3>
+<p>Retrieves the DBPool API key from the default SecretManagement vault with the default name 'DBPool_ApiKey' as a plaintext string.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Get-RefreshDBPoolApiKey</span> <span class="n">-AsPlainText</span>
 </code></pre></div>
-<p>Retrieves the DBPool API key from the default SecretManagement vault with the default name 'DBPool_ApiKey' as a plaintext string.</p>
 <h3 id="example-3">EXAMPLE 3</h3>
-<div class="highlight"><pre><span></span><code><span class="nb">Get-RefreshDBPoolApiKey</span> <span class="n">-SecretName</span> <span class="s1">&#39;Different_SecretName&#39;</span> <span class="n">-SecretStoreName</span> <span class="s1">&#39;Custom_SecretsVault&#39;</span> <span class="n">-Force</span>
-</code></pre></div>
 <p>Retrieves the DBPool API key and adds it to the 'Custom_SecretsVault' SecretManagement vault with the name 'Different_SecretName'.
 If the secret already exists, it will be overwritten.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">Get-RefreshDBPoolApiKey</span> <span class="n">-SecretName</span> <span class="s1">&#39;Different_SecretName&#39;</span> <span class="n">-SecretStoreName</span> <span class="s1">&#39;Custom_SecretsVault&#39;</span> <span class="n">-Force</span>
+</code></pre></div>
 <h2 id="parameters">PARAMETERS</h2>
 <h3 id="-secretname">-SecretName</h3>
 <p>The name to use for the secret in the SecretManagement vault.

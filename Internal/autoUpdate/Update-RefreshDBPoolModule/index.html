@@ -1451,12 +1451,12 @@
 </code></pre></div>
 <h2 id="description">DESCRIPTION</h2>
 <p>This function checks for updates to the Datto.DBPool.Refresh module and updates it if a newer version is available online.
-The auto-update feature can be disabled by setting the AutoUpdate parameter to $false otherwise, it will default to $true.</p>
+The auto-update feature can be disabled by setting the AutoUpdate parameter to <code>$false</code> otherwise, it will default to <code>$true</code>.</p>
 <h2 id="examples">EXAMPLES</h2>
 <h3 id="example-1">EXAMPLE 1</h3>
+<p>Updates the Datto.DBPool.Refresh module if a newer version is available online.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Update-RefreshDBPoolModule</span> <span class="n">-ModuleName</span> <span class="s1">&#39;Datto.DBPool.Refresh&#39;</span> <span class="n">-AutoUpdate</span><span class="p">:</span><span class="nv">$true</span> <span class="n">-AllowPrerelease</span><span class="p">:</span><span class="nv">$false</span>
 </code></pre></div>
-<p>Updates the Datto.DBPool.Refresh module if a newer version is available online.</p>
 <h2 id="parameters">PARAMETERS</h2>
 <h3 id="-modulename">-ModuleName</h3>
 <p>The name of the module to update.
@@ -1473,7 +1473,7 @@ Defaults to 'Datto.DBPool.Refresh'.</p>
 </code></pre></div>
 <h3 id="-autoupdate">-AutoUpdate</h3>
 <p>If specified, the module will be updated if a newer version is available online.
-Defaults to $RefreshDBPool_Enable_AutoUpdate variable.</p>
+Defaults to <code>$RefreshDBPool_Enable_AutoUpdate</code> variable.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SwitchParameter</span>
 <span class="nt">Parameter Sets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(All)</span>
 <span class="nt">Aliases</span><span class="p">:</span>
@@ -1486,7 +1486,7 @@ Defaults to $RefreshDBPool_Enable_AutoUpdate variable.</p>
 </code></pre></div>
 <h3 id="-allowprerelease">-AllowPrerelease</h3>
 <p>If specified, the module will be updated to the latest prerelease version if available.
-Defaults to $false.</p>
+Defaults to <code>$false</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SwitchParameter</span>
 <span class="nt">Parameter Sets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(All)</span>
 <span class="nt">Aliases</span><span class="p">:</span>

@@ -1491,14 +1491,14 @@ It can be used to add or update the API key for later use in scripts and automat
 If the secret already exists, the function can overwrite it if the -Force switch is used.</p>
 <h2 id="examples">EXAMPLES</h2>
 <h3 id="example-1">EXAMPLE 1</h3>
+<p>Adds the DBPool API key to the default SecretManagement vault with the name 'DBPool_ApiKey'.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Set-RefreshDBPoolApiKey</span> <span class="n">-DBPool_ApiKey</span> <span class="nv">$secureApiKey</span> <span class="n">-Verbose</span>
 </code></pre></div>
-<p>Adds the DBPool API key to the default SecretManagement vault with the name 'DBPool_ApiKey'.</p>
 <h3 id="example-2">EXAMPLE 2</h3>
-<div class="highlight"><pre><span></span><code><span class="nb">Set-RefreshDBPoolApiKey</span> <span class="n">-DBPool_ApiKey</span> <span class="nv">$secureApiKey</span> <span class="n">-SecretName</span> <span class="s1">&#39;Custom_ApiKey&#39;</span> <span class="n">-SecretStoreName</span> <span class="s1">&#39;MySecretStore&#39;</span> <span class="n">-Force</span>
-</code></pre></div>
 <p>Adds the DBPool API key to the 'MySecretStore' SecretManagement vault with the name 'Custom_ApiKey'.
 If the secret already exists, it will be overwritten.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">Set-RefreshDBPoolApiKey</span> <span class="n">-DBPool_ApiKey</span> <span class="nv">$secureApiKey</span> <span class="n">-SecretName</span> <span class="s1">&#39;Custom_ApiKey&#39;</span> <span class="n">-SecretStoreName</span> <span class="s1">&#39;MySecretStore&#39;</span> <span class="n">-Force</span>
+</code></pre></div>
 <h2 id="parameters">PARAMETERS</h2>
 <h3 id="-secretname">-SecretName</h3>
 <p>The name to use for the secret in the SecretManagement vault.

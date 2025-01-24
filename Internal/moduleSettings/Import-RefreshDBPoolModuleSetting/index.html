@@ -1416,28 +1416,36 @@
 <h2 id="description">DESCRIPTION</h2>
 <p>The Import-RefreshDBPoolModuleSetting cmdlet imports the DBPool BaseURI, API, &amp; JSON configuration
 information stored in the DBPool refresh configuration file to the users current session.</p>
-<p>By default the configuration file is stored in the following location:
-    $env:USERPROFILE\RefreshDBPool</p>
+<p>By default the configuration file is stored in the following location:</p>
+<ul>
+<li><code>$env:USERPROFILE\RefreshDBPool</code></li>
+</ul>
 <h2 id="examples">EXAMPLES</h2>
 <h3 id="example-1">EXAMPLE 1</h3>
+<p>Validates that the configuration file created with the Export-RefreshDBPoolModuleSettings cmdlet exists
+then imports the stored data into the current users session.</p>
+<p>The default location of the DBPool configuration file is:</p>
+<ul>
+<li><code>$env:USERPROFILE\RefreshDBPool\config.psd1</code></li>
+</ul>
 <div class="highlight"><pre><span></span><code><span class="nb">Import-RefreshDBPoolModuleSetting</span>
 </code></pre></div>
+<h3 id="example-2">EXAMPLE 2</h3>
 <p>Validates that the configuration file created with the Export-RefreshDBPoolModuleSettings cmdlet exists
 then imports the stored data into the current users session.</p>
-<p>The default location of the DBPool configuration file is:
-    $env:USERPROFILE\RefreshDBPool\config.psd1</p>
-<h3 id="example-2">EXAMPLE 2</h3>
+<p>The location of the DBPool configuration file in this example is:</p>
+<ul>
+<li><code>C:\RefreshDBPool\MyConfig.psd1</code></li>
+</ul>
 <div class="highlight"><pre><span></span><code><span class="nb">Import-RefreshDBPoolModuleSetting</span> <span class="n">-RefreshDBPoolConfPath</span> <span class="n">C</span><span class="p">:\</span><span class="n">RefreshDBPool</span> <span class="n">-RefreshDBPoolConfFile</span> <span class="n">MyConfig</span><span class="p">.</span><span class="n">psd1</span>
 </code></pre></div>
-<p>Validates that the configuration file created with the Export-RefreshDBPoolModuleSettings cmdlet exists
-then imports the stored data into the current users session.</p>
-<p>The location of the DBPool configuration file in this example is:
-    C:\RefreshDBPool\MyConfig.psd1</p>
 <h2 id="parameters">PARAMETERS</h2>
 <h3 id="-refreshdbpoolconfpath">-RefreshDBPoolConfPath</h3>
 <p>Define the location to store the DBPool configuration file.</p>
-<p>By default the configuration file is stored in the following location:
-    $env:USERPROFILE\RefreshDBPool</p>
+<p>By default the configuration file is stored in the following location:</p>
+<ul>
+<li><code>$env:USERPROFILE\RefreshDBPool</code></li>
+</ul>
 <div class="highlight"><pre><span></span><code><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
 <span class="nt">Parameter Sets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(All)</span>
 <span class="nt">Aliases</span><span class="p">:</span>
@@ -1450,8 +1458,10 @@ then imports the stored data into the current users session.</p>
 </code></pre></div>
 <h3 id="-refreshdbpoolconffile">-RefreshDBPoolConfFile</h3>
 <p>Define the name of the DBPool configuration file.</p>
-<p>By default the configuration file is named:
-    config.psd1</p>
+<p>By default the configuration file is named:</p>
+<ul>
+<li><code>config.psd1</code></li>
+</ul>
 <div class="highlight"><pre><span></span><code><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
 <span class="nt">Parameter Sets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(All)</span>
 <span class="nt">Aliases</span><span class="p">:</span>

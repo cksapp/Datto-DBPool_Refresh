@@ -1418,13 +1418,13 @@ Checks if the secret store is installed and install if not found.
 The function also sets the secret store configuration for the default vault.</p>
 <h2 id="examples">EXAMPLES</h2>
 <h3 id="example-1">EXAMPLE 1</h3>
+<p>Adds a local secret store named 'Datto_SecretStore' using the Microsoft.PowerShell.SecretStore module.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Add-DattoSecretStore</span>
 </code></pre></div>
-<p>Adds a local secret store named 'Datto_SecretStore' using the Microsoft.PowerShell.SecretStore module.</p>
 <h3 id="example-2">EXAMPLE 2</h3>
+<p>Adds a local secret store named 'Custom_SecretsVault' using the 'Custom.SecretStore' module.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Add-DattoSecretStore</span> <span class="n">-Name</span> <span class="s1">&#39;Custom_SecretsVault&#39;</span> <span class="n">-ModuleName</span> <span class="s1">&#39;Custom.SecretStore&#39;</span>
 </code></pre></div>
-<p>Adds a local secret store named 'Custom_SecretsVault' using the 'Custom.SecretStore' module.</p>
 <h2 id="parameters">PARAMETERS</h2>
 <h3 id="-name">-Name</h3>
 <p>The name of the secret store to add.

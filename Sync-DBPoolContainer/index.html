@@ -1520,25 +1520,25 @@ By default, this function will refresh all containers if no IDs are provided.</p
 By default, this function will refresh all containers if no IDs are provided.</p>
 <h2 id="examples">EXAMPLES</h2>
 <h3 id="example-1">EXAMPLE 1</h3>
+<p>Refreshes all DBPool containers.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Sync-DBPoolContainer</span>
 </code></pre></div>
-<p>Refreshes all DBPool containers.</p>
 <h3 id="example-2">EXAMPLE 2</h3>
+<p>Refreshes the DBPool container with the ID 1234.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Sync-DBPoolContainer</span> <span class="n">-Id</span> <span class="n">1234</span>
 </code></pre></div>
-<p>Refreshes the DBPool container with the ID 1234.</p>
 <h3 id="example-3">EXAMPLE 3</h3>
+<p>Refreshes the DBPool containers with the IDs 1234 and 5678.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Sync-DBPoolContainer</span> <span class="n">-Id</span> <span class="n">1234</span><span class="p">,</span> <span class="n">5678</span>
 </code></pre></div>
-<p>Refreshes the DBPool containers with the IDs 1234 and 5678.</p>
 <h3 id="example-4">EXAMPLE 4</h3>
+<p>Refreshes all DBPool containers matching the specified database name.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Sync-DBPoolContainer</span> <span class="n">-Id</span> <span class="p">$(</span><span class="nb">Get-DBPoolContainer</span> <span class="n">-DefaultDatabase</span> <span class="s2">&quot;Database_Name&quot;</span><span class="p">).</span><span class="n">Id</span>
 </code></pre></div>
-<p>Refreshes all DBPool containers matching the specified database name.</p>
 <h3 id="example-5">EXAMPLE 5</h3>
+<p>Refreshes all DBPool containers not matching the specified container name.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Sync-DBPoolContainer</span> <span class="n">-Id</span> <span class="p">$(</span><span class="nb">Get-DBPoolContainer</span> <span class="o">-NotLike</span> <span class="n">-Name</span> <span class="s2">&quot;*Container_Name*&quot;</span><span class="p">).</span><span class="n">Id</span> <span class="n">-Force</span>
 </code></pre></div>
-<p>Refreshes all DBPool containers not matching the specified container name.</p>
 <h2 id="parameters">PARAMETERS</h2>
 <h3 id="-id">-Id</h3>
 <p>The ID(s) of the container(s) to refresh.

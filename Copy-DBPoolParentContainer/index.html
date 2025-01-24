@@ -540,6 +540,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#example-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      EXAMPLE 5
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1379,6 +1388,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#example-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      EXAMPLE 5
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1553,21 +1571,30 @@
 The cloned container(s) will have the same parent container as the original container(s) and will be appended with the specified string.</p>
 <h2 id="examples">EXAMPLES</h2>
 <h3 id="example-1">EXAMPLE 1</h3>
+<p>Clones the DBPool parent container with the ID 1234.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Copy-DBPoolParentContainer</span> <span class="n">-Id</span> <span class="n">1234</span>
 </code></pre></div>
-<p>Clones the DBPool parent container with the ID 1234.</p>
 <h3 id="example-2">EXAMPLE 2</h3>
+<p>Clones the DBPool parent container with the DefaultDatabase 'exampleParentA'.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Copy-DBPoolParentContainer</span> <span class="n">-DefaultDatabase</span> <span class="s1">&#39;exampleParentA&#39;</span>
 </code></pre></div>
-<p>Clones the DBPool parent container with the DefaultDatabase 'exampleParentA'.</p>
 <h3 id="example-3">EXAMPLE 3</h3>
+<p>Clones the DBPool parent containers with the IDs 1234 and 5678 and appends 'copy' to the cloned container name.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Copy-DBPoolParentContainer</span> <span class="n">-Id</span> <span class="n">1234</span><span class="p">,</span> <span class="n">5678</span> <span class="n">-ContainerName_Append</span> <span class="s1">&#39;copy&#39;</span>
 </code></pre></div>
-<p>Clones the DBPool parent containers with the IDs 1234 and 5678 and appends 'copy' to the cloned container name.</p>
 <h3 id="example-4">EXAMPLE 4</h3>
+<p>Clones the DBPool parent containers with the DefaultDatabase 'exampleParentA' and 'exampleParentB' even if similar containers already exist.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Copy-DBPoolParentContainer</span> <span class="n">-DefaultDatabase</span> <span class="s1">&#39;exampleParentA&#39;</span><span class="p">,</span> <span class="s1">&#39;exampleParentB&#39;</span> <span class="n">-Duplicate</span>
 </code></pre></div>
-<p>Clones the DBPool parent containers with the DefaultDatabase 'exampleParentA' and 'exampleParentB' even if similar containers already exist.</p>
+<h3 id="example-5">EXAMPLE 5</h3>
+<p>Clones the DBPool parent containers with the DefaultDatabase 'exampleParentA' and 'exampleParentB' and appends a number to any duplicate clones.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">Copy-DBPoolParentContainer</span> <span class="n">-DefaultDatabase</span> <span class="s1">&#39;exampleParentA&#39;</span><span class="p">,</span> <span class="s1">&#39;exampleParentB&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">exampleParentA</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">Parent</span> <span class="n">Container</span> <span class="p">[</span> <span class="n">Id</span><span class="p">:</span> <span class="n">7</span><span class="p">,</span> <span class="n">Name</span><span class="p">:</span> <span class="n">exampleParentB</span> <span class="n">staging</span> <span class="p">]</span> <span class="s1">&#39;create&#39;</span> <span class="n">command</span> <span class="n">sent</span> <span class="k">for</span> <span class="n">new</span> <span class="n">Container</span> <span class="p">[</span> <span class="n">exampleB</span> <span class="n">staging</span><span class="p">(</span><span class="n">clone</span><span class="p">)</span> <span class="p">]</span>
+<span class="n">Parent</span> <span class="n">Container</span> <span class="p">[</span> <span class="n">Id</span><span class="p">:</span> <span class="n">3</span><span class="p">,</span> <span class="n">Name</span><span class="p">:</span> <span class="n">exampleParentA</span> <span class="n">on</span> <span class="n">SQL</span> <span class="n">1</span><span class="p">.</span><span class="n">2</span><span class="p">.</span><span class="n">3</span> <span class="p">]</span> <span class="s1">&#39;create&#39;</span> <span class="n">command</span> <span class="n">sent</span> <span class="k">for</span> <span class="n">new</span> <span class="n">Container</span> <span class="p">[</span> <span class="n">exampleA</span><span class="p">(</span><span class="n">clone</span><span class="p">-</span><span class="n">1</span><span class="p">)</span> <span class="p">]</span>
+<span class="n">Parent</span> <span class="n">Container</span> <span class="p">[</span> <span class="n">Id</span><span class="p">:</span> <span class="n">3</span><span class="p">,</span> <span class="n">Name</span><span class="p">:</span> <span class="n">exampleParentA</span> <span class="n">on</span> <span class="n">SQL</span> <span class="n">1</span><span class="p">.</span><span class="n">2</span><span class="p">.</span><span class="n">3</span> <span class="p">]</span> <span class="s1">&#39;create&#39;</span> <span class="n">command</span> <span class="n">sent</span> <span class="k">for</span> <span class="n">new</span> <span class="n">Container</span> <span class="p">[</span> <span class="n">exampleA</span><span class="p">(</span><span class="n">clone</span><span class="p">-</span><span class="n">2</span><span class="p">)</span> <span class="p">]</span>
+<span class="n">Parent</span> <span class="n">Container</span> <span class="p">[</span> <span class="n">Id</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span> <span class="n">Name</span><span class="p">:</span> <span class="n">exampleParentB</span> <span class="n">on</span> <span class="n">4</span><span class="p">.</span><span class="n">5</span><span class="p">.</span><span class="n">6</span> <span class="p">]</span> <span class="s1">&#39;create&#39;</span> <span class="n">command</span> <span class="n">sent</span> <span class="k">for</span> <span class="n">new</span> <span class="n">Container</span> <span class="p">[</span> <span class="n">exampleB</span><span class="p">(</span><span class="n">clone</span><span class="p">)</span> <span class="p">]</span>
+</code></pre></div>
 <h2 id="parameters">PARAMETERS</h2>
 <h3 id="-id">-Id</h3>
 <p>The ID(s) of the parent container(s) to clone.</p>
@@ -1626,7 +1653,9 @@ The default value is 'clone'.</p>
 <h2 id="outputs">OUTPUTS</h2>
 <h3 id="pscustomobject-object-containing-the-cloned-containers-information">[PSCustomObject] - Object containing the cloned container(s) information</h3>
 <h2 id="notes">NOTES</h2>
-<p>N/A</p>
+<p>Does not clone any parent containers with 'BETA' in the name.</p>
+<p>Also removes parent name suffixes like 'on Database v1.2.3' before appending the ContainerName_Append string.</p>
+<p>This function will also append a number to the cloned container name if multiple matching clones are created with same parent at once, or for any matching clones that already exist when using the -Duplicate switch.</p>
 <h2 id="related-links">RELATED LINKS</h2>
 <p><a href="https://datto-dbpool-refresh.kentsapp.com/Copy-DBPoolParentContainer/">https://datto-dbpool-refresh.kentsapp.com/Copy-DBPoolParentContainer/</a></p>
 

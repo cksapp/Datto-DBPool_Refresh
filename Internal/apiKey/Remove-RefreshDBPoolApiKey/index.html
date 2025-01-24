@@ -1471,13 +1471,13 @@
 <p>This function removes the DBPool API key from the specified SecretManagement vault.</p>
 <h2 id="examples">EXAMPLES</h2>
 <h3 id="example-1">EXAMPLE 1</h3>
+<p>Removes the API key from the SecretManagement vault.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Remove-RefreshDBPoolApiKey</span>
 </code></pre></div>
-<p>Removes the API key from the SecretManagement vault.</p>
 <h3 id="example-2">EXAMPLE 2</h3>
+<p>Removes the API key from the 'Custom_SecretsVault' SecretManagement vault with the name 'Different_SecretName'.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Remove-RefreshDBPoolApiKey</span> <span class="n">-SecretName</span> <span class="s1">&#39;Different_SecretName&#39;</span> <span class="n">-SecretStoreName</span> <span class="s1">&#39;Custom_SecretsVault&#39;</span> <span class="n">-Force</span>
 </code></pre></div>
-<p>Removes the API key from the 'Custom_SecretsVault' SecretManagement vault with the name 'Different_SecretName'.</p>
 <h2 id="parameters">PARAMETERS</h2>
 <h3 id="-secretname">-SecretName</h3>
 <p>The name to use for the secret in the SecretManagement vault.

@@ -1435,17 +1435,17 @@
 The task can be configured to run on specific days of the week and at a specified time.</p>
 <h2 id="examples">EXAMPLES</h2>
 <h3 id="example-1">EXAMPLE 1</h3>
+<p>This example creates a scheduled task that runs every day at 7:00 AM, except on Sundays and Saturdays.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Register-RefreshDBPoolTask</span> <span class="n">-TriggerTime</span> <span class="s2">&quot;7AM&quot;</span>
 </code></pre></div>
-<p>This example creates a scheduled task that runs every day at 7:00 AM, except on Sundays and Saturdays.</p>
 <h3 id="example-2">EXAMPLE 2</h3>
+<p>This example creates a scheduled task that runs every day at 3:00 PM, except on Sundays and Saturdays.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Register-RefreshDBPoolTask</span> <span class="n">-TriggerTime</span> <span class="s2">&quot;15:00&quot;</span>
 </code></pre></div>
-<p>This example creates a scheduled task that runs every day at 3:00 PM, except on Sundays and Saturdays.</p>
 <h3 id="example-3">EXAMPLE 3</h3>
+<p>This example creates a scheduled task that runs every day at 4:30 PM, except on Sunday and Monday.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Register-RefreshDBPoolTask</span> <span class="n">-ExcludeDaysOfWeek</span> <span class="s1">&#39;Sunday&#39;</span><span class="p">,</span><span class="s1">&#39;Monday&#39;</span> <span class="n">-TriggerTime</span> <span class="s2">&quot;4:30PM&quot;</span>
 </code></pre></div>
-<p>This example creates a scheduled task that runs every day at 4:30 PM, except on Sunday and Monday.</p>
 <h2 id="parameters">PARAMETERS</h2>
 <h3 id="-triggertime">-TriggerTime</h3>
 <p>Specifies the time of day at which the scheduled task should run.

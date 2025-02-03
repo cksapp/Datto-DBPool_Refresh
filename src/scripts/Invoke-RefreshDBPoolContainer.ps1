@@ -84,9 +84,9 @@ begin {
 
         if (!(Get-Module -Name 'Datto.DBPool.Refresh' -ListAvailable -Verbose:$false)) {
             if (Get-Command -Name 'Install-PSResource' -ErrorAction SilentlyContinue) {
-                Install-PSResource -Name 'Datto.DBPool.Refresh' -Scope CurrentUser -Reinstall -TrustRepository -Verbose:$false -Prerelease
+                Install-PSResource -Name 'Datto.DBPool.Refresh' -Scope CurrentUser -Reinstall -TrustRepository -Verbose:$false
             } else {
-                Install-Module -Name 'Datto.DBPool.Refresh' -Scope CurrentUser -AllowClobber -Force -Verbose:$false -SkipPublisherCheck -AllowPrerelease
+                Install-Module -Name 'Datto.DBPool.Refresh' -Scope CurrentUser -AllowClobber -Force -Verbose:$false -SkipPublisherCheck
             }
         }
         try {
@@ -119,7 +119,7 @@ process {
     Set-DBPoolSecurityProtocol -Verbose:$false
 
     try {
-        Update-RefreshDBPoolModule -AllowPrerelease -Verbose:$PSBoundParameters.ContainsKey('Verbose')
+        Update-RefreshDBPoolModule -Verbose:$PSBoundParameters.ContainsKey('Verbose')
         Update-RefreshDBPoolTask -Verbose:$false -ErrorAction SilentlyContinue | Out-Null
 
         Get-RefreshDBPoolAPIKey -Force -Verbose:$PSBoundParameters.ContainsKey('Verbose') -ErrorAction SilentlyContinue | Out-Null

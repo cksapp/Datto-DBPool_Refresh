@@ -12,7 +12,7 @@
     RootModule = 'Datto.DBPool.Refresh.psm1'
 
     # Version number of this module.
-    ModuleVersion = '0.1.5'
+    ModuleVersion = '0.1.6'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -54,9 +54,9 @@
     RequiredModules   = @(
         @{
             ModuleName = 'Datto.DBPool.API'
-            #ModuleVersion = '0.1.5'
-            #MaximumVersion = '0.99.99.*'
-            RequiredVersion = '0.2.0'
+            ModuleVersion = '0.1.5'
+            MaximumVersion = '0.99.99.*'
+            #RequiredVersion = '0.2.0' # Used to pin dependancy version for prerelease module
         }
         'Microsoft.PowerShell.SecretManagement'
         #'PSFramework'
@@ -119,7 +119,7 @@
             # ReleaseNotes = ''
 
             # Prerelease string of this module
-            Prerelease = 'BETA'
+            #Prerelease = 'BETA'
 
         } # End of PSData hashtable
 

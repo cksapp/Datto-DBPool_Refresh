@@ -240,9 +240,9 @@ if (!(Get-InstalledPSResource -Name Microsoft.PowerShell.SecretStore -Verbose:$f
 if (-not ((Get-InstalledPSResource -Name Datto.DBPool.Refresh -Verbose:$false -ErrorAction SilentlyContinue) -or (Get-Module -Name Datto.DBPool.Refresh -Verbose:$false -ListAvailable -ErrorAction SilentlyContinue))) {
     try {
         if (Get-Command -Name Install-PSResource -ErrorAction SilentlyContinue) {
-            Install-PSResource -Name Datto.DBPool.Refresh -Scope CurrentUser -Repository PSGallery -TrustRepository -Reinstall -ErrorAction Stop -Prerelease
+            Install-PSResource -Name Datto.DBPool.Refresh -Scope CurrentUser -Repository PSGallery -TrustRepository -Reinstall -ErrorAction Stop
         } else {
-            Install-Module -Name Datto.DBPool.Refresh -Scope CurrentUser -AllowClobber -Force -Repository PSGallery -SkipPublisherCheck -ErrorAction Stop -AllowPrerelease
+            Install-Module -Name Datto.DBPool.Refresh -Scope CurrentUser -AllowClobber -Force -Repository PSGallery -SkipPublisherCheck -ErrorAction Stop
         }
     } catch {
         Write-Error $_

@@ -58,6 +58,10 @@ begin {
         $InformationPreference = 'Continue'
     }
 
+    if ($PSBoundParameters.ContainsKey('Verbose')) {
+        $RefreshDBPool_VerbosePreference = $PSBoundParameters['Verbose']
+    }
+
     if (-not $PSBoundParameters.ContainsKey('Bootstrap')) {
         $Bootstrap = $true
     }
@@ -119,10 +123,10 @@ process {
     Set-DBPoolSecurityProtocol -Verbose:$false
 
     try {
-        Update-RefreshDBPoolModule -Verbose:$PSBoundParameters.ContainsKey('Verbose')
+        Update-RefreshDBPoolModule -Verbose:$RefreshDBPool_VerbosePreference
         Update-RefreshDBPoolTask -Verbose:$false -ErrorAction SilentlyContinue | Out-Null
 
-        Get-RefreshDBPoolAPIKey -Force -Verbose:$PSBoundParameters.ContainsKey('Verbose') -ErrorAction SilentlyContinue | Out-Null
+        Get-RefreshDBPoolAPIKey -Force -Verbose:$RefreshDBPool_VerbosePreference -ErrorAction SilentlyContinue | Out-Null
     }
     catch {
         Write-Error $_
@@ -148,7 +152,7 @@ process {
     $apiKeyValid = Test-DBPoolApiKey -Verbose:$false -WarningAction SilentlyContinue
     if ($apiKeyValid.StatusCode -eq 200) {
         Write-Verbose -Message 'ApiKey 200 Success'
-        Sync-DBPoolContainer -Id $ContainerId -Force -Verbose:$PSBoundParameters.ContainsKey('Verbose')
+        Sync-DBPoolContainer -Id $ContainerId -Force -Verbose:$RefreshDBPool_VerbosePreference
     } else {
         Write-Warning -Message "ApiKey not valid. StatusCode: $($apiKeyValid.StatusCode); Message: [ $($apiKeyValid.Message) ] Response Header 'X-App-Request-Id': [ $($apiKeyValid.'Response Header ''X-App-Request-Id''') ]"
     }

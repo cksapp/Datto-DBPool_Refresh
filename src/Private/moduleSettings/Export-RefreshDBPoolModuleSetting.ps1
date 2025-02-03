@@ -107,6 +107,9 @@ function Export-RefreshDBPoolModuleSetting {
 
 #        RefreshDBPool_TimeoutSeconds = 300
 
+        # Refresh DBPool Script Verbose Preference
+#	    RefreshDBPool_VerbosePreference = "True"
+
 
         ## END OF CONFIG FILE
     }

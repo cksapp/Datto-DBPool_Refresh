@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Bump pwsh installer version 7.5.0, added loop during DBPool API status check (30 second wait, default 3600 second timeout)
 
-Remove pre-release tag
+Add $RefreshDBPool_VerbosePreference module setting environment variable
+
+Remove pre-release module tag
 
 ## [0.1.5] Prerelease
 

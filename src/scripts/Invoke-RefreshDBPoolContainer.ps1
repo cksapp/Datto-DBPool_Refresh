@@ -45,7 +45,11 @@ Param(
     [Alias('Id')]
     [int[]]$ContainerId,
 
-    [switch]$Bootstrap
+    [switch]$Bootstrap,
+
+    [Parameter(DontShow = $true)]
+    [ValidateRange(0, [int]::MaxValue)]
+    [int]$TimeoutSeconds = $RefreshDBPool_TimeoutSeconds
 )
 
 begin {
@@ -95,6 +99,10 @@ begin {
         Write-Information 'Bootstrap complete.'
     }
 
+    if (-not $PSBoundParameters['TimeoutSeconds']) {
+        $TimeoutSeconds = 3600
+    }
+
     if (-not $ContainerId) {
         $ContainerId = $RefreshDBPool_Container_Ids
     }
@@ -120,19 +128,29 @@ process {
         Write-Error $_
     }
 
-    $apiStatus = Test-DBPoolApi -Verbose:$false -WarningAction SilentlyContinue
-    if (-not $apiStatus) {
-        Write-Warning -Message 'API Uri is not reachable.'
-        return
-    } elseif ($apiStatus) {
-        Write-Verbose -Message 'API Uri 200 Sucess'
-        $apiKeyValid = Test-DBPoolApiKey -Verbose:$false -WarningAction SilentlyContinue
-        if ($apiKeyValid.StatusCode -eq 200) {
-            Write-Verbose -Message 'ApiKey 200 Sucess'
-            Sync-DBPoolContainer -Id $ContainerId -Force -Verbose:$PSBoundParameters.ContainsKey('Verbose')
-        } else {
-            Write-Warning -Message "ApiKey not valid. StatusCode: $($apiKeyValid.StatusCode); Message: [ $($apiKeyValid.Message) ] Response Header 'X-App-Request-Id': [ $($apiKeyValid.'Response Header ''X-App-Request-Id''') ]"
+    $apiStatus = $false
+    $startTime = Get-Date
+    while (-not $apiStatus) {
+        $apiStatus = Test-DBPoolApi -Verbose:$false -WarningAction SilentlyContinue -ErrorAction SilentlyContinue
+        if (-not $apiStatus) {
+            Write-Verbose -Message 'API Uri is not reachable. Retry in 30 seconds...'
+            Start-Sleep -Seconds 30
         }
+
+        $elapsedTime = (Get-Date) - $startTime
+        if ($elapsedTime.TotalSeconds -ge $TimeoutSeconds) {
+            Write-Error -Message "Timeout of '$TimeoutSeconds' seconds reached. Exiting script."
+            return
+        }
+    }
+
+    Write-Verbose -Message 'API Uri 200 Success'
+    $apiKeyValid = Test-DBPoolApiKey -Verbose:$false -WarningAction SilentlyContinue
+    if ($apiKeyValid.StatusCode -eq 200) {
+        Write-Verbose -Message 'ApiKey 200 Success'
+        Sync-DBPoolContainer -Id $ContainerId -Force -Verbose:$PSBoundParameters.ContainsKey('Verbose')
+    } else {
+        Write-Warning -Message "ApiKey not valid. StatusCode: $($apiKeyValid.StatusCode); Message: [ $($apiKeyValid.Message) ] Response Header 'X-App-Request-Id': [ $($apiKeyValid.'Response Header ''X-App-Request-Id''') ]"
     }
 
 }

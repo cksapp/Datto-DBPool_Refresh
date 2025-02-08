@@ -54,7 +54,7 @@
     RequiredModules   = @(
         @{
             ModuleName = 'Datto.DBPool.API'
-            ModuleVersion = '0.1.5'
+            ModuleVersion = '0.2.0'
             MaximumVersion = '0.99.99.*'
             #RequiredVersion = '0.2.0' # Used to pin dependancy version for prerelease module
         }

@@ -69,7 +69,7 @@ function Update-RefreshDBPoolTask {
 
                 if ($Force -or $PSCmdlet.ShouldProcess("Scheduled task [ $taskName ]", 'Update')) {
                     $actionParams = @{
-                        Execute          = "`"$PSExecutable`""
+                        Execute          = "$PSExecutable"
                         Argument         = "-WindowStyle Minimized -NoProfile -ExecutionPolicy Bypass -File `"$scriptFile`""
                         WorkingDirectory = "$moduleBasePath"
                     }

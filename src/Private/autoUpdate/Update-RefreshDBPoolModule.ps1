@@ -65,28 +65,29 @@ function Update-RefreshDBPoolModule {
                 try {
 
                     $installedModule = if (Get-Command -Name Get-InstalledPSResource -ErrorAction SilentlyContinue) {
-                        Get-InstalledPSResource -Name $ModuleName -ErrorAction SilentlyContinue -Verbose:$false
+                        Get-InstalledPSResource -Name $ModuleName -ErrorAction SilentlyContinue -Verbose:$false -Debug:$false
                     } else {
-                        Get-InstalledModule -Name $ModuleName -AllowPrerelease:$AllowPrerelease -ErrorAction SilentlyContinue -Verbose:$false
+                        Get-InstalledModule -Name $ModuleName -AllowPrerelease:$AllowPrerelease -ErrorAction SilentlyContinue -Verbose:$false -Debug:$false
                     }
                     $onlineModule = if (Get-Command -Name Find-PSResource -ErrorAction SilentlyContinue) {
-                        Find-PSResource -Name $ModuleName -Prerelease:$AllowPrerelease -ErrorAction SilentlyContinue -Verbose:$false
+                        Find-PSResource -Name $ModuleName -Prerelease:$AllowPrerelease -ErrorAction SilentlyContinue -Verbose:$false -Debug:$false
                     } else {
-                        Find-Module -Name $ModuleName -AllowPrerelease:$AllowPrerelease -ErrorAction SilentlyContinue -Verbose:$false
+                        Find-Module -Name $ModuleName -AllowPrerelease:$AllowPrerelease -ErrorAction SilentlyContinue -Verbose:$false -Debug:$false
                     }
                     $installedModule = $installedModule | Sort-Object -Property { [version]$_.Version } -Descending | Select-Object -First 1
                     $onlineModule = $onlineModule | Sort-Object -Property { [version]$_.Version } -Descending | Select-Object -First 1
+                    Write-Debug "Installed module: [ $($installedModule.Name) ] and Online module: [ $($onlineModule.Name) ]"
 
                     if (!$installedModule) {
                         try {
                             Write-Warning "Module [ $ModuleName ] does not appear to be installed, attempting to install."
                             if (Get-Command -Name Install-PSResource -ErrorAction SilentlyContinue) {
-                                Install-PSResource -Name $ModuleName -Scope 'CurrentUser' -TrustRepository -Prerelease:$AllowPrerelease -ErrorAction Stop -Verbose:$false
+                                Install-PSResource -Name $ModuleName -Scope 'CurrentUser' -TrustRepository -Prerelease:$AllowPrerelease -ErrorAction Stop -Verbose:$false -Debug:$false
                             } else {
-                                Install-Module $ModuleName -Scope 'CurrentUser' -Force -AllowPrerelease:$AllowPrerelease -SkipPublisherCheck -ErrorAction Stop -Verbose:$false
+                                Install-Module $ModuleName -Scope 'CurrentUser' -Force -AllowPrerelease:$AllowPrerelease -SkipPublisherCheck -ErrorAction Stop -Verbose:$false -Debug:$false
                             }
                             Write-Information "Module [ $ModuleName ] successfully installed."
-                            Import-Module -Name $ModuleName -Force -Verbose:$false
+                            Import-Module -Name $ModuleName -Force -Verbose:$false -Debug:$false
                         } catch {
                             throw "Error installing module $ModuleName`: $_"
                         }
@@ -94,27 +95,31 @@ function Update-RefreshDBPoolModule {
                         Write-Verbose "Module [ $($installedModule.Name) ] is already installed on the local system."
 
                         $installedVersion = [version]$installedModule.Version
-                        $onlineVersion = [version]$onlineModule.Version
 
-                        Write-Debug "Installed version: [ $installedVersion ] and Online version: [ $onlineVersion ]"
+                        if ($null -ne $onlineModule -and $onlineModule.Version) {
+                            $onlineVersion = [version]$onlineModule.Version
 
-                        if ($installedVersion -eq $onlineVersion) {
-                            Write-Host "$ModuleName version installed is [ $installedVersion ] which matches the online version [ $onlineVersion ]" -ForegroundColor Green
-                        } elseif ($installedVersion -gt $onlineVersion) {
-                            Write-Host "$ModuleName version installed is [ $installedVersion ] which is greater than the online version [ $onlineVersion ]`nStrange, but okay I guess?`n" -ForegroundColor Gray
-                        } elseif ($installedVersion -lt $onlineVersion) {
-                            Write-Warning "$ModuleName version installed is [ $installedVersion ] which is less than the online version [ $onlineVersion ]"
+                            Write-Debug "Installed version: [ $( $installedVersion.ToString() ) ] and Online version: [ $( $onlineVersion.ToString() ) ]"
 
-                            Write-Information "Updating [ $ModuleName ] from version [ $installedVersion ] to [ $onlineVersion ]."
-                            if (Get-Command -Name Update-PSResource -ErrorAction SilentlyContinue) {
-                                Update-PSResource -Name $ModuleName -Force -Prerelease:$AllowPrerelease -ErrorAction Stop -Verbose:$false
-                            } else {
-                                Update-Module -Name $ModuleName -Force -TrustRepository -AllowPrerelease:$AllowPrerelease -ErrorAction Stop -Verbose:$false
+                            if ($installedVersion -eq $onlineVersion) {
+                                Write-Host "$ModuleName version installed is [ $( $installedVersion.ToString() ) ] which matches the online version [ $( $onlineVersion.ToString() ) ]" -ForegroundColor Green
+                            } elseif ($installedVersion -gt $onlineVersion) {
+                                Write-Host "$ModuleName version installed is [ $( $installedVersion.ToString() ) ] which is greater than the online version [ $( $onlineVersion.ToString() ) ]`nStrange, but okay I guess?`n" -ForegroundColor Gray
+                            } elseif ($installedVersion -lt $onlineVersion) {
+                                Write-Warning "$ModuleName version installed is [ $( $installedVersion.ToString() ) ] which is less than the online version [ $( $onlineVersion.ToString() ) ]"
+
+                                Write-Information "Updating [ $ModuleName ] from version [ $( $installedVersion.ToString() ) ] to [ $( $onlineVersion.ToString() ) ]."
+                                if (Get-Command -Name Update-PSResource -ErrorAction SilentlyContinue) {
+                                    Update-PSResource -Name $ModuleName -Force -Prerelease:$AllowPrerelease -ErrorAction Stop -Verbose:$false -Debug:$false
+                                } else {
+                                    Update-Module -Name $ModuleName -Force -TrustRepository -AllowPrerelease:$AllowPrerelease -ErrorAction Stop -Verbose:$false -Debug:$false
+                                }
+
+                                Import-Module -Name $ModuleName -Force -Verbose:$false -Debug:$false
                             }
-
-                            Import-Module -Name $ModuleName -Force -Verbose:$false
+                        } else {
+                            Write-Warning "Failed to retrieve the online version of $ModuleName. Skipping update."
                         }
-
                     }
                 } catch {
                     Write-Error $_

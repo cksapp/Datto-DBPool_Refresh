@@ -813,7 +813,7 @@ function Export-RefreshDBPoolModuleSetting {
         RefreshDBPool_LogRotationDays      = 90
 
 
-        # Script timeout wait for API reachable, and child process jobs to "complete" and return a response (success or failure error)before exit.
+        # Script timeout wait for API reachable, and child process jobs to "complete" and return a response (success or failure error) before exit.
         # Default in the script is set to 3600 seconds (60 minutes).
 
 #        RefreshDBPool_TimeoutSeconds = 300

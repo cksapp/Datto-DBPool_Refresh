@@ -16,23 +16,23 @@ theme:
     - media: "(prefers-color-scheme)"
       toggle:
         icon: material/theme-light-dark
-        name: Toggle dark/light mode
-    # Palette toggle for dark mode
-    - media: '(prefers-color-scheme: dark)'
-      scheme: slate
-      toggle:
-        icon: material/theme-light-dark
-        name: Switch to light mode
-      primary: indigo
-      accent: deep purple
+        name: Toggle light/dark mode
     # Palette toggle for light mode
     - media: '(prefers-color-scheme: light)'
       scheme: default
       toggle:
         icon: material/toggle-switch
-        name: Switch to system preference
+        name: Switch to dark mode
       primary: blue
       accent: deep orange
+    # Palette toggle for dark mode
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch-off
+        name: Switch to system preference
+      primary: indigo
+      accent: deep purple
 
   icon:
     repo: material/github
@@ -48,6 +48,7 @@ theme:
     - search.suggest
     - search.highlight
     - search.share
+    - toc.follow # Highlight the current section in the table of contents
 extra:
   social:
     - icon: fontawesome/brands/github
@@ -64,8 +65,10 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
   - attr_list
+  - toc:
+      permalink: 🔗
 plugins:
-  - privacy
+  #- privacy
   - search
-  - social
+  #- social
   - open-in-new-tab

@@ -2,66 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Copy-DBPoolParentContainer/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Sync-DBPoolContainer/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Internal/Set-DBPoolSecurityProtocol/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Add-DattoSecretStore/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Get-RefreshDBPoolApiKey/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Remove-RefreshDBPoolApiKey/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Internal/apiKey/Set-RefreshDBPoolApiKey/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Internal/autoUpdate/Update-RefreshDBPoolModule/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Internal/logging/Remove-RefreshDBPoolLog/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Export-RefreshDBPoolModuleSetting/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Get-RefreshDBPoolModuleSetting/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Import-RefreshDBPoolModuleSetting/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Internal/moduleSettings/Remove-RefreshDBPoolModuleSetting/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Register-RefreshDBPoolTask/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
     <url>
          <loc>https://datto-dbpool-refresh.kentsapp.com/Internal/scheduledTask/Update-RefreshDBPoolTask/</loc>
-         <lastmod>2025-02-08</lastmod>
+         <lastmod>2025-02-11</lastmod>
     </url>
 </urlset>

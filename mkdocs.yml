@@ -5,6 +5,7 @@ site_dir: ./site/
 docs_dir: ./docs/site/
 exclude_docs: |
   /en-US/
+  /generated/
 repo_url: https://github.com/cksapp/Datto-DBPool_Refresh
 theme:
   name: material
@@ -41,10 +42,10 @@ theme:
     - header.autohide
     - navigation.instant
     - navigation.instant.progress
-    - navigation.tabs
-    - navigation.top
-    #- navigation.tabs.sticky # Keep the tabs visible when scrolling
     #- navigation.footer # Add page navigation to the footer
+    - navigation.tabs
+    #- navigation.tabs.sticky # Keep the tabs visible when scrolling
+    - navigation.top
     - search.suggest
     - search.highlight
     - search.share
@@ -68,7 +69,8 @@ markdown_extensions:
   - toc:
       permalink: 🔗
 plugins:
-  #- privacy
+  - privacy
   - search
-  #- social
+  - social
   - open-in-new-tab
+  - glightbox

@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.3">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.d7758b05.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.8608ea7d.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
@@ -1305,11 +1305,14 @@ The recommendation is ~30 - 60 minutes prior to the start of your shift.</p>
 <ol>
 <li>Copy the full script<ul>
 <li><em>This can be done via the 'Copy to Clipboard' icon</em>
-<a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="copyTo_Clipboard" src="assets/install/script_CopyToClipboard.png" /></a></li>
+<img alt="copyTo_Clipboard-Dark" class="off-glb" src="assets/install/script_CopyToClipboard-Dark.png#only-light" />
+<img alt="copyTo_Clipboard" class="off-glb" src="assets/install/script_CopyToClipboard.png#only-dark" /></li>
 </ul>
 </li>
-<li>Open PowerShell <em>(will work with both Windows PowerShell, and PowerShell)</em></li>
-<li>Paste the script content and enter <em>(sometimes it seems this may hang, in which case pressing 'Enter' or 'Spacebar' will allow continued run)</em></li>
+<li>Open PowerShell <em>(will work with both Windows PowerShell, and PowerShell)</em>
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom" data-gallery="install_script"><img alt="launch_PowerShell" data-gallery="install_script" src="assets/install/launch_WindowsPowerShell.png" /></a></li>
+<li>Paste the script content and enter <em>(sometimes it seems this may hang, in which case pressing 'Enter' or 'Spacebar' will allow continued run)</em>
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom" data-gallery="install_script"><img alt="pasteTo_Run" data-gallery="install_script" src="assets/install/script_PasteToRun.png" /></a></li>
 </ol>
 <hr />
 <h3 id="manual-install">Manual Install<a class="headerlink" href="#manual-install" title="Permanent link">🔗</a></h3>
@@ -1325,10 +1328,10 @@ The recommendation is ~30 - 60 minutes prior to the start of your shift.</p>
 <p>First login to the web-portal <a href="https://dbpool.datto.net">https://dbpool.datto.net</a></p>
 <ol>
 <li>Select your <strong>User Profile</strong> at the top-right, select <strong>My profile</strong> from the drop-down
-   <a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="profile_Settings" src="assets/APIKey/profile_Settings.png" /></a></li>
+   <a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom" data-gallery="api_key"><img alt="profile_Settings" data-gallery="api_key" src="assets/APIKey/profile_Settings.png" /></a></li>
 <li>Under <strong>Profile</strong> → <strong>Metadata</strong> → <strong>API key</strong>, listed is your personal API key</li>
 <li>Make a record of this in a safe-place.
-   <a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="personal_ApiKey" src="assets/APIKey/personal_ApiKey.png" /></a></li>
+   <a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom" data-gallery="api_key"><img alt="personal_ApiKey" data-gallery="api_key" src="assets/APIKey/personal_ApiKey.png" /></a></li>
 <li>Use <code>Set-RefreshDBPoolApiKey</code> to add the API key to module secret store</li>
 </ol>
 <h3 id="environment-override">Environment Override<a class="headerlink" href="#environment-override" title="Permanent link">🔗</a></h3>
@@ -1342,12 +1345,12 @@ If you wish to override any module settings this can be done within the <code>co
 <ul>
 <li>By default <strong>ALL</strong> containers in the DBPool will be refreshed by the script</li>
 <li>The <code>RefreshDBPool_Container_Ids</code> variable can be updated with the DBPool Container Ids which you want to only be refreshed
-<a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="containerIds_Config" src="assets/env/containerIds_Config.png" /></a></li>
+<a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom" data-gallery="env_config"><img alt="containerIds_Config" data-gallery="env_config" src="assets/env/containerIds_Config.png" /></a></li>
 </ul>
 <h3 id="automating">Automating<a class="headerlink" href="#automating" title="Permanent link">🔗</a></h3>
 <p>The module handles automation using the <code>Register-RefreshDBPoolTask</code> by creating a scheduled task in Windows to run the refresh script daily.</p>
 <p>This creates a new task in the Windows <strong>Task Scheduler</strong> under the <strong>Datto</strong> directory labeled <strong>DBPool-Refresh</strong>.
-<a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="scheduledTask" src="assets/task/scheduledTask.png" /></a></p>
+<a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom" data-gallery="automate"><img alt="scheduledTask" data-gallery="automate" src="assets/task/scheduledTask.png" /></a></p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">🔗</a></h2>
 
 

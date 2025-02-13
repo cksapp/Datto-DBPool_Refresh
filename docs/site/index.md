@@ -19,9 +19,12 @@ $scriptFile = 'https://raw.githubusercontent.com/cksapp/Datto-DBPool_Refresh/ref
 
 1. Copy the full script
     - _This can be done via the 'Copy to Clipboard' icon_
-    ![copyTo_Clipboard](./assets/install/script_CopyToClipboard.png)
+    ![copyTo_Clipboard-Dark](./assets/install/script_CopyToClipboard-Dark.png#only-light){ .off-glb }
+    ![copyTo_Clipboard](./assets/install/script_CopyToClipboard.png#only-dark){ .off-glb }
 2. Open PowerShell _(will work with both Windows PowerShell, and PowerShell)_
+    ![launch_PowerShell](./assets/install/launch_WindowsPowerShell.png){data-gallery="install_script"}
 3. Paste the script content and enter _(sometimes it seems this may hang, in which case pressing 'Enter' or 'Spacebar' will allow continued run)_
+    ![pasteTo_Run](./assets/install/script_PasteToRun.png){data-gallery="install_script"}
 
 ---
 
@@ -48,10 +51,10 @@ You will need to get your personal API key, which will be needed by the module t
 First login to the web-portal [https://dbpool.datto.net](https://dbpool.datto.net)
 
 1. Select your **User Profile** at the top-right, select **My profile** from the drop-down
-   ![profile_Settings](./assets/APIKey/profile_Settings.png)
+   ![profile_Settings](./assets/APIKey/profile_Settings.png){data-gallery="api_key"}
 2. Under **Profile** → **Metadata** → **API key**, listed is your personal API key
    - Make a record of this in a safe-place.
-   ![personal_ApiKey](./assets/APIKey/personal_ApiKey.png)
+   ![personal_ApiKey](./assets/APIKey/personal_ApiKey.png){data-gallery="api_key"}
 3. Use `Set-RefreshDBPoolApiKey` to add the API key to module secret store
 
 ### Environment Override
@@ -66,13 +69,13 @@ If you wish to override any module settings this can be done within the `config.
 
 - By default **ALL** containers in the DBPool will be refreshed by the script
   - The `RefreshDBPool_Container_Ids` variable can be updated with the DBPool Container Ids which you want to only be refreshed
-![containerIds_Config](./assets/env/containerIds_Config.png)
+![containerIds_Config](./assets/env/containerIds_Config.png){data-gallery="env_config"}
 
 ### Automating
 
 The module handles automation using the `Register-RefreshDBPoolTask` by creating a scheduled task in Windows to run the refresh script daily.
 
 This creates a new task in the Windows **Task Scheduler** under the **Datto** directory labeled **DBPool-Refresh**.
-![scheduledTask](./assets/task/scheduledTask.png)
+![scheduledTask](./assets/task/scheduledTask.png){data-gallery="automate"}
 
 ## Examples

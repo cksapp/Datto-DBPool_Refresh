@@ -21,7 +21,9 @@ $scriptFile = 'https://raw.githubusercontent.com/cksapp/Datto-DBPool_Refresh/ref
     - _This can be done via the 'Copy to Clipboard' icon_
     ![copyTo_Clipboard](./docs/site/assets/install/script_CopyToClipboard.png)
 2. Open PowerShell _(will work with both Windows PowerShell, and PowerShell)_
+    ![launch_PowerShell](./docs/site/assets/install/launch_WindowsPowerShell.png)
 3. Paste the script content and enter _(sometimes it seems this may hang, in which case pressing 'Enter' or 'Spacebar' will allow continued run)_
+    ![pasteTo_Run](./docs/site/assets/install/script_PasteToRun.png)
 
 ---
 
@@ -46,10 +48,10 @@ You will need to get your personal API key, which will be needed by the module t
 First login to the web-portal [https://dbpool.datto.net](https://dbpool.datto.net)
 
 1. Select your **User Profile** at the top-right, select **My profile** from the drop-down
-   ![profile_Settings](./docs/site/assets/APIKey/profile_Settings.png)
+    ![profile_Settings](./docs/site/assets/APIKey/profile_Settings.png)
 2. Under **Profile** → **Metadata** → **API key**, listed is your personal API key
-   - Make a record of this in a safe-place.
-   ![personal_ApiKey](./docs/site/assets/APIKey/personal_ApiKey.png)
+    - Make a record of this in a safe-place.
+    ![personal_ApiKey](./docs/site/assets/APIKey/personal_ApiKey.png)
 3. Use `Set-RefreshDBPoolApiKey` to add the API key to module secret store
 
 ### Environment Override

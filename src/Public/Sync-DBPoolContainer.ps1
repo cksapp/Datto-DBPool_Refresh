@@ -53,6 +53,7 @@ function Sync-DBPoolContainer {
         https://datto-dbpool-refresh.kentsapp.com/Sync-DBPoolContainer/
 #>
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
+    [Alias('Refresh-DBPoolContainer', 'Refresh-DBPool', 'Sync-DBPool')]
     param (
         [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [AllowNull()]

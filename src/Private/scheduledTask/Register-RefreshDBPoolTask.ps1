@@ -132,6 +132,7 @@ function Register-RefreshDBPoolTask {
             }
             $task = New-ScheduledTask @taskParams
             $task.Author = "Kent Sapp (@cksapp)"
+            $task.Documentation = 'https://datto-dbpool-refresh.kentsapp.com'
 
             $registerParams = @{
                 InputObject = $task

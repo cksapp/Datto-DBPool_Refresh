@@ -97,6 +97,16 @@ function Sync-DBPoolContainer {
 
         $IdsToRefresh = [System.Collections.ArrayList]::new()
         foreach ($n in $Id) {
+            # Try to get the container name to output for the ID when using the Verbose preference
+            if ($PSBoundParameters.ContainsKey('Verbose') -and (-not $Force) -and ($ConfirmPreference -ne 'None')) {
+                try {
+                    $containerName = (Get-DBPoolContainer -Id $n -WarningAction SilentlyContinue -ErrorAction Stop -Verbose:$false).name
+                } catch {
+                    #Write-Warning "Failed to get the container name for ID $n. $_"
+                    $containerName = '## FailedToGetContainerName ##'
+                }
+                Write-Verbose "Confirm action [ Refresh ] for Container [ ID: $n, Name: $containerName ]"
+            }
             if ($Force -or $PSCmdlet.ShouldProcess("Container [ ID: $n ]", '[ Refresh ]')) {
                 $IdsToRefresh.Add($n) | Out-Null
             }

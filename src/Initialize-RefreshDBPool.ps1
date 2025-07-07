@@ -54,7 +54,7 @@ if ($PSEdition -eq 'Desktop') {
     }
 }
 # Set the execution policy within the current session scope
-if ((Get-ExecutionPolicy) -ne "Bypass") {
+if (($PSEdition -eq 'Desktop' -or $IsWindows) -and ((Get-ExecutionPolicy) -ne 'Bypass')) {
     Set-ExecutionPolicy "Bypass" -Force -Scope Process
 }
 

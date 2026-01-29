@@ -12,7 +12,7 @@
     RootModule = 'Datto.DBPool.Refresh.psm1'
 
     # Version number of this module.
-    ModuleVersion = '0.2.1'
+    ModuleVersion = '0.2.2'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -75,7 +75,31 @@
     # FormatsToProcess = @()
 
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-    # NestedModules = @()
+    NestedModules = @(
+        'Private/Set-DBPoolSecurityProtocol.ps1'
+
+        'Private/apiKey/Get-RefreshDBPoolApiKey.ps1'
+        'Private/apiKey/Remove-RefreshDBPoolApiKey.ps1'
+        'Private/apiKey/Set-RefreshDBPoolApiKey.ps1'
+
+        'Private/apiKey/secretStore/Add-DattoSecretStore.ps1'
+
+        'Private/autoUpdate/Update-RefreshDBPoolModule.ps1'
+
+        'Private/logging/Remove-RefreshDBPoolLog.ps1'
+
+        'Private/moduleSettings/Export-RefreshDBPoolModuleSetting.ps1'
+        'Private/moduleSettings/Get-RefreshDBPoolModuleSetting.ps1'
+        'Private/moduleSettings/Import-RefreshDBPoolModuleSetting.ps1'
+        'Private/moduleSettings/Initialize-RefreshDBPoolModuleSetting.ps1'
+        'Private/moduleSettings/Remove-RefreshDBPoolModuleSetting.ps1'
+
+        'Private/scheduledTask/Register-RefreshDBPoolTask.ps1'
+        'Private/scheduledTask/Update-RefreshDBPoolTask.ps1'
+
+        'Public/Copy-DBPoolParentContainer.ps1'
+        'Public/Sync-DBPoolContainer.ps1'
+    )
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = '*'

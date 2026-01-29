@@ -40,6 +40,11 @@ $ErrorActionPreference = 'Stop'
 
 # Bootstrap dependencies
 if ($Bootstrap.IsPresent) {
+    # Force PowerShellGet v2 to avoid PSDepend compatibility issues
+    Remove-Module Microsoft.PowerShell.PSResourceGet -Force -ErrorAction SilentlyContinue
+    Remove-Module PowerShellGet -Force -ErrorAction SilentlyContinue
+    Import-Module PowerShellGet -RequiredVersion '2.2.5' -Force
+
     Get-PackageProvider -Name Nuget -ForceBootstrap | Out-Null
     Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
     if ((Test-Path -Path ./requirements.psd1)) {

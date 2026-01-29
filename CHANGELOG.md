@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+## [0.2.1]
+
+Adds documentation link in scheduled task details
+
+Aliases for `Sync-DBPoolContainer` function: 'Refresh-DBPoolContainer', 'Refresh-DBPool', 'Sync-DBPool'
+
+Hidden parameter switch for `Copy-DBPoolParentContainer` function `-AllowBeta` cloning DBPool containers matching 'BETA' name
+
+Verbose output for confirmation prompt with container name in `Sync-DBPoolContainer` function
+
 ## [0.1.6.1] Release
 
 Fix minor typo in release module settings

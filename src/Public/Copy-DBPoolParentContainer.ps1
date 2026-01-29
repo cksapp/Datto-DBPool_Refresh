@@ -18,6 +18,10 @@ function Copy-DBPoolParentContainer {
     .PARAMETER Duplicate
         If specified, the function will clone the parent container(s) even if a similar container already exists.
 
+    .PARAMETER AllowBeta
+        If specified, the function will allow cloning of parent containers with 'BETA' in the name.
+        By default, BETA containers are excluded from cloning.
+
     .INPUTS
         [int] - Array of ID(s) of the parent container(s) to clone.
         [string] - Array of DefaultDatabase(s) of the parent container(s) to clone.
@@ -120,7 +124,7 @@ function Copy-DBPoolParentContainer {
             }
         }
         if ($filteredParentContainer.Count -eq 0) {
-            Write-Error 'No parent container found to clone.'
+            Write-Error 'No matching parent container(s) found to clone.'
             return
         }
 

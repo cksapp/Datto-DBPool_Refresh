@@ -11,13 +11,15 @@ The recommendation is ~30 - 60 minutes prior to the start of your shift.
 
 Use the following script to easily install and handle **all** dependancies.
 
-The [install script](./src/Invoke-RefreshDBPoolInstall.ps1) is user interactive with a few prompts to set up the initial install and variables needed to automate the container refresh.
+The [invoke install script](./src/Invoke-RefreshDBPoolInstall.ps1) is user interactive with a few prompts to set up the initial install and variables needed to automate the container refresh.
 
 ```PowerShell
-$scriptFile = 'https://raw.githubusercontent.com/cksapp/Datto-DBPool_Refresh/refs/heads/main/src/Initialize-RefreshDBPool.ps1'; $fileName = [System.IO.Path]::GetFileName($scriptFile); $tempFile = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), $fileName); if ($PSEdition -eq 'Desktop' -or $IsWindows) { Set-ExecutionPolicy Bypass -Scope Process -Force }; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; (New-Object System.Net.WebClient).DownloadFile($scriptFile, $tempFile); & $tempFile
+powershell -ep bypass "irm mlnk.kentsapp.com/dbpool-ez-inst|iex"
 ```
 
-1. Copy the full script
+**Note:** If you have PowerShell 7 installed and want to use it directly, replace `powershell` with `pwsh` in the command above.
+
+1. Copy the script command
     - _This can be done via the 'Copy to Clipboard' icon_
     ![copyTo_Clipboard](./docs/site/assets/install/script_CopyToClipboard.png)
 2. Open PowerShell _(will work with both Windows PowerShell, and PowerShell)_

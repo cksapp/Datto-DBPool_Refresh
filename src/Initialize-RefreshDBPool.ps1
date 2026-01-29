@@ -100,21 +100,42 @@ if ($PSEdition -eq 'Desktop') {
     try {
         # Check if pwsh is installed
         if (Get-Command pwsh -ErrorAction SilentlyContinue) {
-            # Relaunch the script in the new PowerShell Core session
-            Write-Information 'PowerShell Core is already installed. Running in a new session...'
-            Start-Process pwsh -ArgumentList "-NoExit -ExecutionPolicy Bypass -File `"$PSCommandPath`" -InformationAction:$InformationPreference -Verbose:$($PSBoundParameters.ContainsKey('Verbose'))"
-            Start-Sleep -Seconds 3
-            exit
+            # Check if script is running from memory (piped into iex) or from a file
+            if ([string]::IsNullOrEmpty($PSCommandPath)) {
+                # Script is running from memory, download to temp file first
+                Write-Information 'PowerShell Core is already installed. Downloading script to launch in new session...'
+                $scriptUrl = 'https://raw.githubusercontent.com/cksapp/Datto-DBPool_Refresh/refs/heads/main/src/Initialize-RefreshDBPool.ps1'
+                $tempScriptPath = Join-Path -Path $env:TEMP -ChildPath 'Initialize-RefreshDBPool.ps1'
+
+                try {
+                    (New-Object System.Net.WebClient).DownloadFile($scriptUrl, $tempScriptPath)
+                    Write-Verbose "Script downloaded to: $tempScriptPath"
+
+                    # Relaunch with the downloaded script
+                    Start-Process pwsh -ArgumentList "-NoExit -ExecutionPolicy Bypass -File `"$tempScriptPath`" -InformationAction:$InformationPreference -Verbose:$($PSBoundParameters.ContainsKey('Verbose'))"
+                    Start-Sleep -Seconds 3
+                    exit
+                } catch {
+                    Write-Warning "Failed to download script for relaunch. Error: $_"
+                    Write-Information 'Continuing in Windows PowerShell...'
+                }
+            } else {
+                # Script is running from a file, use the file path
+                Write-Information 'PowerShell Core is already installed. Running in a new session...'
+                Start-Process pwsh -ArgumentList "-NoExit -ExecutionPolicy Bypass -File `"$PSCommandPath`" -InformationAction:$InformationPreference -Verbose:$($PSBoundParameters.ContainsKey('Verbose'))"
+                Start-Sleep -Seconds 3
+                exit
+            }
         } else {
             $installPwshCore = Read-Host 'PowerShell Core not installed. Do you want to install the latest version? (Yes/no)'
             if ($installPwshCore -imatch '^(yes|y|)$') {
                 Write-Information 'Installing the latest version of PowerShell Core... This may take some time...'
 
                 # Define the URL for the latest PowerShell Core installer
-                $pwshInstallerUrl = 'https://github.com/PowerShell/PowerShell/releases/download/v7.5.0/PowerShell-7.5.0-win-x64.msi'
-                $pwshInstallerHash = '6B988B7E236A8E1CF1166D3BE289D3A20AA344499153BDAADD2F9FEDFFC6EDA9'
+                $pwshInstallerUrl = 'https://github.com/PowerShell/PowerShell/releases/download/v7.5.4/PowerShell-7.5.4-win-x64.msi'
+                $pwshInstallerHash = 'sha256:84a39d39f113f884333686c4df70bc6c517f5b5d3982d88b4a0139f10ebb3fcb'
 
-                $pwshInstallerPath = Join-Path -Path $env:TEMP -ChildPath 'PowerShell-7.5.0-win-x64.msi'
+                $pwshInstallerPath = Join-Path -Path $env:TEMP -ChildPath 'PowerShell-7.5.4-win-x64.msi'
 
                 # Function to handle download progress
                 function DownloadFileWithProgress {
@@ -204,10 +225,30 @@ if ($PSEdition -eq 'Desktop') {
 
                     if ($process.ExitCode -eq 0) {
                         Write-Information 'PowerShell Core has been installed successfully. Relaunching the script in the new session...'
-                        # Relaunch the script in the new PowerShell Core session
-                        Start-Process pwsh -ArgumentList "-NoExit -ExecutionPolicy Bypass -File `"$PSCommandPath`" -InformationAction:$InformationPreference -Verbose:$($PSBoundParameters.ContainsKey('Verbose'))"
-                        Start-Sleep -Seconds 3
-                        exit
+
+                        # Check if script is running from memory or from a file
+                        if ([string]::IsNullOrEmpty($PSCommandPath)) {
+                            # Script is running from memory, download to temp file first
+                            $scriptUrl = 'https://raw.githubusercontent.com/cksapp/Datto-DBPool_Refresh/refs/heads/main/src/Initialize-RefreshDBPool.ps1'
+                            $tempScriptPath = Join-Path -Path $env:TEMP -ChildPath 'Initialize-RefreshDBPool.ps1'
+
+                            try {
+                                (New-Object System.Net.WebClient).DownloadFile($scriptUrl, $tempScriptPath)
+                                Write-Verbose "Script downloaded to: $tempScriptPath"
+
+                                # Relaunch with the downloaded script
+                                Start-Process pwsh -ArgumentList "-NoExit -ExecutionPolicy Bypass -File `"$tempScriptPath`" -InformationAction:$InformationPreference -Verbose:$($PSBoundParameters.ContainsKey('Verbose'))"
+                                Start-Sleep -Seconds 3
+                                exit
+                            } catch {
+                                Write-Warning "Failed to download script for relaunch. Error: $_"
+                            }
+                        } else {
+                            # Relaunch the script in the new PowerShell Core session
+                            Start-Process pwsh -ArgumentList "-NoExit -ExecutionPolicy Bypass -File `"$PSCommandPath`" -InformationAction:$InformationPreference -Verbose:$($PSBoundParameters.ContainsKey('Verbose'))"
+                            Start-Sleep -Seconds 3
+                            exit
+                        }
                     } else {
                         Write-Warning "PowerShell Core installation failed with exit code $($process.ExitCode)."
                     }

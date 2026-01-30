@@ -61,7 +61,7 @@ Task PublishDocs -Depends Build {
     $env:GITHUB_TOKEN = $env:GITHUB_TOKEN ?? ''
     $env:GITHUB_REPOSITORY = $env:GITHUB_REPOSITORY ?? ''
     $env:GITHUB_ACTOR = $env:GITHUB_ACTOR ?? ''
-    
+
     Exec {
         docker run -v "$($psake.build_script_dir)`:/docs" `
             -e 'CI=true' `

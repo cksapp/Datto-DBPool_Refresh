@@ -1,0 +1,57 @@
+name: Publish to PowerShell Gallery
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish Module
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: bjompen/UpdatePWSHAction@v1.0.3
+
+      - name: Download release asset
+        shell: pwsh
+        run: |
+          $release = gh release view --json assets -q '.assets[0].url'
+          if ($release) {
+            gh release download --pattern '*.zip'
+            Write-Host "Downloaded release artifact"
+          } else {
+            Write-Error "No release artifact found"
+            exit 1
+          }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract and publish module
+        shell: pwsh
+        run: |
+          $zipFile = Get-ChildItem -Filter "Datto.DBPool.Refresh-*.zip" | Select-Object -First 1
+          if ($zipFile) {
+            Write-Host "Found zip file: $($zipFile.Name)"
+            Expand-Archive -Path $zipFile.FullName -DestinationPath './extracted'
+            
+            $modulePath = Get-ChildItem -Path './extracted' -Directory | Select-Object -First 1
+            if ($modulePath) {
+              Write-Host "Publishing from: $($modulePath.FullName)"
+              Publish-Module -Path $modulePath.FullName -NuGetApiKey ${{ secrets.PSGALLERY_API_KEY }} -Force
+              Write-Host "Module published successfully"
+            } else {
+              Write-Error "Module directory not found in extracted archive"
+              exit 1
+            }
+          } else {
+            Write-Error "No zip file found"
+            exit 1
+          }
+
+      - name: Trigger docs publish
+        run: |
+          gh workflow run publish-docs.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

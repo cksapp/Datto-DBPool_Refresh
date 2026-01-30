@@ -10,6 +10,11 @@ on:
       - mkdocs.yml
       - .github/workflows/Build_DocsSite.yml
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_REPOSITORY: ${{ github.repository }}
+  GITHUB_ACTOR: ${{ github.actor }}
+
 jobs:
 
   DeployDocs:
@@ -21,20 +26,18 @@ jobs:
       pages: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       # Using caches in a larger project can really speed up builds
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           key: ${{ runner.os }}-mkdocs
           path: .cache
 
       - name: Setup PowerShell
-        uses: bjompen/UpdatePWSHAction@v1.0.1
-        with:
-          FixedVersion: '7.3.12'
+        uses: bjompen/UpdatePWSHAction@v1.0.3
 
       - name: MkDocs GH-Deploy
         if: github.ref == 'refs/heads/main'

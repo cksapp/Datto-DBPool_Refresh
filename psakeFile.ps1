@@ -48,8 +48,29 @@ Task RemoveNestedModules -Depends UpdateFunctionsToExport {
     Write-Host 'Module manifest updated successfully'
 }
 
-# Override GenerateMarkdown to depend on RemoveNestedModules
-Task GenerateMarkdown -FromModule PowerShellBuild -Depends RemoveNestedModules
+# Append Initialize-RefreshDBPool.ps1 to compiled module
+Task AppendInitialization -Depends RemoveNestedModules {
+    $compiledModulePath = Join-Path -Path $env:BHBuildOutput -ChildPath $($env:BHProjectName + '.psm1')
+    $initializeScriptPath = Join-Path -Path $env:BHPSModulePath -ChildPath 'Initialize-RefreshDBPool.ps1'
+    
+    if (Test-Path $initializeScriptPath) {
+        Write-Host "Appending initialization script to compiled module"
+        $initializeContent = Get-Content -Path $initializeScriptPath -Raw
+        
+        $appendContent = @"
+
+# Region: Initialize-RefreshDBPool.ps1
+$initializeContent
+# EndRegion: Initialize-RefreshDBPool.ps1
+"@
+        
+        Add-Content -Path $compiledModulePath -Value $appendContent
+        Write-Host "Initialization script appended successfully"
+    }
+}
+
+# Override GenerateMarkdown to depend on AppendInitialization
+Task GenerateMarkdown -FromModule PowerShellBuild -Depends AppendInitialization
 
 # Override Build to include your custom dependencies
 Task Build -FromModule PowerShellBuild -Depends @('GenerateMarkdown', 'BuildHelp')
@@ -58,7 +79,16 @@ Task Build -FromModule PowerShellBuild -Depends @('GenerateMarkdown', 'BuildHelp
 Task Test -FromModule PowerShellBuild -MinimumVersion '0.6.1' -Depends Build
 
 Task PublishDocs -Depends Build {
+    $env:GITHUB_TOKEN = $env:GITHUB_TOKEN ?? ''
+    $env:GITHUB_REPOSITORY = $env:GITHUB_REPOSITORY ?? ''
+    $env:GITHUB_ACTOR = $env:GITHUB_ACTOR ?? ''
+    
     Exec {
-        docker run -v "$($psake.build_script_dir)`:/docs" -e 'CI=true' --entrypoint 'sh' squidfunk/mkdocs-material:9 -c 'pip install -r requirements.txt && mkdocs gh-deploy --force'
+        docker run -v "$($psake.build_script_dir)`:/docs" `
+            -e 'CI=true' `
+            -e "GITHUB_TOKEN=$env:GITHUB_TOKEN" `
+            -e "GITHUB_REPOSITORY=$env:GITHUB_REPOSITORY" `
+            -e "GITHUB_ACTOR=$env:GITHUB_ACTOR" `
+            --entrypoint 'sh' squidfunk/mkdocs-material:9 -c 'pip install -r requirements.txt && mkdocs gh-deploy --force'
     }
 }

@@ -304,7 +304,10 @@ if (-not (Get-Module -Name Datto.DBPool.Refresh -Verbose:$false)) {
 # Set the environment variables for the Datto.DBPool.Refresh module
 try {
     if (-not (Get-SecretVault -Name Datto_SecretStore -ErrorAction SilentlyContinue -Verbose:$false)) {
-        $secretStoreAuth = ConvertTo-SecureString 'HardCodedPassword' -AsPlainText -Force
+        # Generate a random temporary password for initial SecretStore configuration
+        # This is immediately replaced with no authentication, but SecretStore requires a password for the initial setup
+        $tempPassword = -join ((65..90) + (97..122) + (48..57) | Get-Random -Count 32 | ForEach-Object { [char]$_ })
+        $secretStoreAuth = ConvertTo-SecureString $tempPassword -AsPlainText -Force
         Set-SecretStoreConfiguration -Authentication Password -Password $secretStoreAuth -Confirm:$false
         Set-SecretStoreConfiguration -Authentication none -Password $secretStoreAuth -Confirm:$false
         Add-DattoSecretStore -ErrorAction Stop

@@ -5,8 +5,6 @@ properties {
     # Set this to $true to create a module with a monolithic PSM1
     $PSBPreference.Build.CompileModule = $true
     $PSBPreference.Build.CopyDirectories = @('scripts')
-    # Exclude bootstrap/helper scripts from compilation - they are helper tools for users, not part of the module
-    $PSBPreference.Build.Exclude = @('Initialize-RefreshDBPool.ps1', 'Invoke-RefreshDBPoolInstall.ps1')
     $PSBPreference.Build.CompileScriptHeader = '#Region' + [System.Environment]::NewLine
     $PSBPreference.Build.CompileScriptFooter = [System.Environment]::NewLine + '#EndRegion'
     $PSBPreference.Help.DefaultLocale = 'en-US'
@@ -63,13 +61,11 @@ Task PublishDocs -Depends Build {
     $env:GITHUB_TOKEN = $env:GITHUB_TOKEN ?? ''
     $env:GITHUB_REPOSITORY = $env:GITHUB_REPOSITORY ?? ''
     $env:GITHUB_ACTOR = $env:GITHUB_ACTOR ?? ''
-    
+
     Exec {
         docker run -v "$($psake.build_script_dir)`:/docs" `
             -e 'CI=true' `
             -e "GITHUB_TOKEN=$env:GITHUB_TOKEN" `
             -e "GITHUB_REPOSITORY=$env:GITHUB_REPOSITORY" `
             -e "GITHUB_ACTOR=$env:GITHUB_ACTOR" `
-            --entrypoint 'sh' squidfunk/mkdocs-material:9 -c 'pip install -r requirements.txt && mkdocs gh-deploy --force'
-    }
-}
+            --entrypoint 'sh' squidfunk/mkdocs-material:9@sha256:3bba0a99bc6e635bb8e53f379d32ab9cecb554adee9cc8f59a347f93ecf82f3b -c 'pip install -r requirements.txt && mkdocs gh-deploy --force'

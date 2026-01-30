@@ -14,12 +14,14 @@ Clones the specified DBPool parent container(s) using the DBPool API.
 
 ### byId (Default)
 ```
-Copy-DBPoolParentContainer -Id <Int32[]> [-ContainerName_Append <String>] [-Duplicate] [-AllowBeta] [<CommonParameters>]
+Copy-DBPoolParentContainer -Id <Int32[]> [-ContainerName_Append <String>] [-Duplicate] [-AllowBeta]
+ [<CommonParameters>]
 ```
 
 ### byDefaultDatabase
 ```
-Copy-DBPoolParentContainer -DefaultDatabase <String[]> [-ContainerName_Append <String>] [-Duplicate] [-AllowBeta] [<CommonParameters>]
+Copy-DBPoolParentContainer -DefaultDatabase <String[]> [-ContainerName_Append <String>] [-Duplicate]
+ [-AllowBeta] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

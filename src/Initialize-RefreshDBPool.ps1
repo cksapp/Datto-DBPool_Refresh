@@ -133,7 +133,7 @@ if ($PSEdition -eq 'Desktop') {
 
                 # Define the URL for the latest PowerShell Core installer
                 $pwshInstallerUrl = 'https://github.com/PowerShell/PowerShell/releases/download/v7.5.4/PowerShell-7.5.4-win-x64.msi'
-                $pwshInstallerHash = 'sha256:84a39d39f113f884333686c4df70bc6c517f5b5d3982d88b4a0139f10ebb3fcb'
+                $pwshInstallerHash = '84A39D39F113F884333686C4DF70BC6C517F5B5D3982D88B4A0139F10EBB3FCB'
 
                 $pwshInstallerPath = Join-Path -Path $env:TEMP -ChildPath 'PowerShell-7.5.4-win-x64.msi'
 

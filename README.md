@@ -9,7 +9,7 @@ The recommendation is ~30 - 60 minutes prior to the start of your shift.
 
 ### Easy Install Script
 
-Use the following script to easily install and handle **all** dependancies.
+Use the following script to easily install and handle **all** dependencies.
 
 The [invoke install script](./src/Invoke-RefreshDBPoolInstall.ps1) is user interactive with a few prompts to set up the initial install and variables needed to automate the container refresh.
 

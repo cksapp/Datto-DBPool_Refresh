@@ -1,5 +1,12 @@
-name: Build_DocsSite
+name: Build Documentation
 
+# Documentation Build and Deployment
+#
+# Triggered by:
+# 1. Manual: workflow_dispatch button
+# 2. Changes: Push to docs/** or mkdocs.yml
+# 3. Auto: Called by build-and-release.yml after release creation
+# 4. Auto: Called by publish-psgallery.yml after PSGallery publishing
 on:
   workflow_dispatch:
   push:
@@ -9,11 +16,12 @@ on:
       - docs/**
       - mkdocs.yml
       - .github/workflows/Build_DocsSite.yml
+      - src/**
+      - Datto.DBPool.Refresh/**
 
 jobs:
-
-  DeployDocs:
-    name: Build and deploy docs
+  build-docs:
+    name: Build and Deploy Documentation
     runs-on: ubuntu-latest
     # Grant the minimum permissions necessary for this job to publish to GitHub Pages
     permissions:
@@ -21,22 +29,31 @@ jobs:
       pages: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       # Using caches in a larger project can really speed up builds
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           key: ${{ runner.os }}-mkdocs
           path: .cache
 
       - name: Setup PowerShell
-        uses: bjompen/UpdatePWSHAction@v1.0.1
-        with:
-          FixedVersion: '7.3.12'
+        uses: bjompen/UpdatePWSHAction@v1.0.3
 
-      - name: MkDocs GH-Deploy
+      - name: Build and deploy documentation
         if: github.ref == 'refs/heads/main'
         shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_ACTOR: ${{ github.actor }}
         run: ./build.ps1 -Bootstrap -Task PublishDocs
+
+      - name: Documentation published
+        shell: pwsh
+        run: |
+          Write-Host "Documentation has been updated:"
+          Write-Host "Site: https://github.com/${{ github.repository }}/pages"
+          Write-Host "URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"

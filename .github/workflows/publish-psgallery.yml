@@ -1,0 +1,162 @@
+name: Publish to PowerShell Gallery
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Resolve and validate version
+        id: version
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          # Resolve tag name from release event or git
+          $tagName = "${{ github.event.release.tag_name }}"
+          if (-not $tagName) {
+              $tagName = git describe --tags --abbrev=0 --match 'v*.*.*' 2>$null
+          }
+
+          if (-not $tagName) {
+              throw "[ERROR] Could not resolve a release tag for this run"
+          }
+
+          $version = $tagName -replace '^v', ''
+
+          # Validate version format
+          if ($version -notmatch '^\d+\.\d+\.\d+$') {
+              throw "[ERROR] Invalid version format: $version (expected X.Y.Z)"
+          }
+
+          # Check if version already exists in PSGallery
+          Write-Host "Checking PSGallery for version $version..."
+          try {
+              $existingModule = Find-Module -Name 'Datto.DBPool.Refresh' -RequiredVersion $version -ErrorAction SilentlyContinue
+              if ($existingModule) {
+                  Write-Host "[INFO] Version $version already published to PSGallery"
+                  Write-Output "skip_publish=true" >> $env:GITHUB_OUTPUT
+              } else {
+                  Write-Output "skip_publish=false" >> $env:GITHUB_OUTPUT
+              }
+          } catch {
+              Write-Host "[INFO] Could not check PSGallery: $_"
+              Write-Output "skip_publish=false" >> $env:GITHUB_OUTPUT
+          }
+
+          Write-Output "version=$version" >> $env:GITHUB_OUTPUT
+          Write-Output "tag_name=$tagName" >> $env:GITHUB_OUTPUT
+          Write-Host "Release version: $version"
+
+      - name: Download release artifact
+        shell: pwsh
+        run: |
+          $version = "${{ steps.version.outputs.version }}"
+          $tagName = "${{ steps.version.outputs.tag_name }}"
+          $assetName = "Datto.DBPool.Refresh-$version.zip"
+
+          Write-Host "Downloading: $assetName from $tagName"
+          gh release download $tagName -p $assetName -O module.zip
+
+          if (-not (Test-Path module.zip)) {
+              Write-Error "[ERROR] Module artifact not found in release: $assetName"
+              exit 1
+          }
+
+          Write-Host "[SUCCESS] Downloaded successfully"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract module archive
+        shell: pwsh
+        run: |
+          Write-Host "Extracting module.zip..."
+          Expand-Archive -Path "module.zip" -DestinationPath "." -Force
+
+          Write-Host "Extracted contents:"
+          Get-ChildItem -Recurse | Select-Object FullName
+
+      - name: Validate module structure
+        id: validate
+        shell: pwsh
+        run: |
+          $version = "${{ steps.version.outputs.version }}"
+          $modulePath = "Datto.DBPool.Refresh/$version"
+
+          if (-not (Test-Path $modulePath)) {
+              Write-Error "[ERROR] Module directory not found: $modulePath"
+              exit 1
+          }
+
+          $manifestPath = Join-Path $modulePath "Datto.DBPool.Refresh.psd1"
+          if (-not (Test-Path $manifestPath)) {
+              Write-Error "[ERROR] Module manifest not found: $manifestPath"
+              exit 1
+          }
+
+          Write-Output "module_path=$modulePath" >> $env:GITHUB_OUTPUT
+          Write-Host "[SUCCESS] Module structure validated"
+          Write-Host "Module path: $modulePath"
+
+      - name: Publish to PowerShell Gallery
+        if: ${{ steps.version.outputs.skip_publish != 'true' }}
+        shell: pwsh
+        env:
+          PS_GALLERY_API_KEY: ${{ secrets.PS_GALLERY_API_KEY }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $modulePath = "${{ steps.validate.outputs.module_path }}"
+          $version = "${{ steps.version.outputs.version }}"
+
+          if (-not $env:PS_GALLERY_API_KEY) {
+              throw "[ERROR] PS_GALLERY_API_KEY secret is not set. Please add it in repository Settings > Secrets and variables > Actions"
+          }
+
+          Write-Host "Publishing module version $version from: $modulePath"
+
+          try {
+              Publish-Module -Path $modulePath -NuGetApiKey $env:PS_GALLERY_API_KEY -Verbose -Force
+              Write-Host "[SUCCESS] Module version $version published successfully to PowerShell Gallery"
+          } catch {
+              $errorMessage = $_.Exception.Message
+              if ($errorMessage -like "*already available in the repository*") {
+                  Write-Host "[WARNING] Module version already published to PSGallery"
+                  exit 1
+              } else {
+                  Write-Error "[ERROR] Failed to publish module: $_"
+                  exit 1
+              }
+          }
+
+      - name: Confirm publish completion
+        shell: pwsh
+        run: |
+          $skipPublish = "${{ steps.version.outputs.skip_publish }}"
+          $version = "${{ steps.version.outputs.version }}"
+
+          if ($skipPublish -eq 'true') {
+              Write-Host "[INFO] Version $version already exists in PSGallery (publish skipped)"
+          } else {
+              Write-Host "[SUCCESS] Version $version publish completed"
+          }
+
+      - name: Trigger documentation update
+        uses: actions/github-script@v8
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'Build_DocsSite.yml',
+              ref: 'main'
+            });
+            core.info('[SUCCESS] Triggered documentation update after PSGallery publish');

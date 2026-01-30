@@ -53,6 +53,7 @@ function Sync-DBPoolContainer {
         https://datto-dbpool-refresh.kentsapp.com/Sync-DBPoolContainer/
 #>
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
+    [Alias('Refresh-DBPoolContainer', 'Refresh-DBPool', 'Sync-DBPool')]
     param (
         [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [AllowNull()]
@@ -96,7 +97,17 @@ function Sync-DBPoolContainer {
 
         $IdsToRefresh = [System.Collections.ArrayList]::new()
         foreach ($n in $Id) {
-            if ($Force -or $PSCmdlet.ShouldProcess("Container [ ID: $n ]", '[ Refresh ]')) {
+            # Try to get the container name for the ID to output when using Verbose
+            if ( ($PSCmdlet.MyInvocation.BoundParameters['Verbose'].IsPresent) -and ( (-not $Force) -and ($ConfirmPreference -in @('Low', 'Medium')) ) ) {
+                try {
+                    $containerName = (Get-DBPoolContainer -Id $n -WarningAction SilentlyContinue -ErrorAction Stop -Verbose:$false).name
+                } catch {
+                    #Write-Warning "Failed to get the container name for ID $n. $_"
+                    $containerName = '## FailedToGetContainerName ##'
+                }
+                Write-Verbose "Confirm action [ Refresh ] for Container [ ID: $n, Name: $containerName ]"
+            }
+            if ($Force -or $PSCmdlet.ShouldProcess("Container [ ID: $n ]", '[ Refresh ]') ) {
                 $IdsToRefresh.Add($n) | Out-Null
             }
         }

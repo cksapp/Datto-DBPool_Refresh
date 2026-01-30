@@ -18,6 +18,10 @@ function Copy-DBPoolParentContainer {
     .PARAMETER Duplicate
         If specified, the function will clone the parent container(s) even if a similar container already exists.
 
+    .PARAMETER AllowBeta
+        If specified, the function will allow cloning of parent containers with 'BETA' in the name.
+        By default, BETA containers are excluded from cloning.
+
     .INPUTS
         [int] - Array of ID(s) of the parent container(s) to clone.
         [string] - Array of DefaultDatabase(s) of the parent container(s) to clone.
@@ -58,8 +62,9 @@ function Copy-DBPoolParentContainer {
         Parent Container [ Id: 4, Name: exampleParentB on 4.5.6 ] 'create' command sent for new Container [ exampleB(clone) ]
 
     .NOTES
-        Does not clone any parent containers with 'BETA' in the name. Also removes parent name suffixes like 'on Database v1.2.3' before appending the ContainerName_Append string.
-        This function will also append a number to the cloned container name if multiple matching clones are created with same parent at once, or for any matching clones that already exist when using the -Duplicate switch.
+        Does not clone any parent containers with 'BETA' in the name, unless specified with '-AllowBeta' switch.
+        Also removes parent name suffixes like 'on Database v1.2.3' before appending the ContainerName_Append string.
+        Appends a number to the cloned container name if multiple matching clones are created with same parent at once, or for any matching clones that already exist when using the '-Duplicate' switch.
 
     .LINK
         https://datto-dbpool-refresh.kentsapp.com/Copy-DBPoolParentContainer/
@@ -76,7 +81,10 @@ function Copy-DBPoolParentContainer {
         [Parameter()]
         [string]$ContainerName_Append = 'clone',
 
-        [switch]$Duplicate
+        [switch]$Duplicate,
+
+        [Parameter(DontShow = $true)]
+        [switch]$AllowBeta
     )
 
     begin {
@@ -99,22 +107,24 @@ function Copy-DBPoolParentContainer {
         switch ($PSCmdlet.ParameterSetName) {
             'byId' {
                 $myContainers = Get-DBPoolContainer
-                # Filter containers based on Id and exclude those with 'BETA' in the name
-                $filteredParentContainer = $parentContainer | Where-Object {
-                    $_.Id -in $Id -and $_.Name -notmatch 'BETA'
+                $filteredParentContainer = if ($AllowBeta) {
+                    $parentContainer | Where-Object { $_.Id -in $Id }
+                } else {
+                    $parentContainer | Where-Object { $_.Id -in $Id -and $_.Name -notmatch 'BETA' }
                 }
             }
 
             'byDefaultDatabase' {
-                $myContainers = Get-DBPoolContainer -DefaultDatabase $DefaultDatabase
-                # Filter containers based on DefaultDatabase and exclude those with 'BETA' in the name
-                $filteredParentContainer = $parentContainer | Where-Object {
-                    $_.defaultDatabase -in $DefaultDatabase -and $_.Name -notmatch 'BETA'
+                $myContainers = Get-DBPoolContainer -DefaultDatabase $DefaultDatabase -WarningAction SilentlyContinue
+                $filteredParentContainer = if ($AllowBeta) {
+                    $parentContainer | Where-Object { $_.defaultDatabase -in $DefaultDatabase }
+                } else {
+                    $parentContainer | Where-Object { $_.defaultDatabase -in $DefaultDatabase -and $_.Name -notmatch 'BETA' }
                 }
             }
         }
         if ($filteredParentContainer.Count -eq 0) {
-            Write-Error 'No parent container found to clone.'
+            Write-Error 'No matching parent container(s) found to clone.'
             return
         }
 
@@ -195,8 +205,10 @@ function Copy-DBPoolParentContainer {
 
     end {
 
-        $runspacePool.Close()
-        $runspacePool.Dispose()
+        if ($filteredParentContainer.Count -ne 0) {
+            $runspacePool.Close()
+            $runspacePool.Dispose()
+        }
 
     }
 

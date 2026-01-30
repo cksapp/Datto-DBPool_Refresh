@@ -16,14 +16,13 @@ Clones the specified DBPool parent container(s) using the DBPool API.
 ### byId (Default)
 
 ```PowerShell
-Copy-DBPoolParentContainer -Id <Int32[]> [-ContainerName_Append <String>] [-Duplicate] [<CommonParameters>]
+Copy-DBPoolParentContainer -Id <Int32[]> [-ContainerName_Append <String>] [-Duplicate] [-AllowBeta] [<CommonParameters>]
 ```
 
 ### byDefaultDatabase
 
 ```PowerShell
-Copy-DBPoolParentContainer -DefaultDatabase <String[]> [-ContainerName_Append <String>] [-Duplicate]
- [<CommonParameters>]
+Copy-DBPoolParentContainer -DefaultDatabase <String[]> [-ContainerName_Append <String>] [-Duplicate] [-AllowBeta] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -134,6 +133,20 @@ Accept wildcard characters: False
 ### -Duplicate
 
 If specified, the function will clone the parent container(s) even if a similar container already exists.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AllowBeta
 
 ```yaml
 Type: SwitchParameter

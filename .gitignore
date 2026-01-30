@@ -1,3 +1,7 @@
+# Don't check in the Output dir
+Output/
+out/
+
 scratch/
 
 testResults.xml
@@ -5,3 +9,6 @@ testResults.xml
 venv/
 
 /site/
+
+# Build output folders (local builds only, not source)
+Datto.DBPool.Refresh/*/

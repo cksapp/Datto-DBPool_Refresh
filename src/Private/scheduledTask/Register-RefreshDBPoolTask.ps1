@@ -132,6 +132,7 @@ function Register-RefreshDBPoolTask {
             }
             $task = New-ScheduledTask @taskParams
             $task.Author = "Kent Sapp (@cksapp)"
+            $task.Documentation = 'https://datto-dbpool-refresh.kentsapp.com'
 
             $registerParams = @{
                 InputObject = $task
@@ -157,7 +158,7 @@ function Register-RefreshDBPoolTask {
             }
         }
         else {
-            Write-Warning "This function is currently only supported on Windows."
+            Write-Error "This function is currently only supported on Windows."
             #TODO: Add support for Linux/MacOS using cron jobs or similar such as anacron
         }
 

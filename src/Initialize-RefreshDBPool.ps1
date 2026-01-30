@@ -307,7 +307,7 @@ function Initialize-DattoSecretStoreVault {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Justification = "Temporary random password generated for initial SecretStore setup only. Never stored or logged.")]
     # PSScriptAnalyzer - ignore creation of a SecureString using plain text rule
     param()
-    
+
     # Generate a random temporary password for initial SecretStore configuration
     # This is immediately replaced with no authentication, but SecretStore requires a password for the initial setup
     $tempPassword = -join ((65..90) + (97..122) + (48..57) | Get-Random -Count 32 | ForEach-Object { [char]$_ })

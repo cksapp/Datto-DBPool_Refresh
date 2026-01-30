@@ -107,6 +107,29 @@ jobs:
           Write-Host "[SUCCESS] Module structure validated"
           Write-Host "Module path: $modulePath"
 
+      - name: Install module dependencies
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $modulePath = "${{ steps.validate.outputs.module_path }}"
+          $manifestPath = Join-Path $modulePath "Datto.DBPool.Refresh.psd1"
+          
+          Write-Host "Installing required modules for validation..."
+          $manifest = Import-PowerShellDataFile -Path $manifestPath
+          
+          foreach ($requiredModule in $manifest.RequiredModules) {
+              if ($requiredModule -is [hashtable]) {
+                  $moduleName = $requiredModule.ModuleName
+                  $moduleVersion = $requiredModule.ModuleVersion
+                  Write-Host "Installing $moduleName version $moduleVersion or higher..."
+                  Install-Module -Name $moduleName -MinimumVersion $moduleVersion -Force -AllowClobber -Scope CurrentUser -Repository PSGallery
+              } else {
+                  Write-Host "Installing $requiredModule..."
+                  Install-Module -Name $requiredModule -Force -AllowClobber -Scope CurrentUser -Repository PSGallery
+              }
+          }
+          Write-Host "[SUCCESS] All dependencies installed"
+
       - name: Publish to PowerShell Gallery
         if: ${{ steps.version.outputs.skip_publish != 'true' }}
         shell: pwsh
@@ -148,15 +171,3 @@ jobs:
           } else {
               Write-Host "[SUCCESS] Version $version publish completed"
           }
-
-      - name: Trigger documentation update
-        uses: actions/github-script@v8
-        with:
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'Build_DocsSite.yml',
-              ref: 'main'
-            });
-            core.info('[SUCCESS] Triggered documentation update after PSGallery publish');

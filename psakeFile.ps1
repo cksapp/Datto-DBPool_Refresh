@@ -61,7 +61,7 @@ Task PublishDocs -Depends Build {
     $env:GITHUB_TOKEN = $env:GITHUB_TOKEN ?? ''
     $env:GITHUB_REPOSITORY = $env:GITHUB_REPOSITORY ?? ''
     $env:GITHUB_ACTOR = $env:GITHUB_ACTOR ?? ''
-
+    
     Exec {
         docker run -v "$($psake.build_script_dir)`:/docs" `
             -e 'CI=true' `
@@ -69,3 +69,5 @@ Task PublishDocs -Depends Build {
             -e "GITHUB_REPOSITORY=$env:GITHUB_REPOSITORY" `
             -e "GITHUB_ACTOR=$env:GITHUB_ACTOR" `
             --entrypoint 'sh' squidfunk/mkdocs-material:9@sha256:3bba0a99bc6e635bb8e53f379d32ab9cecb554adee9cc8f59a347f93ecf82f3b -c 'pip install -r requirements.txt && mkdocs gh-deploy --force'
+    }
+}

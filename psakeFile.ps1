@@ -58,16 +58,7 @@ Task Build -FromModule PowerShellBuild -Depends @('GenerateMarkdown', 'BuildHelp
 Task Test -FromModule PowerShellBuild -MinimumVersion '0.6.1' -Depends Build
 
 Task PublishDocs -Depends Build {
-    $env:GITHUB_TOKEN = $env:GITHUB_TOKEN ?? ''
-    $env:GITHUB_REPOSITORY = $env:GITHUB_REPOSITORY ?? ''
-    $env:GITHUB_ACTOR = $env:GITHUB_ACTOR ?? ''
-
     Exec {
-        docker run -v "$($psake.build_script_dir)`:/docs" `
-            -e 'CI=true' `
-            -e "GITHUB_TOKEN=$env:GITHUB_TOKEN" `
-            -e "GITHUB_REPOSITORY=$env:GITHUB_REPOSITORY" `
-            -e "GITHUB_ACTOR=$env:GITHUB_ACTOR" `
-            --entrypoint 'sh' squidfunk/mkdocs-material:9@sha256:3bba0a99bc6e635bb8e53f379d32ab9cecb554adee9cc8f59a347f93ecf82f3b -c 'pip install -r requirements.txt && mkdocs gh-deploy --force'
+        docker run -v "$($psake.build_script_dir)`:/docs" -e "CI=true" -e "GITHUB_TOKEN=$env:GITHUB_TOKEN" -e "GITHUB_REPOSITORY=$env:GITHUB_REPOSITORY" -e "GITHUB_ACTOR=$env:GITHUB_ACTOR" --entrypoint 'sh' squidfunk/mkdocs-material:9 -c 'set -e; python -m venv /tmp/venv && . /tmp/venv/bin/activate && pip install -r requirements.txt && if [ -z "$GITHUB_TOKEN" ] || [ -z "$GITHUB_REPOSITORY" ]; then echo "GITHUB_TOKEN and GITHUB_REPOSITORY are required for gh-deploy"; exit 1; fi; git config --global user.email "${GITHUB_ACTOR:-github-actions[bot]}@users.noreply.github.com"; git config --global user.name "${GITHUB_ACTOR:-github-actions[bot]}"; git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"; mkdocs gh-deploy --force'
     }
 }

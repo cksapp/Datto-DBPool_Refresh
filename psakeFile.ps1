@@ -5,6 +5,8 @@ properties {
     # Set this to $true to create a module with a monolithic PSM1
     $PSBPreference.Build.CompileModule = $true
     $PSBPreference.Build.CopyDirectories = @('scripts')
+    # Exclude bootstrap/helper scripts from compilation - they are helper tools for users, not part of the module
+    $PSBPreference.Build.Exclude = @('Initialize-RefreshDBPool.ps1', 'Invoke-RefreshDBPoolInstall.ps1')
     $PSBPreference.Build.CompileScriptHeader = '#Region' + [System.Environment]::NewLine
     $PSBPreference.Build.CompileScriptFooter = [System.Environment]::NewLine + '#EndRegion'
     $PSBPreference.Help.DefaultLocale = 'en-US'
@@ -48,29 +50,8 @@ Task RemoveNestedModules -Depends UpdateFunctionsToExport {
     Write-Host 'Module manifest updated successfully'
 }
 
-# Append Initialize-RefreshDBPool.ps1 to compiled module
-Task AppendInitialization -Depends RemoveNestedModules {
-    $compiledModulePath = Join-Path -Path $env:BHBuildOutput -ChildPath $($env:BHProjectName + '.psm1')
-    $initializeScriptPath = Join-Path -Path $env:BHPSModulePath -ChildPath 'Initialize-RefreshDBPool.ps1'
-    
-    if (Test-Path $initializeScriptPath) {
-        Write-Host "Appending initialization script to compiled module"
-        $initializeContent = Get-Content -Path $initializeScriptPath -Raw
-        
-        $appendContent = @"
-
-# Region: Initialize-RefreshDBPool.ps1
-$initializeContent
-# EndRegion: Initialize-RefreshDBPool.ps1
-"@
-        
-        Add-Content -Path $compiledModulePath -Value $appendContent
-        Write-Host "Initialization script appended successfully"
-    }
-}
-
-# Override GenerateMarkdown to depend on AppendInitialization
-Task GenerateMarkdown -FromModule PowerShellBuild -Depends AppendInitialization
+# Override GenerateMarkdown to depend on RemoveNestedModules
+Task GenerateMarkdown -FromModule PowerShellBuild -Depends RemoveNestedModules
 
 # Override Build to include your custom dependencies
 Task Build -FromModule PowerShellBuild -Depends @('GenerateMarkdown', 'BuildHelp')

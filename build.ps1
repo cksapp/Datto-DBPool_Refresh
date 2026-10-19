@@ -52,7 +52,15 @@ if ($Bootstrap.IsPresent) {
             Install-Module -Name PSDepend -Repository PSGallery -Scope CurrentUser -Force
         }
         Import-Module -Name PSDepend -Verbose:$false
-        Invoke-PSDepend -Path './requirements.psd1' -Install -Import -Force -WarningAction SilentlyContinue
+        $buildRequirements = Import-PowerShellDataFile -Path './requirements.psd1'
+        $pesterRequirement = $buildRequirements['Pester']
+        $buildRequirements.Remove('Pester')
+        Invoke-PSDepend -InputObject $buildRequirements -Install -Import -Force -WarningAction SilentlyContinue
+        # PowerShellBuild loads Pester when its test task starts.
+        Invoke-PSDepend -InputObject @{
+            PSDependOptions = $buildRequirements.PSDependOptions
+            Pester          = $pesterRequirement
+        } -Install -Force -WarningAction SilentlyContinue
     } else {
         Write-Warning 'No [requirements.psd1] found. Skipping build dependency installation.'
     }

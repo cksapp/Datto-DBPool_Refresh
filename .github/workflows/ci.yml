@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Setup PowerShell
-        uses: bjompen/UpdatePWSHAction@v1.0.3
+        uses: bjompen/UpdatePWSHAction@v1.1.0
 
       - name: Run Pester Tests
         shell: pwsh

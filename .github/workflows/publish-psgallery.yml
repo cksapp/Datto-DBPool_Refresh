@@ -113,10 +113,10 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $modulePath = "${{ steps.validate.outputs.module_path }}"
           $manifestPath = Join-Path $modulePath "Datto.DBPool.Refresh.psd1"
-          
+
           Write-Host "Installing required modules for validation..."
           $manifest = Import-PowerShellDataFile -Path $manifestPath
-          
+
           foreach ($requiredModule in $manifest.RequiredModules) {
               if ($requiredModule -is [hashtable]) {
                   $moduleName = $requiredModule.ModuleName

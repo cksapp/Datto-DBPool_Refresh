@@ -91,7 +91,7 @@ function Register-RefreshDBPoolTask {
 
             $taskPath = 'Datto'
             $taskName = 'DBPool-Refresh'
-            $taskDescription = 'Scheduled task to automate refresh of Datto DBPool containers.'
+            $taskDescription = "Scheduled task to automate refresh of Datto DBPool containers.$([Environment]::NewLine)$([Environment]::NewLine)For further details see documentation at https://datto-dbpool-refresh.kentsapp.com/ & https://datto-dbpool-api.kentsapp.com/"
 
             # Task trigger
             $triggerParams = @{

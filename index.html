@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1505,10 +1505,10 @@ The recommendation is ~30 - 60 minutes prior to the start of your shift.</p>
 <h3 id="easy-install-script">Easy Install Script<a class="headerlink" href="#easy-install-script" title="Permanent link">🔗</a></h3>
 <p>Use the following script to easily install and handle <strong>all</strong> dependancies.</p>
 <p>The <a href="https://github.com/cksapp/Datto-DBPool_Refresh/blob/main/src/Invoke-RefreshDBPoolInstall.ps1">install script</a> is user interactive with a few prompts to set up the initial install and variables needed to automate the container refresh.</p>
-<div class="highlight"><pre><span></span><code><span class="nv">$scriptFile</span> <span class="p">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/cksapp/Datto-DBPool_Refresh/refs/heads/main/src/Initialize-RefreshDBPool.ps1&#39;</span><span class="p">;</span> <span class="nv">$fileName</span> <span class="p">=</span> <span class="no">[System.IO.Path]</span><span class="p">::</span><span class="n">GetFileName</span><span class="p">(</span><span class="nv">$scriptFile</span><span class="p">);</span> <span class="nv">$tempFile</span> <span class="p">=</span> <span class="no">[System.IO.Path]</span><span class="p">::</span><span class="n">Combine</span><span class="p">(</span><span class="no">[System.IO.Path]</span><span class="p">::</span><span class="n">GetTempPath</span><span class="p">(),</span> <span class="nv">$fileName</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$PSEdition</span> <span class="o">-eq</span> <span class="s1">&#39;Desktop&#39;</span> <span class="o">-or</span> <span class="nv">$IsWindows</span><span class="p">)</span> <span class="p">{</span> <span class="nb">Set-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="n">-Scope</span> <span class="k">Process</span> <span class="n">-Force</span> <span class="p">};</span> <span class="no">[System.Net.ServicePointManager]</span><span class="p">::</span><span class="n">SecurityProtocol</span> <span class="p">=</span> <span class="no">[System.Net.ServicePointManager]</span><span class="p">::</span><span class="n">SecurityProtocol</span> <span class="o">-bor</span> <span class="n">3072</span><span class="p">;</span> <span class="p">(</span><span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">WebClient</span><span class="p">).</span><span class="n">DownloadFile</span><span class="p">(</span><span class="nv">$scriptFile</span><span class="p">,</span> <span class="nv">$tempFile</span><span class="p">);</span> <span class="p">&amp;</span> <span class="nv">$tempFile</span>
+<div class="highlight"><pre><span></span><code><span class="nv">$scriptFile</span> <span class="p">=</span> <span class="s1">'https://mlnk.kentsapp.com/dbpool-ez-init'</span><span class="p">;</span> <span class="nv">$fileName</span> <span class="p">=</span> <span class="s1">'Initialize-RefreshDBPool.ps1'</span><span class="p">;</span> <span class="nv">$tempFile</span> <span class="p">=</span> <span class="no">[System.IO.Path]</span><span class="p">::</span><span class="n">Combine</span><span class="p">(</span><span class="no">[System.IO.Path]</span><span class="p">::</span><span class="n">GetTempPath</span><span class="p">(),</span> <span class="nv">$fileName</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$PSEdition</span> <span class="o">-eq</span> <span class="s1">'Desktop'</span> <span class="o">-or</span> <span class="nv">$IsWindows</span><span class="p">)</span> <span class="p">{</span> <span class="nb">Set-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="n">-Scope</span> <span class="k">Process</span> <span class="n">-Force</span> <span class="p">};</span> <span class="no">[System.Net.ServicePointManager]</span><span class="p">::</span><span class="n">SecurityProtocol</span> <span class="p">=</span> <span class="no">[System.Net.ServicePointManager]</span><span class="p">::</span><span class="n">SecurityProtocol</span> <span class="o">-bor</span> <span class="n">3072</span><span class="p">;</span> <span class="p">(</span><span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">WebClient</span><span class="p">).</span><span class="n">DownloadFile</span><span class="p">(</span><span class="nv">$scriptFile</span><span class="p">,</span> <span class="nv">$tempFile</span><span class="p">);</span> <span class="p">&amp;</span> <span class="nv">$tempFile</span>
 </code></pre></div>
 <ol>
-<li>Copy the full script<ul>
+<li>Copy the install command<ul>
 <li><em>This can be done via the 'Copy to Clipboard' icon</em>
 <img alt="copyTo_Clipboard-Dark" class="off-glb" src="assets/install/script_CopyToClipboard-Dark.png#only-light" />
 <img alt="copyTo_Clipboard" class="off-glb" src="assets/install/script_CopyToClipboard.png#only-dark" /></li>
@@ -1642,7 +1642,7 @@ If you wish to override any module settings this can be done within the <code>co
       <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["content.code.copy", "header.autohide", "navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.top", "search.suggest", "search.highlight", "search.share", "toc.follow"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="js/open_in_new_tab.js"></script>
       

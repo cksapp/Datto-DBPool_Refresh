@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1706,15 +1706,15 @@ The task can be configured to run on specific days of the week and at a specifie
 <h2 id="examples">EXAMPLES<a class="headerlink" href="#examples" title="Permanent link">🔗</a></h2>
 <h3 id="example-1">EXAMPLE 1<a class="headerlink" href="#example-1" title="Permanent link">🔗</a></h3>
 <p>This example creates a scheduled task that runs every day at 7:00 AM, except on Sundays and Saturdays.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">Register-RefreshDBPoolTask</span> <span class="n">-TriggerTime</span> <span class="s2">&quot;7AM&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nb">Register-RefreshDBPoolTask</span> <span class="n">-TriggerTime</span> <span class="s2">"7AM"</span>
 </code></pre></div>
 <h3 id="example-2">EXAMPLE 2<a class="headerlink" href="#example-2" title="Permanent link">🔗</a></h3>
 <p>This example creates a scheduled task that runs every day at 3:00 PM, except on Sundays and Saturdays.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">Register-RefreshDBPoolTask</span> <span class="n">-TriggerTime</span> <span class="s2">&quot;15:00&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nb">Register-RefreshDBPoolTask</span> <span class="n">-TriggerTime</span> <span class="s2">"15:00"</span>
 </code></pre></div>
 <h3 id="example-3">EXAMPLE 3<a class="headerlink" href="#example-3" title="Permanent link">🔗</a></h3>
 <p>This example creates a scheduled task that runs every day at 4:30 PM, except on Sunday and Monday.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">Register-RefreshDBPoolTask</span> <span class="n">-ExcludeDaysOfWeek</span> <span class="s1">&#39;Sunday&#39;</span><span class="p">,</span><span class="s1">&#39;Monday&#39;</span> <span class="n">-TriggerTime</span> <span class="s2">&quot;4:30PM&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nb">Register-RefreshDBPoolTask</span> <span class="n">-ExcludeDaysOfWeek</span> <span class="s1">'Sunday'</span><span class="p">,</span><span class="s1">'Monday'</span> <span class="n">-TriggerTime</span> <span class="s2">"4:30PM"</span>
 </code></pre></div>
 <h2 id="parameters">PARAMETERS<a class="headerlink" href="#parameters" title="Permanent link">🔗</a></h2>
 <h3 id="-triggertime">-TriggerTime<a class="headerlink" href="#-triggertime" title="Permanent link">🔗</a></h3>
@@ -1740,7 +1740,7 @@ This will generally be days off work, by default the task will not run on Sunday
 
 <span class="nt">Required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 <span class="nt">Position</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-<span class="nt">Default value</span><span class="p">:</span><span class="w"> </span><span class="err">@</span><span class="l l-Scalar l-Scalar-Plain">(&#39;Sunday&#39;,&#39;Saturday&#39;)</span>
+<span class="nt">Default value</span><span class="p">:</span><span class="w"> </span><span class="err">@</span><span class="l l-Scalar l-Scalar-Plain">('Sunday','Saturday')</span>
 <span class="nt">Accept pipeline input</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 <span class="nt">Accept wildcard characters</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 </code></pre></div>
@@ -1845,7 +1845,7 @@ Will look to add support for Linux/MacOS using cron jobs or similar such as anac
       <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.copy", "header.autohide", "navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.top", "search.suggest", "search.highlight", "search.share", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="../../../js/open_in_new_tab.js"></script>
       

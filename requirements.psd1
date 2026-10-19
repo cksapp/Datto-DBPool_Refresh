@@ -7,6 +7,7 @@
     }
     'Pester' = @{
         Version = '5.7.1'
+        Import = $false
         Parameters = @{
             SkipPublisherCheck = $true
         }
